@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Benchmark.BetterBenchmark-20240913-121806</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.14.0, Windows 10 (10.0.19045.4780/22H2/2022Update)
+12th Gen Intel Core i7-12800H, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 9.0.100-rc.1.24452.12
+  [Host]     : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
+  Job-JFIAZA : .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
+  Job-JTKYHY : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
+  Job-MCYVQZ : .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
+</code></pre>
+<pre><code>IterationCount=25  
+</code></pre>
+
+<table>
+<thead><tr><th>Method        </th><th>Runtime</th><th>ItemCount</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Gen0</th><th>Code Size</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>For</td><td>.NET 6.0</td><td>100000</td><td>72.35 &mu;s</td><td>0.134 &mu;s</td><td>0.165 &mu;s</td><td>-</td><td>98 B</td><td>-</td>
+</tr><tr><td>ForEach</td><td>.NET 6.0</td><td>100000</td><td>68.80 &mu;s</td><td>0.819 &mu;s</td><td>1.036 &mu;s</td><td>-</td><td>127 B</td><td>-</td>
+</tr><tr><td>ForEach_Linq</td><td>.NET 6.0</td><td>100000</td><td>139.54 &mu;s</td><td>0.260 &mu;s</td><td>0.329 &mu;s</td><td>-</td><td>137 B</td><td>-</td>
+</tr><tr><td>ForEach_Parallel</td><td>.NET 6.0</td><td>100000</td><td>804.11 &mu;s</td><td>8.195 &mu;s</td><td>10.940 &mu;s</td><td>-</td><td>565 B</td><td>5522 B</td>
+</tr><tr><td>ForEach_LinqParallel</td><td>.NET 6.0</td><td>100000</td><td>885.41 &mu;s</td><td>8.300 &mu;s</td><td>10.793 &mu;s</td><td>-</td><td>624 B</td><td>7887 B</td>
+</tr><tr><td>For_Span</td><td>.NET 6.0</td><td>100000</td><td>46.34 &mu;s</td><td>0.102 &mu;s</td><td>0.129 &mu;s</td><td>-</td><td>124 B</td><td>-</td>
+</tr><tr><td>ForEach_Span</td><td>.NET 6.0</td><td>100000</td><td>45.63 &mu;s</td><td>0.112 &mu;s</td><td>0.149 &mu;s</td><td>-</td><td>NA</td><td>-</td>
+</tr><tr><td>For</td><td>.NET 8.0</td><td>100000</td><td>115.38 &mu;s</td><td>0.273 &mu;s</td><td>0.345 &mu;s</td><td>-</td><td>97 B</td><td>-</td>
+</tr><tr><td>ForEach</td><td>.NET 8.0</td><td>100000</td><td>114.89 &mu;s</td><td>0.330 &mu;s</td><td>0.429 &mu;s</td><td>-</td><td>NA</td><td>-</td>
+</tr><tr><td>ForEach_Linq</td><td>.NET 8.0</td><td>100000</td><td>155.29 &mu;s</td><td>2.422 &mu;s</td><td>3.150 &mu;s</td><td>-</td><td>228 B</td><td>-</td>
+</tr><tr><td>ForEach_Parallel</td><td>.NET 8.0</td><td>100000</td><td>494.79 &mu;s</td><td>3.344 &mu;s</td><td>4.349 &mu;s</td><td>-</td><td>1,522 B</td><td>5710 B</td>
+</tr><tr><td>ForEach_LinqParallel</td><td>.NET 8.0</td><td>100000</td><td>410.97 &mu;s</td><td>2.792 &mu;s</td><td>3.728 &mu;s</td><td>0.4883</td><td>460 B</td><td>7891 B</td>
+</tr><tr><td>For_Span</td><td>.NET 8.0</td><td>100000</td><td>114.31 &mu;s</td><td>0.549 &mu;s</td><td>0.654 &mu;s</td><td>-</td><td>117 B</td><td>-</td>
+</tr><tr><td>ForEach_Span</td><td>.NET 8.0</td><td>100000</td><td>113.11 &mu;s</td><td>0.536 &mu;s</td><td>0.716 &mu;s</td><td>-</td><td>NA</td><td>-</td>
+</tr><tr><td>For</td><td>.NET 9.0</td><td>100000</td><td>115.05 &mu;s</td><td>0.369 &mu;s</td><td>0.480 &mu;s</td><td>-</td><td>95 B</td><td>-</td>
+</tr><tr><td>ForEach</td><td>.NET 9.0</td><td>100000</td><td>114.63 &mu;s</td><td>0.148 &mu;s</td><td>0.197 &mu;s</td><td>-</td><td>NA</td><td>-</td>
+</tr><tr><td>ForEach_Linq</td><td>.NET 9.0</td><td>100000</td><td>154.41 &mu;s</td><td>0.922 &mu;s</td><td>1.198 &mu;s</td><td>-</td><td>227 B</td><td>-</td>
+</tr><tr><td>ForEach_Parallel</td><td>.NET 9.0</td><td>100000</td><td>388.44 &mu;s</td><td>3.457 &mu;s</td><td>4.615 &mu;s</td><td>-</td><td>512 B</td><td>5721 B</td>
+</tr><tr><td>ForEach_LinqParallel</td><td>.NET 9.0</td><td>100000</td><td>417.66 &mu;s</td><td>2.848 &mu;s</td><td>3.802 &mu;s</td><td>0.4883</td><td>1,286 B</td><td>7896 B</td>
+</tr><tr><td>For_Span</td><td>.NET 9.0</td><td>100000</td><td>92.82 &mu;s</td><td>0.334 &mu;s</td><td>0.446 &mu;s</td><td>-</td><td>98 B</td><td>-</td>
+</tr><tr><td>ForEach_Span</td><td>.NET 9.0</td><td>100000</td><td>89.16 &mu;s</td><td>0.547 &mu;s</td><td>0.731 &mu;s</td><td>-</td><td>NA</td><td>-</td>
+</tr></tbody></table>
+</body>
+</html>
