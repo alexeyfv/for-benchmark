@@ -86,7 +86,6 @@ public class BadBenchmark
 }
 
 [MemoryDiagnoser]
-[DotTraceDiagnoser]
 [DisassemblyDiagnoser(printInstructionAddresses: true, printSource: true, exportCombinedDisassemblyReport: true)]
 [SimpleJob(RuntimeMoniker.Net90, iterationCount: 25)]
 [SimpleJob(RuntimeMoniker.Net80, iterationCount: 25)]
@@ -96,20 +95,33 @@ public class BetterBenchmark
     [Params(100_000)]
     public int ItemCount { get; set; }
     private List<int> List = null!;
-    private int sum = 0;
-    private Action<int> _doSomeThing = null!;
+    private static int sum = 0;
+    private readonly Action<int> _doSomeThing = x => sum += DoSomeThing(x);
 
     [GlobalSetup]
     public void GlobalSetup()
     {
         List = Enumerable.Range(0, ItemCount).ToList();
-        _doSomeThing = x => sum += x + x;
+        
+        var result1 = For();
+        var result2 = ForEach();
+        var result3 = For_Span();
+        var result4 = ForEach_Linq();
+        var result5 = ForEach_LinqParallel();
+        var result6 = ForEach_Parallel();
+        var result7 = ForEach_Span();
+
+        // Make sure that all methods returns the same result
+        if (result1 != result2 || result3 != result4 || result5 != result6 || result6 != result7)
+        {
+            throw new InvalidOperationException();
+        }
     }
 
     [Benchmark]
     public int For()
     {
-        var sum = 0;
+        sum = 0;
         for (int i = 0; i < List.Count; i++)
         {
             sum += DoSomeThing(List[i]);
@@ -120,7 +132,7 @@ public class BetterBenchmark
     [Benchmark]
     public int ForEach()
     {
-        var sum = 0;
+        sum = 0;
         foreach (var item in List)
         {
             sum += DoSomeThing(item);
@@ -131,6 +143,7 @@ public class BetterBenchmark
     [Benchmark]
     public int ForEach_Linq()
     {
+        sum = 0;
         List.ForEach(_doSomeThing);
         return sum;
     }
@@ -138,6 +151,7 @@ public class BetterBenchmark
     [Benchmark]
     public int ForEach_Parallel()
     {
+        sum = 0;
         Parallel.ForEach(List, _doSomeThing);
         return sum;
     }
@@ -145,6 +159,7 @@ public class BetterBenchmark
     [Benchmark]
     public int ForEach_LinqParallel()
     {
+        sum = 0;
         List.AsParallel().ForAll(_doSomeThing);
         return sum;
     }
@@ -152,7 +167,7 @@ public class BetterBenchmark
     [Benchmark]
     public int For_Span()
     {
-        var sum = 0;
+        sum = 0;
         var span = CollectionsMarshal.AsSpan(List);
         for (int i = 0; i < span.Length; i++)
         {
@@ -164,7 +179,7 @@ public class BetterBenchmark
     [Benchmark]
     public int ForEach_Span()
     {
-        var sum = 0;
+        sum = 0;
         foreach (var item in CollectionsMarshal.AsSpan(List))
         {
             sum += DoSomeThing(item);
@@ -173,5 +188,5 @@ public class BetterBenchmark
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private int DoSomeThing(int i) => i + i;
+    private static int DoSomeThing(int i) => i + i;
 }
