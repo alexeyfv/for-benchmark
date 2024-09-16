@@ -1,63 +1,62 @@
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For()
-       7FFAF13E6020 push      rdi
-       7FFAF13E6021 push      rsi
-       7FFAF13E6022 push      rbp
-       7FFAF13E6023 push      rbx
-       7FFAF13E6024 sub       rsp,28
-       7FFAF13E6028 mov       rsi,rcx
-;         var sum = 0;
-;         ^^^^^^^^^^^^
-       7FFAF13E602B xor       edi,edi
+       7FFD4C298180 push      rdi
+       7FFD4C298181 push      rsi
+       7FFD4C298182 push      rbx
+       7FFD4C298183 sub       rsp,20
+       7FFD4C298187 mov       rsi,rcx
+;         sum = 0;
+;         ^^^^^^^^
+       7FFD4C29818A mov       dword ptr [7FFD4C22ECA0],0
 ;         for (int i = 0; i < List.Count; i++)
 ;              ^^^^^^^^^
-       7FFAF13E602D xor       ebx,ebx
-       7FFAF13E602F mov       rbp,[rsi+8]
-       7FFAF13E6033 cmp       dword ptr [rbp+10],0
-       7FFAF13E6037 jle       short M00_L01
-;             sum += DoSomeThing(List[i]);
+       7FFD4C298194 xor       edi,edi
+       7FFD4C298196 mov       rbx,[rsi+8]
+       7FFD4C29819A cmp       dword ptr [rbx+10],0
+       7FFD4C29819E jle       short M00_L01
+;             sum += DoSomething(List[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 M00_L00:
-       7FFAF13E6039 mov       rcx,[rsi+8]
-       7FFAF13E603D cmp       ebx,[rcx+10]
-       7FFAF13E6040 jae       short M00_L02
-       7FFAF13E6042 mov       rcx,[rcx+8]
-       7FFAF13E6046 cmp       ebx,[rcx+8]
-       7FFAF13E6049 jae       short M00_L03
-       7FFAF13E604B movsxd    rdx,ebx
-       7FFAF13E604E mov       edx,[rcx+rdx*4+10]
-       7FFAF13E6052 mov       rcx,rsi
-       7FFAF13E6055 call      Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFAF13E605A add       edi,eax
-       7FFAF13E605C inc       ebx
-       7FFAF13E605E mov       rbp,[rsi+8]
-       7FFAF13E6062 cmp       ebx,[rbp+10]
-       7FFAF13E6065 jl        short M00_L00
+       7FFD4C2981A0 mov       ebx,[7FFD4C22ECA0]
+       7FFD4C2981A6 mov       rcx,[rsi+8]
+       7FFD4C2981AA cmp       edi,[rcx+10]
+       7FFD4C2981AD jae       short M00_L02
+       7FFD4C2981AF mov       rcx,[rcx+8]
+       7FFD4C2981B3 cmp       edi,[rcx+8]
+       7FFD4C2981B6 jae       short M00_L03
+       7FFD4C2981B8 movsxd    rax,edi
+       7FFD4C2981BB mov       ecx,[rcx+rax*4+10]
+       7FFD4C2981BF call      Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD4C2981C4 add       eax,ebx
+       7FFD4C2981C6 mov       [7FFD4C22ECA0],eax
+       7FFD4C2981CC inc       edi
+       7FFD4C2981CE mov       rbx,[rsi+8]
+       7FFD4C2981D2 cmp       edi,[rbx+10]
+       7FFD4C2981D5 jl        short M00_L00
 ;         return sum;
 ;         ^^^^^^^^^^^
 M00_L01:
-       7FFAF13E6067 mov       eax,edi
-       7FFAF13E6069 add       rsp,28
-       7FFAF13E606D pop       rbx
-       7FFAF13E606E pop       rbp
-       7FFAF13E606F pop       rsi
-       7FFAF13E6070 pop       rdi
-       7FFAF13E6071 ret
+       7FFD4C2981D7 mov       eax,[7FFD4C22ECA0]
+       7FFD4C2981DD add       rsp,20
+       7FFD4C2981E1 pop       rbx
+       7FFD4C2981E2 pop       rsi
+       7FFD4C2981E3 pop       rdi
+       7FFD4C2981E4 ret
 M00_L02:
-       7FFAF13E6072 call      System.ThrowHelper.ThrowArgumentOutOfRange_IndexException()
-       7FFAF13E6077 int       3
+       7FFD4C2981E5 call      System.ThrowHelper.ThrowArgumentOutOfRange_IndexException()
+       7FFD4C2981EA int       3
 M00_L03:
-       7FFAF13E6078 call      CORINFO_HELP_RNGCHKFAIL
-       7FFAF13E607D int       3
-; Total bytes of code 94
+       7FFD4C2981EB call      CORINFO_HELP_RNGCHKFAIL
+       7FFD4C2981F0 int       3
+; Total bytes of code 113
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFAF13E9570 lea       eax,[rdx+rdx]
-       7FFAF13E9573 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD4C2B2C80 lea       eax,[rcx+rcx]
+       7FFD4C2B2C83 ret
 ; Total bytes of code 4
 ```
 **Method was not JITted yet.**
@@ -66,77 +65,75 @@ System.ThrowHelper.ThrowArgumentOutOfRange_IndexException()
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach()
-       7FFAF13F6280 push      r14
-       7FFAF13F6282 push      rdi
-       7FFAF13F6283 push      rsi
-       7FFAF13F6284 push      rbp
-       7FFAF13F6285 push      rbx
-       7FFAF13F6286 sub       rsp,20
-       7FFAF13F628A mov       rsi,rcx
-;         var sum = 0;
-;         ^^^^^^^^^^^^
-       7FFAF13F628D xor       edi,edi
+       7FFD4C2A8F20 push      rdi
+       7FFD4C2A8F21 push      rsi
+       7FFD4C2A8F22 push      rbp
+       7FFD4C2A8F23 push      rbx
+       7FFD4C2A8F24 sub       rsp,28
+;         sum = 0;
+;         ^^^^^^^^
+       7FFD4C2A8F28 mov       dword ptr [7FFD4C23ECA0],0
 ;         foreach (var item in List)
 ;                              ^^^^
-       7FFAF13F628F mov       rbx,[rsi+8]
-       7FFAF13F6293 mov       ebp,[rbx+14]
-       7FFAF13F6296 xor       r14d,r14d
-       7FFAF13F6299 jmp       short M00_L01
-;             sum += DoSomeThing(item);
+       7FFD4C2A8F32 mov       rsi,[rcx+8]
+       7FFD4C2A8F36 mov       edi,[rsi+14]
+       7FFD4C2A8F39 xor       ebx,ebx
+       7FFD4C2A8F3B jmp       short M00_L01
+;             sum += DoSomething(item);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^
 M00_L00:
-       7FFAF13F629B mov       rcx,rsi
-       7FFAF13F629E call      Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFAF13F62A3 add       edi,eax
+       7FFD4C2A8F3D mov       ebp,[7FFD4C23ECA0]
+       7FFD4C2A8F43 call      Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD4C2A8F48 add       eax,ebp
+       7FFD4C2A8F4A mov       [7FFD4C23ECA0],eax
 M00_L01:
-       7FFAF13F62A5 mov       rcx,rbx
-       7FFAF13F62A8 cmp       ebp,[rcx+14]
-       7FFAF13F62AB jne       short M00_L02
-       7FFAF13F62AD cmp       r14d,[rbx+10]
-       7FFAF13F62B1 jae       short M00_L03
-       7FFAF13F62B3 mov       rcx,[rbx+8]
-       7FFAF13F62B7 cmp       r14d,[rcx+8]
-       7FFAF13F62BB jae       short M00_L06
-       7FFAF13F62BD movsxd    rdx,r14d
-       7FFAF13F62C0 mov       edx,[rcx+rdx*4+10]
-       7FFAF13F62C4 inc       r14d
-       7FFAF13F62C7 mov       ecx,1
-       7FFAF13F62CC jmp       short M00_L04
+       7FFD4C2A8F50 mov       rcx,rsi
+       7FFD4C2A8F53 cmp       edi,[rcx+14]
+       7FFD4C2A8F56 jne       short M00_L02
+       7FFD4C2A8F58 cmp       ebx,[rsi+10]
+       7FFD4C2A8F5B jae       short M00_L03
+       7FFD4C2A8F5D mov       rcx,[rsi+8]
+       7FFD4C2A8F61 cmp       ebx,[rcx+8]
+       7FFD4C2A8F64 jae       short M00_L06
+       7FFD4C2A8F66 movsxd    rax,ebx
+       7FFD4C2A8F69 mov       ecx,[rcx+rax*4+10]
+       7FFD4C2A8F6D inc       ebx
+       7FFD4C2A8F6F mov       eax,1
+       7FFD4C2A8F74 jmp       short M00_L04
 M00_L02:
-       7FFAF13F62CE cmp       ebp,[rbx+14]
-       7FFAF13F62D1 jne       short M00_L05
+       7FFD4C2A8F76 cmp       edi,[rsi+14]
+       7FFD4C2A8F79 jne       short M00_L05
 M00_L03:
-       7FFAF13F62D3 mov       r14d,[rbx+10]
-       7FFAF13F62D7 inc       r14d
-       7FFAF13F62DA xor       edx,edx
-       7FFAF13F62DC xor       ecx,ecx
+       7FFD4C2A8F7B mov       ebx,[rsi+10]
+       7FFD4C2A8F7E inc       ebx
+       7FFD4C2A8F80 xor       ecx,ecx
+       7FFD4C2A8F82 xor       eax,eax
 M00_L04:
-       7FFAF13F62DE test      ecx,ecx
-       7FFAF13F62E0 jne       short M00_L00
+       7FFD4C2A8F84 test      eax,eax
+       7FFD4C2A8F86 jne       short M00_L00
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFAF13F62E2 mov       eax,edi
-       7FFAF13F62E4 add       rsp,20
-       7FFAF13F62E8 pop       rbx
-       7FFAF13F62E9 pop       rbp
-       7FFAF13F62EA pop       rsi
-       7FFAF13F62EB pop       rdi
-       7FFAF13F62EC pop       r14
-       7FFAF13F62EE ret
+       7FFD4C2A8F88 mov       eax,[7FFD4C23ECA0]
+       7FFD4C2A8F8E add       rsp,28
+       7FFD4C2A8F92 pop       rbx
+       7FFD4C2A8F93 pop       rbp
+       7FFD4C2A8F94 pop       rsi
+       7FFD4C2A8F95 pop       rdi
+       7FFD4C2A8F96 ret
 M00_L05:
-       7FFAF13F62EF call      System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
-       7FFAF13F62F4 int       3
+       7FFD4C2A8F97 call      System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
+       7FFD4C2A8F9C int       3
 M00_L06:
-       7FFAF13F62F5 call      CORINFO_HELP_RNGCHKFAIL
-       7FFAF13F62FA int       3
-; Total bytes of code 123
+       7FFD4C2A8F9D call      CORINFO_HELP_RNGCHKFAIL
+       7FFD4C2A8FA2 int       3
+; Total bytes of code 131
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFAF13F97F0 lea       eax,[rdx+rdx]
-       7FFAF13F97F3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD4C2C2D80 lea       eax,[rcx+rcx]
+       7FFD4C2C2D83 ret
 ; Total bytes of code 4
 ```
 **Method was not JITted yet.**
@@ -145,476 +142,479 @@ System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVer
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Linq()
-;         List.ForEach(_doSomeThing);
+;         sum = 0;
+;         ^^^^^^^^
+;         List.ForEach(_doSomething);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFAF1409570 push      rsi
-       7FFAF1409571 sub       rsp,20
-       7FFAF1409575 mov       rsi,rcx
-       7FFAF1409578 mov       rcx,[rsi+8]
-       7FFAF140957C mov       rdx,[rsi+10]
-       7FFAF1409580 cmp       [rcx],ecx
-       7FFAF1409582 call      System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFAF1409587 mov       eax,[rsi+1C]
-       7FFAF140958A add       rsp,20
-       7FFAF140958E pop       rsi
-       7FFAF140958F ret
-; Total bytes of code 32
+       7FFD4C2B2DE0 sub       rsp,28
+       7FFD4C2B2DE4 mov       dword ptr [7FFD4C22ECA0],0
+       7FFD4C2B2DEE mov       [rsp+30],rcx
+       7FFD4C2B2DF3 mov       rcx,[rcx+8]
+       7FFD4C2B2DF7 mov       rdx,[rsp+30]
+       7FFD4C2B2DFC mov       rdx,[rdx+10]
+       7FFD4C2B2E00 cmp       [rcx],ecx
+       7FFD4C2B2E02 call      System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
+       7FFD4C2B2E07 mov       eax,[7FFD4C22ECA0]
+       7FFD4C2B2E0D add       rsp,28
+       7FFD4C2B2E11 ret
+; Total bytes of code 50
 ```
 ```assembly
 ; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFAF14095C0 push      rdi
-       7FFAF14095C1 push      rsi
-       7FFAF14095C2 push      rbp
-       7FFAF14095C3 push      rbx
-       7FFAF14095C4 sub       rsp,28
-       7FFAF14095C8 mov       rsi,rcx
-       7FFAF14095CB mov       rdi,rdx
-       7FFAF14095CE test      rdi,rdi
-       7FFAF14095D1 je        short M01_L02
-       7FFAF14095D3 mov       ebx,[rsi+14]
-       7FFAF14095D6 xor       ebp,ebp
-       7FFAF14095D8 cmp       dword ptr [rsi+10],0
-       7FFAF14095DC jle       short M01_L01
+       7FFD4C2B2E40 push      rdi
+       7FFD4C2B2E41 push      rsi
+       7FFD4C2B2E42 push      rbp
+       7FFD4C2B2E43 push      rbx
+       7FFD4C2B2E44 sub       rsp,28
+       7FFD4C2B2E48 mov       rsi,rcx
+       7FFD4C2B2E4B mov       rdi,rdx
+       7FFD4C2B2E4E test      rdi,rdi
+       7FFD4C2B2E51 je        short M01_L02
+       7FFD4C2B2E53 mov       ebx,[rsi+14]
+       7FFD4C2B2E56 xor       ebp,ebp
+       7FFD4C2B2E58 cmp       dword ptr [rsi+10],0
+       7FFD4C2B2E5C jle       short M01_L01
 M01_L00:
-       7FFAF14095DE cmp       ebx,[rsi+14]
-       7FFAF14095E1 jne       short M01_L01
-       7FFAF14095E3 mov       rcx,[rsi+8]
-       7FFAF14095E7 cmp       ebp,[rcx+8]
-       7FFAF14095EA jae       short M01_L04
-       7FFAF14095EC movsxd    rdx,ebp
-       7FFAF14095EF mov       edx,[rcx+rdx*4+10]
-       7FFAF14095F3 mov       rax,rdi
-       7FFAF14095F6 mov       rcx,[rax+8]
-       7FFAF14095FA call      qword ptr [rax+18]
-       7FFAF14095FD inc       ebp
-       7FFAF14095FF cmp       ebp,[rsi+10]
-       7FFAF1409602 jl        short M01_L00
+       7FFD4C2B2E5E cmp       ebx,[rsi+14]
+       7FFD4C2B2E61 jne       short M01_L01
+       7FFD4C2B2E63 mov       rcx,[rsi+8]
+       7FFD4C2B2E67 cmp       ebp,[rcx+8]
+       7FFD4C2B2E6A jae       short M01_L04
+       7FFD4C2B2E6C movsxd    rdx,ebp
+       7FFD4C2B2E6F mov       edx,[rcx+rdx*4+10]
+       7FFD4C2B2E73 mov       rax,rdi
+       7FFD4C2B2E76 mov       rcx,[rax+8]
+       7FFD4C2B2E7A call      qword ptr [rax+18]
+       7FFD4C2B2E7D inc       ebp
+       7FFD4C2B2E7F cmp       ebp,[rsi+10]
+       7FFD4C2B2E82 jl        short M01_L00
 M01_L01:
-       7FFAF1409604 cmp       ebx,[rsi+14]
-       7FFAF1409607 jne       short M01_L03
-       7FFAF1409609 add       rsp,28
-       7FFAF140960D pop       rbx
-       7FFAF140960E pop       rbp
-       7FFAF140960F pop       rsi
-       7FFAF1409610 pop       rdi
-       7FFAF1409611 ret
+       7FFD4C2B2E84 cmp       ebx,[rsi+14]
+       7FFD4C2B2E87 jne       short M01_L03
+       7FFD4C2B2E89 add       rsp,28
+       7FFD4C2B2E8D pop       rbx
+       7FFD4C2B2E8E pop       rbp
+       7FFD4C2B2E8F pop       rsi
+       7FFD4C2B2E90 pop       rdi
+       7FFD4C2B2E91 ret
 M01_L02:
-       7FFAF1409612 mov       ecx,1C
-       7FFAF1409617 call      System.ThrowHelper.ThrowArgumentNullException(System.ExceptionArgument)
-       7FFAF140961C int       3
+       7FFD4C2B2E92 mov       ecx,1C
+       7FFD4C2B2E97 call      System.ThrowHelper.ThrowArgumentNullException(System.ExceptionArgument)
+       7FFD4C2B2E9C int       3
 M01_L03:
-       7FFAF140961D call      System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
-       7FFAF1409622 int       3
+       7FFD4C2B2E9D call      System.ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
+       7FFD4C2B2EA2 int       3
 M01_L04:
-       7FFAF1409623 call      CORINFO_HELP_RNGCHKFAIL
-       7FFAF1409628 int       3
+       7FFD4C2B2EA3 call      CORINFO_HELP_RNGCHKFAIL
+       7FFD4C2B2EA8 int       3
 ; Total bytes of code 105
 ```
 
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Parallel()
-;         Parallel.ForEach(List, _doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         Parallel.ForEach(List, _doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFAF13F27D0 push      rsi
-       7FFAF13F27D1 sub       rsp,40
-       7FFAF13F27D5 mov       rsi,rcx
-       7FFAF13F27D8 mov       rdx,[rsi+8]
-       7FFAF13F27DC mov       r8,[rsi+10]
-       7FFAF13F27E0 lea       rcx,[rsp+28]
-       7FFAF13F27E5 call      System.Threading.Tasks.Parallel.ForEach[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, System.Action`1<Int32>)
-       7FFAF13F27EA mov       eax,[rsi+1C]
-       7FFAF13F27ED add       rsp,40
-       7FFAF13F27F1 pop       rsi
-       7FFAF13F27F2 ret
-; Total bytes of code 35
+       7FFD4C2E7E00 sub       rsp,38
+       7FFD4C2E7E04 mov       dword ptr [7FFD4C25ECA0],0
+       7FFD4C2E7E0E mov       rdx,[rcx+8]
+       7FFD4C2E7E12 mov       r8,[rcx+18]
+       7FFD4C2E7E16 lea       rcx,[rsp+20]
+       7FFD4C2E7E1B call      System.Threading.Tasks.Parallel.ForEach[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, System.Action`1<Int32>)
+       7FFD4C2E7E20 mov       eax,[7FFD4C25ECA0]
+       7FFD4C2E7E26 add       rsp,38
+       7FFD4C2E7E2A ret
+; Total bytes of code 43
 ```
 ```assembly
 ; System.Threading.Tasks.Parallel.ForEach[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, System.Action`1<Int32>)
-       7FFAF13F2810 push      rbp
-       7FFAF13F2811 push      r14
-       7FFAF13F2813 push      rdi
-       7FFAF13F2814 push      rsi
-       7FFAF13F2815 push      rbx
-       7FFAF13F2816 sub       rsp,80
-       7FFAF13F281D vzeroupper
-       7FFAF13F2820 lea       rbp,[rsp+0A0]
-       7FFAF13F2828 xor       eax,eax
-       7FFAF13F282A mov       [rbp-40],rax
-       7FFAF13F282E mov       rbx,rcx
-       7FFAF13F2831 mov       rsi,rdx
-       7FFAF13F2834 mov       rdi,r8
-       7FFAF13F2837 test      rsi,rsi
-       7FFAF13F283A je        near ptr M01_L05
-       7FFAF13F2840 test      rdi,rdi
-       7FFAF13F2843 je        near ptr M01_L06
-       7FFAF13F2849 mov       rdx,2306EDC8138
-       7FFAF13F2853 mov       r14,[rdx]
-       7FFAF13F2856 mov       rdx,[r14+18]
-       7FFAF13F285A mov       [rbp-40],rdx
-       7FFAF13F285E cmp       qword ptr [rbp-40],0
-       7FFAF13F2863 jne       near ptr M01_L02
+       7FFD4C2E7E40 push      rbp
+       7FFD4C2E7E41 push      r14
+       7FFD4C2E7E43 push      rdi
+       7FFD4C2E7E44 push      rsi
+       7FFD4C2E7E45 push      rbx
+       7FFD4C2E7E46 sub       rsp,80
+       7FFD4C2E7E4D vzeroupper
+       7FFD4C2E7E50 lea       rbp,[rsp+0A0]
+       7FFD4C2E7E58 xor       eax,eax
+       7FFD4C2E7E5A mov       [rbp-40],rax
+       7FFD4C2E7E5E mov       rbx,rcx
+       7FFD4C2E7E61 mov       rsi,rdx
+       7FFD4C2E7E64 mov       rdi,r8
+       7FFD4C2E7E67 test      rsi,rsi
+       7FFD4C2E7E6A je        near ptr M01_L05
+       7FFD4C2E7E70 test      rdi,rdi
+       7FFD4C2E7E73 je        near ptr M01_L06
+       7FFD4C2E7E79 mov       rdx,1B66BEF81C0
+       7FFD4C2E7E83 mov       r14,[rdx]
+       7FFD4C2E7E86 mov       rdx,[r14+18]
+       7FFD4C2E7E8A mov       [rbp-40],rdx
+       7FFD4C2E7E8E cmp       qword ptr [rbp-40],0
+       7FFD4C2E7E93 jne       near ptr M01_L02
 M01_L00:
-       7FFAF13F2869 mov       rdx,rsi
-       7FFAF13F286C mov       rcx,offset MT_System.Int32[]
-       7FFAF13F2876 call      CORINFO_HELP_ISINSTANCEOFARRAY
-       7FFAF13F287B test      rax,rax
-       7FFAF13F287E je        near ptr M01_L03
-       7FFAF13F2884 mov       [rsp+20],rdi
-       7FFAF13F2889 xor       ecx,ecx
-       7FFAF13F288B mov       [rsp+28],rcx
-       7FFAF13F2890 mov       [rsp+30],rcx
-       7FFAF13F2895 mov       [rsp+38],rcx
-       7FFAF13F289A mov       [rsp+40],rcx
-       7FFAF13F289F mov       [rsp+48],rcx
-       7FFAF13F28A4 mov       [rsp+50],rcx
-       7FFAF13F28A9 lea       rcx,[rbp-38]
-       7FFAF13F28AD mov       r8,rax
-       7FFAF13F28B0 mov       r9,r14
-       7FFAF13F28B3 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFAF13F28BD call      System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD4C2E7E99 mov       rdx,rsi
+       7FFD4C2E7E9C mov       rcx,offset MT_System.Int32[]
+       7FFD4C2E7EA6 call      CORINFO_HELP_ISINSTANCEOFARRAY
+       7FFD4C2E7EAB test      rax,rax
+       7FFD4C2E7EAE je        near ptr M01_L03
+       7FFD4C2E7EB4 mov       [rsp+20],rdi
+       7FFD4C2E7EB9 xor       ecx,ecx
+       7FFD4C2E7EBB mov       [rsp+28],rcx
+       7FFD4C2E7EC0 mov       [rsp+30],rcx
+       7FFD4C2E7EC5 mov       [rsp+38],rcx
+       7FFD4C2E7ECA mov       [rsp+40],rcx
+       7FFD4C2E7ECF mov       [rsp+48],rcx
+       7FFD4C2E7ED4 mov       [rsp+50],rcx
+       7FFD4C2E7ED9 lea       rcx,[rbp-38]
+       7FFD4C2E7EDD mov       r8,rax
+       7FFD4C2E7EE0 mov       r9,r14
+       7FFD4C2E7EE3 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD4C2E7EED call      System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M01_L01:
-       7FFAF13F28C2 vmovdqu   xmm0,xmmword ptr [rbp-38]
-       7FFAF13F28C7 vmovdqu   xmmword ptr [rbx],xmm0
-       7FFAF13F28CB mov       rax,[rbp-28]
-       7FFAF13F28CF mov       [rbx+10],rax
-       7FFAF13F28D3 mov       rax,rbx
-       7FFAF13F28D6 add       rsp,80
-       7FFAF13F28DD pop       rbx
-       7FFAF13F28DE pop       rsi
-       7FFAF13F28DF pop       rdi
-       7FFAF13F28E0 pop       r14
-       7FFAF13F28E2 pop       rbp
-       7FFAF13F28E3 ret
+       7FFD4C2E7EF2 vmovdqu   xmm0,xmmword ptr [rbp-38]
+       7FFD4C2E7EF7 vmovdqu   xmmword ptr [rbx],xmm0
+       7FFD4C2E7EFB mov       rax,[rbp-28]
+       7FFD4C2E7EFF mov       [rbx+10],rax
+       7FFD4C2E7F03 mov       rax,rbx
+       7FFD4C2E7F06 add       rsp,80
+       7FFD4C2E7F0D pop       rbx
+       7FFD4C2E7F0E pop       rsi
+       7FFD4C2E7F0F pop       rdi
+       7FFD4C2E7F10 pop       r14
+       7FFD4C2E7F12 pop       rbp
+       7FFD4C2E7F13 ret
 M01_L02:
-       7FFAF13F28E4 mov       rdx,[rbp-40]
-       7FFAF13F28E8 cmp       dword ptr [rdx+20],0
-       7FFAF13F28EC setne     dl
-       7FFAF13F28EF movzx     edx,dl
-       7FFAF13F28F2 test      edx,edx
-       7FFAF13F28F4 je        near ptr M01_L00
-       7FFAF13F28FA jmp       near ptr M01_L07
+       7FFD4C2E7F14 mov       rdx,[rbp-40]
+       7FFD4C2E7F18 cmp       dword ptr [rdx+20],0
+       7FFD4C2E7F1C setne     dl
+       7FFD4C2E7F1F movzx     edx,dl
+       7FFD4C2E7F22 test      edx,edx
+       7FFD4C2E7F24 je        near ptr M01_L00
+       7FFD4C2E7F2A jmp       near ptr M01_L07
 M01_L03:
-       7FFAF13F28FF mov       rdx,rsi
-       7FFAF13F2902 mov       rcx,offset MT_System.Collections.Generic.IList`1[[System.Int32, System.Private.CoreLib]]
-       7FFAF13F290C call      CORINFO_HELP_ISINSTANCEOFINTERFACE
-       7FFAF13F2911 test      rax,rax
-       7FFAF13F2914 je        short M01_L04
-       7FFAF13F2916 mov       [rsp+20],rdi
-       7FFAF13F291B xor       ecx,ecx
-       7FFAF13F291D mov       [rsp+28],rcx
-       7FFAF13F2922 mov       [rsp+30],rcx
-       7FFAF13F2927 mov       [rsp+38],rcx
-       7FFAF13F292C mov       [rsp+40],rcx
-       7FFAF13F2931 mov       [rsp+48],rcx
-       7FFAF13F2936 mov       [rsp+50],rcx
-       7FFAF13F293B lea       rcx,[rbp-38]
-       7FFAF13F293F mov       r8,rax
-       7FFAF13F2942 mov       r9,r14
-       7FFAF13F2945 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFAF13F294F call      System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
-       7FFAF13F2954 jmp       near ptr M01_L01
+       7FFD4C2E7F2F mov       rdx,rsi
+       7FFD4C2E7F32 mov       rcx,offset MT_System.Collections.Generic.IList`1[[System.Int32, System.Private.CoreLib]]
+       7FFD4C2E7F3C call      CORINFO_HELP_ISINSTANCEOFINTERFACE
+       7FFD4C2E7F41 test      rax,rax
+       7FFD4C2E7F44 je        short M01_L04
+       7FFD4C2E7F46 mov       [rsp+20],rdi
+       7FFD4C2E7F4B xor       ecx,ecx
+       7FFD4C2E7F4D mov       [rsp+28],rcx
+       7FFD4C2E7F52 mov       [rsp+30],rcx
+       7FFD4C2E7F57 mov       [rsp+38],rcx
+       7FFD4C2E7F5C mov       [rsp+40],rcx
+       7FFD4C2E7F61 mov       [rsp+48],rcx
+       7FFD4C2E7F66 mov       [rsp+50],rcx
+       7FFD4C2E7F6B lea       rcx,[rbp-38]
+       7FFD4C2E7F6F mov       r8,rax
+       7FFD4C2E7F72 mov       r9,r14
+       7FFD4C2E7F75 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD4C2E7F7F call      System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD4C2E7F84 jmp       near ptr M01_L01
 M01_L04:
-       7FFAF13F2959 mov       rcx,rsi
-       7FFAF13F295C xor       edx,edx
-       7FFAF13F295E call      System.Collections.Concurrent.Partitioner.Create[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, System.Collections.Concurrent.EnumerablePartitionerOptions)
-       7FFAF13F2963 mov       r8,rax
-       7FFAF13F2966 mov       [rsp+20],rdi
-       7FFAF13F296B xor       ecx,ecx
-       7FFAF13F296D mov       [rsp+28],rcx
-       7FFAF13F2972 mov       [rsp+30],rcx
-       7FFAF13F2977 mov       [rsp+38],rcx
-       7FFAF13F297C mov       [rsp+40],rcx
-       7FFAF13F2981 mov       [rsp+48],rcx
-       7FFAF13F2986 mov       [rsp+50],rcx
-       7FFAF13F298B lea       rcx,[rbp-38]
-       7FFAF13F298F mov       r9,r14
-       7FFAF13F2992 mov       rdx,offset MD_System.Threading.Tasks.Parallel.PartitionerForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Concurrent.Partitioner`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFAF13F299C call      System.Threading.Tasks.Parallel.PartitionerForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Concurrent.Partitioner`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
-       7FFAF13F29A1 jmp       near ptr M01_L01
+       7FFD4C2E7F89 mov       rcx,rsi
+       7FFD4C2E7F8C xor       edx,edx
+       7FFD4C2E7F8E call      System.Collections.Concurrent.Partitioner.Create[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, System.Collections.Concurrent.EnumerablePartitionerOptions)
+       7FFD4C2E7F93 mov       r8,rax
+       7FFD4C2E7F96 mov       [rsp+20],rdi
+       7FFD4C2E7F9B xor       ecx,ecx
+       7FFD4C2E7F9D mov       [rsp+28],rcx
+       7FFD4C2E7FA2 mov       [rsp+30],rcx
+       7FFD4C2E7FA7 mov       [rsp+38],rcx
+       7FFD4C2E7FAC mov       [rsp+40],rcx
+       7FFD4C2E7FB1 mov       [rsp+48],rcx
+       7FFD4C2E7FB6 mov       [rsp+50],rcx
+       7FFD4C2E7FBB lea       rcx,[rbp-38]
+       7FFD4C2E7FBF mov       r9,r14
+       7FFD4C2E7FC2 mov       rdx,offset MD_System.Threading.Tasks.Parallel.PartitionerForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Concurrent.Partitioner`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD4C2E7FCC call      System.Threading.Tasks.Parallel.PartitionerForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Concurrent.Partitioner`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD4C2E7FD1 jmp       near ptr M01_L01
 M01_L05:
-       7FFAF13F29A6 mov       rcx,offset MT_System.ArgumentNullException
-       7FFAF13F29B0 call      CORINFO_HELP_NEWSFAST
-       7FFAF13F29B5 mov       rsi,rax
-       7FFAF13F29B8 mov       ecx,3C3
-       7FFAF13F29BD mov       rdx,7FFAF14B88D0
-       7FFAF13F29C7 call      CORINFO_HELP_STRCNS
-       7FFAF13F29CC mov       rdx,rax
-       7FFAF13F29CF mov       rcx,rsi
-       7FFAF13F29D2 call      System.ArgumentNullException..ctor(System.String)
-       7FFAF13F29D7 mov       rcx,rsi
-       7FFAF13F29DA call      CORINFO_HELP_THROW
+       7FFD4C2E7FD6 mov       rcx,offset MT_System.ArgumentNullException
+       7FFD4C2E7FE0 call      CORINFO_HELP_NEWSFAST
+       7FFD4C2E7FE5 mov       rsi,rax
+       7FFD4C2E7FE8 mov       ecx,3C3
+       7FFD4C2E7FED mov       rdx,7FFD4C3DEED0
+       7FFD4C2E7FF7 call      CORINFO_HELP_STRCNS
+       7FFD4C2E7FFC mov       rdx,rax
+       7FFD4C2E7FFF mov       rcx,rsi
+       7FFD4C2E8002 call      System.ArgumentNullException..ctor(System.String)
+       7FFD4C2E8007 mov       rcx,rsi
+       7FFD4C2E800A call      CORINFO_HELP_THROW
 M01_L06:
-       7FFAF13F29DF mov       rcx,offset MT_System.ArgumentNullException
-       7FFAF13F29E9 call      CORINFO_HELP_NEWSFAST
-       7FFAF13F29EE mov       rsi,rax
-       7FFAF13F29F1 mov       ecx,38B
-       7FFAF13F29F6 mov       rdx,7FFAF14B88D0
-       7FFAF13F2A00 call      CORINFO_HELP_STRCNS
-       7FFAF13F2A05 mov       rdx,rax
-       7FFAF13F2A08 mov       rcx,rsi
-       7FFAF13F2A0B call      System.ArgumentNullException..ctor(System.String)
-       7FFAF13F2A10 mov       rcx,rsi
-       7FFAF13F2A13 call      CORINFO_HELP_THROW
+       7FFD4C2E800F mov       rcx,offset MT_System.ArgumentNullException
+       7FFD4C2E8019 call      CORINFO_HELP_NEWSFAST
+       7FFD4C2E801E mov       rsi,rax
+       7FFD4C2E8021 mov       ecx,38B
+       7FFD4C2E8026 mov       rdx,7FFD4C3DEED0
+       7FFD4C2E8030 call      CORINFO_HELP_STRCNS
+       7FFD4C2E8035 mov       rdx,rax
+       7FFD4C2E8038 mov       rcx,rsi
+       7FFD4C2E803B call      System.ArgumentNullException..ctor(System.String)
+       7FFD4C2E8040 mov       rcx,rsi
+       7FFD4C2E8043 call      CORINFO_HELP_THROW
 M01_L07:
-       7FFAF13F2A18 lea       rcx,[rbp-40]
-       7FFAF13F2A1C call      System.Threading.CancellationToken.ThrowOperationCanceledException()
-       7FFAF13F2A21 int       3
+       7FFD4C2E8048 lea       rcx,[rbp-40]
+       7FFD4C2E804C call      System.Threading.CancellationToken.ThrowOperationCanceledException()
+       7FFD4C2E8051 int       3
 ; Total bytes of code 530
 ```
 
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_LinqParallel()
-;         List.AsParallel().ForAll(_doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         List.AsParallel().ForAll(_doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFAF13E8840 push      rsi
-       7FFAF13E8841 sub       rsp,20
-       7FFAF13E8845 mov       rsi,rcx
-       7FFAF13E8848 mov       rcx,[rsi+8]
-       7FFAF13E884C call      System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFAF13E8851 mov       rcx,rax
-       7FFAF13E8854 mov       rdx,[rsi+10]
-       7FFAF13E8858 call      System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
-       7FFAF13E885D mov       eax,[rsi+1C]
-       7FFAF13E8860 add       rsp,20
-       7FFAF13E8864 pop       rsi
-       7FFAF13E8865 ret
-; Total bytes of code 38
+       7FFD4C2C9B80 push      rsi
+       7FFD4C2C9B81 sub       rsp,20
+       7FFD4C2C9B85 mov       rsi,rcx
+       7FFD4C2C9B88 mov       dword ptr [7FFD4C23ECA0],0
+       7FFD4C2C9B92 mov       rcx,[rsi+8]
+       7FFD4C2C9B96 call      System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
+       7FFD4C2C9B9B mov       rcx,rax
+       7FFD4C2C9B9E mov       rdx,[rsi+18]
+       7FFD4C2C9BA2 call      System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
+       7FFD4C2C9BA7 mov       eax,[7FFD4C23ECA0]
+       7FFD4C2C9BAD add       rsp,20
+       7FFD4C2C9BB1 pop       rsi
+       7FFD4C2C9BB2 ret
+; Total bytes of code 51
 ```
 ```assembly
 ; System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFAF13E8880 push      rdi
-       7FFAF13E8881 push      rsi
-       7FFAF13E8882 push      rbp
-       7FFAF13E8883 push      rbx
-       7FFAF13E8884 sub       rsp,88
-       7FFAF13E888B vzeroupper
-       7FFAF13E888E xor       eax,eax
-       7FFAF13E8890 mov       [rsp+28],rax
-       7FFAF13E8895 vxorps    xmm4,xmm4,xmm4
-       7FFAF13E8899 vmovdqa   xmmword ptr [rsp+30],xmm4
-       7FFAF13E889F vmovdqa   xmmword ptr [rsp+40],xmm4
-       7FFAF13E88A5 vmovdqa   xmmword ptr [rsp+50],xmm4
-       7FFAF13E88AB vmovdqa   xmmword ptr [rsp+60],xmm4
-       7FFAF13E88B1 vmovdqa   xmmword ptr [rsp+70],xmm4
-       7FFAF13E88B7 mov       [rsp+80],rax
-       7FFAF13E88BF mov       rbx,rcx
-       7FFAF13E88C2 test      rbx,rbx
-       7FFAF13E88C5 je        near ptr M01_L00
-       7FFAF13E88CB mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFAF13E88D5 call      CORINFO_HELP_NEWSFAST
-       7FFAF13E88DA mov       rbp,rax
-       7FFAF13E88DD lea       rcx,[rsp+58]
-       7FFAF13E88E2 call      System.Linq.Parallel.QuerySettings.get_Empty()
-       7FFAF13E88E7 vmovdqu   xmm0,xmmword ptr [rsp+58]
-       7FFAF13E88ED vmovdqu   xmmword ptr [rsp+28],xmm0
-       7FFAF13E88F3 vmovdqu   xmm0,xmmword ptr [rsp+68]
-       7FFAF13E88F9 vmovdqu   xmmword ptr [rsp+38],xmm0
-       7FFAF13E88FF vmovdqu   xmm0,xmmword ptr [rsp+78]
-       7FFAF13E8905 vmovdqu   xmmword ptr [rsp+48],xmm0
-       7FFAF13E890B lea       rdi,[rbp+8]
-       7FFAF13E890F lea       rsi,[rsp+28]
-       7FFAF13E8914 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFAF13E8919 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFAF13E891E mov       ecx,4
-       7FFAF13E8923 rep movsq
-       7FFAF13E8926 lea       rcx,[rbp+38]
-       7FFAF13E892A mov       rdx,rbx
-       7FFAF13E892D call      CORINFO_HELP_ASSIGN_REF
-       7FFAF13E8932 mov       rax,rbp
-       7FFAF13E8935 add       rsp,88
-       7FFAF13E893C pop       rbx
-       7FFAF13E893D pop       rbp
-       7FFAF13E893E pop       rsi
-       7FFAF13E893F pop       rdi
-       7FFAF13E8940 ret
+       7FFD4C2C9BD0 push      rdi
+       7FFD4C2C9BD1 push      rsi
+       7FFD4C2C9BD2 push      rbp
+       7FFD4C2C9BD3 push      rbx
+       7FFD4C2C9BD4 sub       rsp,88
+       7FFD4C2C9BDB vzeroupper
+       7FFD4C2C9BDE xor       eax,eax
+       7FFD4C2C9BE0 mov       [rsp+28],rax
+       7FFD4C2C9BE5 vxorps    xmm4,xmm4,xmm4
+       7FFD4C2C9BE9 vmovdqa   xmmword ptr [rsp+30],xmm4
+       7FFD4C2C9BEF vmovdqa   xmmword ptr [rsp+40],xmm4
+       7FFD4C2C9BF5 vmovdqa   xmmword ptr [rsp+50],xmm4
+       7FFD4C2C9BFB vmovdqa   xmmword ptr [rsp+60],xmm4
+       7FFD4C2C9C01 vmovdqa   xmmword ptr [rsp+70],xmm4
+       7FFD4C2C9C07 mov       [rsp+80],rax
+       7FFD4C2C9C0F mov       rbx,rcx
+       7FFD4C2C9C12 test      rbx,rbx
+       7FFD4C2C9C15 je        near ptr M01_L00
+       7FFD4C2C9C1B mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD4C2C9C25 call      CORINFO_HELP_NEWSFAST
+       7FFD4C2C9C2A mov       rbp,rax
+       7FFD4C2C9C2D lea       rcx,[rsp+58]
+       7FFD4C2C9C32 call      System.Linq.Parallel.QuerySettings.get_Empty()
+       7FFD4C2C9C37 vmovdqu   xmm0,xmmword ptr [rsp+58]
+       7FFD4C2C9C3D vmovdqu   xmmword ptr [rsp+28],xmm0
+       7FFD4C2C9C43 vmovdqu   xmm0,xmmword ptr [rsp+68]
+       7FFD4C2C9C49 vmovdqu   xmmword ptr [rsp+38],xmm0
+       7FFD4C2C9C4F vmovdqu   xmm0,xmmword ptr [rsp+78]
+       7FFD4C2C9C55 vmovdqu   xmmword ptr [rsp+48],xmm0
+       7FFD4C2C9C5B lea       rdi,[rbp+8]
+       7FFD4C2C9C5F lea       rsi,[rsp+28]
+       7FFD4C2C9C64 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD4C2C9C69 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD4C2C9C6E mov       ecx,4
+       7FFD4C2C9C73 rep movsq
+       7FFD4C2C9C76 lea       rcx,[rbp+38]
+       7FFD4C2C9C7A mov       rdx,rbx
+       7FFD4C2C9C7D call      CORINFO_HELP_ASSIGN_REF
+       7FFD4C2C9C82 mov       rax,rbp
+       7FFD4C2C9C85 add       rsp,88
+       7FFD4C2C9C8C pop       rbx
+       7FFD4C2C9C8D pop       rbp
+       7FFD4C2C9C8E pop       rsi
+       7FFD4C2C9C8F pop       rdi
+       7FFD4C2C9C90 ret
 M01_L00:
-       7FFAF13E8941 mov       rcx,offset MT_System.ArgumentNullException
-       7FFAF13E894B call      CORINFO_HELP_NEWSFAST
-       7FFAF13E8950 mov       rsi,rax
-       7FFAF13E8953 mov       ecx,6F1
-       7FFAF13E8958 mov       rdx,7FFAF14A88C8
-       7FFAF13E8962 call      CORINFO_HELP_STRCNS
-       7FFAF13E8967 mov       rdx,rax
-       7FFAF13E896A mov       rcx,rsi
-       7FFAF13E896D call      System.ArgumentNullException..ctor(System.String)
-       7FFAF13E8972 mov       rcx,rsi
-       7FFAF13E8975 call      CORINFO_HELP_THROW
-       7FFAF13E897A int       3
+       7FFD4C2C9C91 mov       rcx,offset MT_System.ArgumentNullException
+       7FFD4C2C9C9B call      CORINFO_HELP_NEWSFAST
+       7FFD4C2C9CA0 mov       rsi,rax
+       7FFD4C2C9CA3 mov       ecx,6F1
+       7FFD4C2C9CA8 mov       rdx,7FFD4C3791D8
+       7FFD4C2C9CB2 call      CORINFO_HELP_STRCNS
+       7FFD4C2C9CB7 mov       rdx,rax
+       7FFD4C2C9CBA mov       rcx,rsi
+       7FFD4C2C9CBD call      System.ArgumentNullException..ctor(System.String)
+       7FFD4C2C9CC2 mov       rcx,rsi
+       7FFD4C2C9CC5 call      CORINFO_HELP_THROW
+       7FFD4C2C9CCA int       3
 ; Total bytes of code 251
 ```
 ```assembly
 ; System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
-       7FFAF13E8E90 push      r15
-       7FFAF13E8E92 push      r14
-       7FFAF13E8E94 push      rdi
-       7FFAF13E8E95 push      rsi
-       7FFAF13E8E96 push      rbp
-       7FFAF13E8E97 push      rbx
-       7FFAF13E8E98 sub       rsp,58
-       7FFAF13E8E9C vzeroupper
-       7FFAF13E8E9F xor       eax,eax
-       7FFAF13E8EA1 mov       [rsp+28],rax
-       7FFAF13E8EA6 vxorps    xmm4,xmm4,xmm4
-       7FFAF13E8EAA vmovdqa   xmmword ptr [rsp+30],xmm4
-       7FFAF13E8EB0 vmovdqa   xmmword ptr [rsp+40],xmm4
-       7FFAF13E8EB6 mov       [rsp+50],rax
-       7FFAF13E8EBB mov       rsi,rcx
-       7FFAF13E8EBE mov       rbx,rdx
-       7FFAF13E8EC1 test      rsi,rsi
-       7FFAF13E8EC4 je        near ptr M02_L00
-       7FFAF13E8ECA test      rbx,rbx
-       7FFAF13E8ECD je        near ptr M02_L01
-       7FFAF13E8ED3 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
-       7FFAF13E8EDD call      CORINFO_HELP_NEWSFAST
-       7FFAF13E8EE2 mov       rbp,rax
-       7FFAF13E8EE5 mov       rcx,rsi
-       7FFAF13E8EE8 call      System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFAF13E8EED mov       r14,rax
-       7FFAF13E8EF0 movzx     ecx,byte ptr [r14+38]
-       7FFAF13E8EF5 vmovdqu   xmm0,xmmword ptr [r14+8]
-       7FFAF13E8EFB vmovdqu   xmmword ptr [rsp+28],xmm0
-       7FFAF13E8F01 vmovdqu   xmm0,xmmword ptr [r14+18]
-       7FFAF13E8F07 vmovdqu   xmmword ptr [rsp+38],xmm0
-       7FFAF13E8F0D vmovdqu   xmm0,xmmword ptr [r14+28]
-       7FFAF13E8F13 vmovdqu   xmmword ptr [rsp+48],xmm0
-       7FFAF13E8F19 movzx     r15d,cl
-       7FFAF13E8F1D mov       byte ptr [rbp+48],3
-       7FFAF13E8F21 lea       rdi,[rbp+8]
-       7FFAF13E8F25 lea       rsi,[rsp+28]
-       7FFAF13E8F2A call      CORINFO_HELP_ASSIGN_BYREF
-       7FFAF13E8F2F call      CORINFO_HELP_ASSIGN_BYREF
-       7FFAF13E8F34 mov       ecx,4
-       7FFAF13E8F39 rep movsq
-       7FFAF13E8F3C mov       [rbp+38],r15b
-       7FFAF13E8F40 lea       rcx,[rbp+40]
-       7FFAF13E8F44 mov       rdx,r14
-       7FFAF13E8F47 call      CORINFO_HELP_ASSIGN_REF
-       7FFAF13E8F4C lea       rcx,[rbp+50]
-       7FFAF13E8F50 mov       rdx,rbx
-       7FFAF13E8F53 call      CORINFO_HELP_ASSIGN_REF
-       7FFAF13E8F58 mov       rcx,rbp
-       7FFAF13E8F5B add       rsp,58
-       7FFAF13E8F5F pop       rbx
-       7FFAF13E8F60 pop       rbp
-       7FFAF13E8F61 pop       rsi
-       7FFAF13E8F62 pop       rdi
-       7FFAF13E8F63 pop       r14
-       7FFAF13E8F65 pop       r15
-       7FFAF13E8F67 jmp       near ptr System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
+       7FFD4C2CA1E0 push      r15
+       7FFD4C2CA1E2 push      r14
+       7FFD4C2CA1E4 push      rdi
+       7FFD4C2CA1E5 push      rsi
+       7FFD4C2CA1E6 push      rbp
+       7FFD4C2CA1E7 push      rbx
+       7FFD4C2CA1E8 sub       rsp,58
+       7FFD4C2CA1EC vzeroupper
+       7FFD4C2CA1EF xor       eax,eax
+       7FFD4C2CA1F1 mov       [rsp+28],rax
+       7FFD4C2CA1F6 vxorps    xmm4,xmm4,xmm4
+       7FFD4C2CA1FA vmovdqa   xmmword ptr [rsp+30],xmm4
+       7FFD4C2CA200 vmovdqa   xmmword ptr [rsp+40],xmm4
+       7FFD4C2CA206 mov       [rsp+50],rax
+       7FFD4C2CA20B mov       rsi,rcx
+       7FFD4C2CA20E mov       rbx,rdx
+       7FFD4C2CA211 test      rsi,rsi
+       7FFD4C2CA214 je        near ptr M02_L00
+       7FFD4C2CA21A test      rbx,rbx
+       7FFD4C2CA21D je        near ptr M02_L01
+       7FFD4C2CA223 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
+       7FFD4C2CA22D call      CORINFO_HELP_NEWSFAST
+       7FFD4C2CA232 mov       rbp,rax
+       7FFD4C2CA235 mov       rcx,rsi
+       7FFD4C2CA238 call      System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
+       7FFD4C2CA23D mov       r14,rax
+       7FFD4C2CA240 movzx     ecx,byte ptr [r14+38]
+       7FFD4C2CA245 vmovdqu   xmm0,xmmword ptr [r14+8]
+       7FFD4C2CA24B vmovdqu   xmmword ptr [rsp+28],xmm0
+       7FFD4C2CA251 vmovdqu   xmm0,xmmword ptr [r14+18]
+       7FFD4C2CA257 vmovdqu   xmmword ptr [rsp+38],xmm0
+       7FFD4C2CA25D vmovdqu   xmm0,xmmword ptr [r14+28]
+       7FFD4C2CA263 vmovdqu   xmmword ptr [rsp+48],xmm0
+       7FFD4C2CA269 movzx     r15d,cl
+       7FFD4C2CA26D mov       byte ptr [rbp+48],3
+       7FFD4C2CA271 lea       rdi,[rbp+8]
+       7FFD4C2CA275 lea       rsi,[rsp+28]
+       7FFD4C2CA27A call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD4C2CA27F call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD4C2CA284 mov       ecx,4
+       7FFD4C2CA289 rep movsq
+       7FFD4C2CA28C mov       [rbp+38],r15b
+       7FFD4C2CA290 lea       rcx,[rbp+40]
+       7FFD4C2CA294 mov       rdx,r14
+       7FFD4C2CA297 call      CORINFO_HELP_ASSIGN_REF
+       7FFD4C2CA29C lea       rcx,[rbp+50]
+       7FFD4C2CA2A0 mov       rdx,rbx
+       7FFD4C2CA2A3 call      CORINFO_HELP_ASSIGN_REF
+       7FFD4C2CA2A8 mov       rcx,rbp
+       7FFD4C2CA2AB add       rsp,58
+       7FFD4C2CA2AF pop       rbx
+       7FFD4C2CA2B0 pop       rbp
+       7FFD4C2CA2B1 pop       rsi
+       7FFD4C2CA2B2 pop       rdi
+       7FFD4C2CA2B3 pop       r14
+       7FFD4C2CA2B5 pop       r15
+       7FFD4C2CA2B7 jmp       near ptr System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
 M02_L00:
-       7FFAF13E8F6C mov       rcx,offset MT_System.ArgumentNullException
-       7FFAF13E8F76 call      CORINFO_HELP_NEWSFAST
-       7FFAF13E8F7B mov       rsi,rax
-       7FFAF13E8F7E mov       ecx,6F1
-       7FFAF13E8F83 mov       rdx,7FFAF14A88C8
-       7FFAF13E8F8D call      CORINFO_HELP_STRCNS
-       7FFAF13E8F92 mov       rdx,rax
-       7FFAF13E8F95 mov       rcx,rsi
-       7FFAF13E8F98 call      System.ArgumentNullException..ctor(System.String)
-       7FFAF13E8F9D mov       rcx,rsi
-       7FFAF13E8FA0 call      CORINFO_HELP_THROW
+       7FFD4C2CA2BC mov       rcx,offset MT_System.ArgumentNullException
+       7FFD4C2CA2C6 call      CORINFO_HELP_NEWSFAST
+       7FFD4C2CA2CB mov       rsi,rax
+       7FFD4C2CA2CE mov       ecx,6F1
+       7FFD4C2CA2D3 mov       rdx,7FFD4C3791D8
+       7FFD4C2CA2DD call      CORINFO_HELP_STRCNS
+       7FFD4C2CA2E2 mov       rdx,rax
+       7FFD4C2CA2E5 mov       rcx,rsi
+       7FFD4C2CA2E8 call      System.ArgumentNullException..ctor(System.String)
+       7FFD4C2CA2ED mov       rcx,rsi
+       7FFD4C2CA2F0 call      CORINFO_HELP_THROW
 M02_L01:
-       7FFAF13E8FA5 mov       rcx,offset MT_System.ArgumentNullException
-       7FFAF13E8FAF call      CORINFO_HELP_NEWSFAST
-       7FFAF13E8FB4 mov       rsi,rax
-       7FFAF13E8FB7 mov       ecx,733
-       7FFAF13E8FBC mov       rdx,7FFAF14A88C8
-       7FFAF13E8FC6 call      CORINFO_HELP_STRCNS
-       7FFAF13E8FCB mov       rdx,rax
-       7FFAF13E8FCE mov       rcx,rsi
-       7FFAF13E8FD1 call      System.ArgumentNullException..ctor(System.String)
-       7FFAF13E8FD6 mov       rcx,rsi
-       7FFAF13E8FD9 call      CORINFO_HELP_THROW
-       7FFAF13E8FDE int       3
+       7FFD4C2CA2F5 mov       rcx,offset MT_System.ArgumentNullException
+       7FFD4C2CA2FF call      CORINFO_HELP_NEWSFAST
+       7FFD4C2CA304 mov       rsi,rax
+       7FFD4C2CA307 mov       ecx,733
+       7FFD4C2CA30C mov       rdx,7FFD4C3791D8
+       7FFD4C2CA316 call      CORINFO_HELP_STRCNS
+       7FFD4C2CA31B mov       rdx,rax
+       7FFD4C2CA31E mov       rcx,rsi
+       7FFD4C2CA321 call      System.ArgumentNullException..ctor(System.String)
+       7FFD4C2CA326 mov       rcx,rsi
+       7FFD4C2CA329 call      CORINFO_HELP_THROW
+       7FFD4C2CA32E int       3
 ; Total bytes of code 335
 ```
 
 ## .NET 6.0.33 (6.0.3324.36610), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For_Span()
-       7FFAF13F6680 push      r14
-       7FFAF13F6682 push      rdi
-       7FFAF13F6683 push      rsi
-       7FFAF13F6684 push      rbp
-       7FFAF13F6685 push      rbx
-       7FFAF13F6686 sub       rsp,20
-       7FFAF13F668A mov       rsi,rcx
-;         var sum = 0;
-;         ^^^^^^^^^^^^
-       7FFAF13F668D xor       edi,edi
+       7FFD4C2B8A60 push      rdi
+       7FFD4C2B8A61 push      rsi
+       7FFD4C2B8A62 push      rbp
+       7FFD4C2B8A63 push      rbx
+       7FFD4C2B8A64 sub       rsp,28
+;         sum = 0;
+;         ^^^^^^^^
+       7FFD4C2B8A68 mov       dword ptr [7FFD4C24ECA0],0
 ;         var span = CollectionsMarshal.AsSpan(List);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       7FFAF13F668F mov       rdx,[rsi+8]
-       7FFAF13F6693 test      rdx,rdx
-       7FFAF13F6696 je        short M00_L02
-       7FFAF13F6698 mov       rcx,[rdx+8]
-       7FFAF13F669C mov       ebx,[rdx+10]
-       7FFAF13F669F test      rcx,rcx
-       7FFAF13F66A2 jne       short M00_L00
-       7FFAF13F66A4 test      ebx,ebx
-       7FFAF13F66A6 jne       short M00_L06
-       7FFAF13F66A8 xor       ebp,ebp
-       7FFAF13F66AA xor       ebx,ebx
-       7FFAF13F66AC jmp       short M00_L01
+       7FFD4C2B8A72 mov       rcx,[rcx+8]
+       7FFD4C2B8A76 test      rcx,rcx
+       7FFD4C2B8A79 je        short M00_L02
+       7FFD4C2B8A7B mov       rax,[rcx+8]
+       7FFD4C2B8A7F mov       esi,[rcx+10]
+       7FFD4C2B8A82 test      rax,rax
+       7FFD4C2B8A85 jne       short M00_L00
+       7FFD4C2B8A87 test      esi,esi
+       7FFD4C2B8A89 jne       short M00_L06
+       7FFD4C2B8A8B xor       edi,edi
+       7FFD4C2B8A8D xor       esi,esi
+       7FFD4C2B8A8F jmp       short M00_L01
 M00_L00:
-       7FFAF13F66AE mov       edx,[rcx+8]
-       7FFAF13F66B1 mov       eax,ebx
-       7FFAF13F66B3 cmp       rdx,rax
-       7FFAF13F66B6 jb        short M00_L06
-       7FFAF13F66B8 add       rcx,10
-       7FFAF13F66BC mov       rbp,rcx
+       7FFD4C2B8A91 mov       ecx,[rax+8]
+       7FFD4C2B8A94 mov       edx,esi
+       7FFD4C2B8A96 cmp       rcx,rdx
+       7FFD4C2B8A99 jb        short M00_L06
+       7FFD4C2B8A9B add       rax,10
+       7FFD4C2B8A9F mov       rdi,rax
 M00_L01:
-       7FFAF13F66BF jmp       short M00_L03
+       7FFD4C2B8AA2 jmp       short M00_L03
 M00_L02:
-       7FFAF13F66C1 xor       ebp,ebp
-       7FFAF13F66C3 xor       ebx,ebx
+       7FFD4C2B8AA4 xor       edi,edi
+       7FFD4C2B8AA6 xor       esi,esi
 ;         for (int i = 0; i < span.Length; i++)
 ;              ^^^^^^^^^
 M00_L03:
-       7FFAF13F66C5 xor       r14d,r14d
-       7FFAF13F66C8 test      ebx,ebx
-       7FFAF13F66CA jle       short M00_L05
-;             sum += DoSomeThing(span[i]);
+       7FFD4C2B8AA8 xor       ebx,ebx
+       7FFD4C2B8AAA test      esi,esi
+       7FFD4C2B8AAC jle       short M00_L05
+;             sum += DoSomething(span[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 M00_L04:
-       7FFAF13F66CC movsxd    rdx,r14d
-       7FFAF13F66CF mov       edx,[rbp+rdx*4]
-       7FFAF13F66D3 mov       rcx,rsi
-       7FFAF13F66D6 call      Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFAF13F66DB add       edi,eax
-       7FFAF13F66DD inc       r14d
-       7FFAF13F66E0 cmp       r14d,ebx
-       7FFAF13F66E3 jl        short M00_L04
+       7FFD4C2B8AAE mov       ebp,[7FFD4C24ECA0]
+       7FFD4C2B8AB4 movsxd    rcx,ebx
+       7FFD4C2B8AB7 mov       ecx,[rdi+rcx*4]
+       7FFD4C2B8ABA call      Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD4C2B8ABF add       eax,ebp
+       7FFD4C2B8AC1 mov       [7FFD4C24ECA0],eax
+       7FFD4C2B8AC7 inc       ebx
+       7FFD4C2B8AC9 cmp       ebx,esi
+       7FFD4C2B8ACB jl        short M00_L04
 ;         return sum;
 ;         ^^^^^^^^^^^
 M00_L05:
-       7FFAF13F66E5 mov       eax,edi
-       7FFAF13F66E7 add       rsp,20
-       7FFAF13F66EB pop       rbx
-       7FFAF13F66EC pop       rbp
-       7FFAF13F66ED pop       rsi
-       7FFAF13F66EE pop       rdi
-       7FFAF13F66EF pop       r14
-       7FFAF13F66F1 ret
+       7FFD4C2B8ACD mov       eax,[7FFD4C24ECA0]
+       7FFD4C2B8AD3 add       rsp,28
+       7FFD4C2B8AD7 pop       rbx
+       7FFD4C2B8AD8 pop       rbp
+       7FFD4C2B8AD9 pop       rsi
+       7FFD4C2B8ADA pop       rdi
+       7FFD4C2B8ADB ret
 M00_L06:
-       7FFAF13F66F2 call      System.ThrowHelper.ThrowArgumentOutOfRangeException()
-       7FFAF13F66F7 int       3
-; Total bytes of code 120
+       7FFD4C2B8ADC call      System.ThrowHelper.ThrowArgumentOutOfRangeException()
+       7FFD4C2B8AE1 int       3
+; Total bytes of code 130
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFAF13F9BD0 lea       eax,[rdx+rdx]
-       7FFAF13F9BD3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD4C2D2850 lea       eax,[rcx+rcx]
+       7FFD4C2D2853 ret
 ; Total bytes of code 4
 ```
 **Method was not JITted yet.**
@@ -623,1557 +623,1622 @@ System.ThrowHelper.ThrowArgumentOutOfRangeException()
 ## .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For()
-;         var sum = 0;
-;         ^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
 ;         for (int i = 0; i < List.Count; i++)
 ;              ^^^^^^^^^
-;             sum += DoSomeThing(List[i]);
+;             sum += DoSomething(List[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2D779640 push      rdi
-       7FFB2D779641 push      rsi
-       7FFB2D779642 push      rbx
-       7FFB2D779643 sub       rsp,20
-       7FFB2D779647 mov       rbx,rcx
-       7FFB2D77964A xor       esi,esi
-       7FFB2D77964C xor       edi,edi
-       7FFB2D77964E mov       rcx,[rbx+8]
-       7FFB2D779652 cmp       dword ptr [rcx+10],0
-       7FFB2D779656 jle       short M00_L01
+       7FFD6ED3E120 push      rdi
+       7FFD6ED3E121 push      rsi
+       7FFD6ED3E122 push      rbp
+       7FFD6ED3E123 push      rbx
+       7FFD6ED3E124 sub       rsp,28
+       7FFD6ED3E128 mov       rbx,rcx
+       7FFD6ED3E12B mov       rsi,7FFD6EFC52F0
+       7FFD6ED3E135 xor       ecx,ecx
+       7FFD6ED3E137 mov       [rsi],ecx
+       7FFD6ED3E139 xor       edi,edi
+       7FFD6ED3E13B mov       rcx,[rbx+8]
+       7FFD6ED3E13F cmp       dword ptr [rcx+10],0
+       7FFD6ED3E143 jle       short M00_L01
 M00_L00:
-       7FFB2D779658 mov       rcx,[rbx+8]
-       7FFB2D77965C cmp       edi,[rcx+10]
-       7FFB2D77965F jae       short M00_L02
-       7FFB2D779661 mov       rcx,[rcx+8]
-       7FFB2D779665 cmp       edi,[rcx+8]
-       7FFB2D779668 jae       short M00_L03
-       7FFB2D77966A mov       edx,edi
-       7FFB2D77966C mov       edx,[rcx+rdx*4+10]
-       7FFB2D779670 mov       rcx,rbx
-       7FFB2D779673 call      qword ptr [7FFB2D9EEE50]; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFB2D779679 add       esi,eax
-       7FFB2D77967B inc       edi
-       7FFB2D77967D mov       rax,[rbx+8]
-       7FFB2D779681 cmp       edi,[rax+10]
-       7FFB2D779684 jl        short M00_L00
+       7FFD6ED3E145 mov       ebp,[rsi]
+       7FFD6ED3E147 mov       rcx,[rbx+8]
+       7FFD6ED3E14B cmp       edi,[rcx+10]
+       7FFD6ED3E14E jae       short M00_L02
+       7FFD6ED3E150 mov       rcx,[rcx+8]
+       7FFD6ED3E154 cmp       edi,[rcx+8]
+       7FFD6ED3E157 jae       short M00_L03
+       7FFD6ED3E159 mov       eax,edi
+       7FFD6ED3E15B mov       ecx,[rcx+rax*4+10]
+       7FFD6ED3E15F call      qword ptr [7FFD6EFAEE50]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD6ED3E165 add       eax,ebp
+       7FFD6ED3E167 mov       [rsi],eax
+       7FFD6ED3E169 inc       edi
+       7FFD6ED3E16B mov       rax,[rbx+8]
+       7FFD6ED3E16F cmp       edi,[rax+10]
+       7FFD6ED3E172 jl        short M00_L00
 M00_L01:
-       7FFB2D779686 mov       eax,esi
-       7FFB2D779688 add       rsp,20
-       7FFB2D77968C pop       rbx
-       7FFB2D77968D pop       rsi
-       7FFB2D77968E pop       rdi
-       7FFB2D77968F ret
+       7FFD6ED3E174 mov       eax,[rsi]
+       7FFD6ED3E176 add       rsp,28
+       7FFD6ED3E17A pop       rbx
+       7FFD6ED3E17B pop       rbp
+       7FFD6ED3E17C pop       rsi
+       7FFD6ED3E17D pop       rdi
+       7FFD6ED3E17E ret
 M00_L02:
-       7FFB2D779690 call      qword ptr [7FFB2D9E5878]
-       7FFB2D779696 int       3
+       7FFD6ED3E17F call      qword ptr [7FFD6EFA5878]
+       7FFD6ED3E185 int       3
 M00_L03:
-       7FFB2D779697 call      CORINFO_HELP_RNGCHKFAIL
-       7FFB2D77969C int       3
-; Total bytes of code 93
+       7FFD6ED3E186 call      CORINFO_HELP_RNGCHKFAIL
+       7FFD6ED3E18B int       3
+; Total bytes of code 108
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFB2D7793A0 lea       eax,[rdx+rdx]
-       7FFB2D7793A3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD6ED3DE80 lea       eax,[rcx+rcx]
+       7FFD6ED3DE83 ret
 ; Total bytes of code 4
 ```
 
 ## .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Linq()
-;         List.ForEach(_doSomeThing);
+;         sum = 0;
+;         ^^^^^^^^
+;         List.ForEach(_doSomething);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2D799400 push      rbx
-       7FFB2D799401 sub       rsp,20
-       7FFB2D799405 mov       rbx,rcx
-       7FFB2D799408 mov       rcx,[rbx+8]
-       7FFB2D79940C mov       rdx,[rbx+10]
-       7FFB2D799410 cmp       [rcx],ecx
-       7FFB2D799412 call      qword ptr [7FFB2D8AF000]; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFB2D799418 mov       eax,[rbx+1C]
-       7FFB2D79941B add       rsp,20
-       7FFB2D79941F pop       rbx
-       7FFB2D799420 ret
-; Total bytes of code 33
+       7FFD6ED5E080 push      rbx
+       7FFD6ED5E081 sub       rsp,20
+       7FFD6ED5E085 mov       rdx,rcx
+       7FFD6ED5E088 mov       rbx,7FFD6EFE52F0
+       7FFD6ED5E092 xor       ecx,ecx
+       7FFD6ED5E094 mov       [rbx],ecx
+       7FFD6ED5E096 mov       rcx,[rdx+8]
+       7FFD6ED5E09A mov       rdx,[rdx+10]
+       7FFD6ED5E09E cmp       [rcx],ecx
+       7FFD6ED5E0A0 call      qword ptr [7FFD6EE6F000]; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
+       7FFD6ED5E0A6 mov       eax,[rbx]
+       7FFD6ED5E0A8 add       rsp,20
+       7FFD6ED5E0AC pop       rbx
+       7FFD6ED5E0AD ret
+; Total bytes of code 46
 ```
 ```assembly
 ; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFB2D799440 push      r14
-       7FFB2D799442 push      rdi
-       7FFB2D799443 push      rsi
-       7FFB2D799444 push      rbp
-       7FFB2D799445 push      rbx
-       7FFB2D799446 sub       rsp,20
-       7FFB2D79944A mov       rbx,rcx
-       7FFB2D79944D mov       rsi,rdx
-       7FFB2D799450 test      rsi,rsi
-       7FFB2D799453 je        near ptr M01_L04
-       7FFB2D799459 mov       edi,[rbx+14]
-       7FFB2D79945C xor       ebp,ebp
-       7FFB2D79945E cmp       dword ptr [rbx+10],0
-       7FFB2D799462 jle       short M01_L03
-       7FFB2D799464 mov       r14,[rsi+18]
-       7FFB2D799468 mov       rcx,7FFB2DA0AE80
-       7FFB2D799472 cmp       r14,rcx
-       7FFB2D799475 jne       short M01_L01
+       7FFD6ED5E0E0 push      r15
+       7FFD6ED5E0E2 push      r14
+       7FFD6ED5E0E4 push      r13
+       7FFD6ED5E0E6 push      rdi
+       7FFD6ED5E0E7 push      rsi
+       7FFD6ED5E0E8 push      rbp
+       7FFD6ED5E0E9 push      rbx
+       7FFD6ED5E0EA sub       rsp,20
+       7FFD6ED5E0EE mov       rbx,rcx
+       7FFD6ED5E0F1 mov       rsi,rdx
+       7FFD6ED5E0F4 test      rsi,rsi
+       7FFD6ED5E0F7 je        near ptr M01_L04
+       7FFD6ED5E0FD mov       edi,[rbx+14]
+       7FFD6ED5E100 xor       ebp,ebp
+       7FFD6ED5E102 cmp       dword ptr [rbx+10],0
+       7FFD6ED5E106 jle       near ptr M01_L03
+       7FFD6ED5E10C mov       r14,[rsi+18]
+       7FFD6ED5E110 mov       rcx,7FFD6F0214A0
+       7FFD6ED5E11A cmp       r14,rcx
+       7FFD6ED5E11D jne       short M01_L01
 M01_L00:
-       7FFB2D799477 cmp       edi,[rbx+14]
-       7FFB2D79947A jne       short M01_L03
-       7FFB2D79947C mov       rcx,[rbx+8]
-       7FFB2D799480 cmp       ebp,[rcx+8]
-       7FFB2D799483 jae       short M01_L07
-       7FFB2D799485 mov       eax,ebp
-       7FFB2D799487 mov       edx,[rcx+rax*4+10]
-       7FFB2D79948B mov       rax,[rsi+8]
-       7FFB2D79948F add       edx,edx
-       7FFB2D799491 add       [rax+1C],edx
-       7FFB2D799494 inc       ebp
-       7FFB2D799496 cmp       ebp,[rbx+10]
-       7FFB2D799499 jl        short M01_L00
-       7FFB2D79949B jmp       short M01_L03
+       7FFD6ED5E11F cmp       edi,[rbx+14]
+       7FFD6ED5E122 jne       near ptr M01_L03
+       7FFD6ED5E128 mov       r14,[rbx+8]
+       7FFD6ED5E12C cmp       ebp,[r14+8]
+       7FFD6ED5E130 jae       near ptr M01_L07
+       7FFD6ED5E136 mov       ecx,ebp
+       7FFD6ED5E138 mov       edx,[r14+rcx*4+10]
+       7FFD6ED5E13D mov       rsi,7FFD6EFE52F0
+       7FFD6ED5E147 mov       r14d,[rsi]
+       7FFD6ED5E14A mov       ecx,edx
+       7FFD6ED5E14C call      qword ptr [7FFD6EFCEE50]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD6ED5E152 add       eax,r14d
+       7FFD6ED5E155 mov       [rsi],eax
+       7FFD6ED5E157 inc       ebp
+       7FFD6ED5E159 cmp       ebp,[rbx+10]
+       7FFD6ED5E15C jl        short M01_L00
+       7FFD6ED5E15E jmp       short M01_L03
 M01_L01:
-       7FFB2D79949D cmp       edi,[rbx+14]
-       7FFB2D7994A0 jne       short M01_L03
-       7FFB2D7994A2 mov       rcx,[rbx+8]
-       7FFB2D7994A6 cmp       ebp,[rcx+8]
-       7FFB2D7994A9 jae       short M01_L07
-       7FFB2D7994AB mov       eax,ebp
-       7FFB2D7994AD mov       edx,[rcx+rax*4+10]
-       7FFB2D7994B1 mov       rcx,7FFB2DA0AE80
-       7FFB2D7994BB cmp       r14,rcx
-       7FFB2D7994BE jne       short M01_L05
-       7FFB2D7994C0 mov       rax,[rsi+8]
-       7FFB2D7994C4 lea       ecx,[rdx+rdx]
-       7FFB2D7994C7 add       [rax+1C],ecx
+       7FFD6ED5E160 cmp       edi,[rbx+14]
+       7FFD6ED5E163 jne       short M01_L03
+       7FFD6ED5E165 mov       rcx,[rbx+8]
+       7FFD6ED5E169 cmp       ebp,[rcx+8]
+       7FFD6ED5E16C jae       short M01_L07
+       7FFD6ED5E16E mov       eax,ebp
+       7FFD6ED5E170 mov       edx,[rcx+rax*4+10]
+       7FFD6ED5E174 mov       rcx,7FFD6F0214A0
+       7FFD6ED5E17E cmp       r14,rcx
+       7FFD6ED5E181 jne       short M01_L05
+       7FFD6ED5E183 mov       rcx,7FFD6EFE52F0
+       7FFD6ED5E18D mov       r15,rcx
+       7FFD6ED5E190 mov       r13d,[r15]
+       7FFD6ED5E193 mov       ecx,edx
+       7FFD6ED5E195 call      qword ptr [7FFD6EFCEE50]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD6ED5E19B add       eax,r13d
+       7FFD6ED5E19E mov       [r15],eax
 M01_L02:
-       7FFB2D7994CA inc       ebp
-       7FFB2D7994CC cmp       ebp,[rbx+10]
-       7FFB2D7994CF jl        short M01_L01
+       7FFD6ED5E1A1 inc       ebp
+       7FFD6ED5E1A3 cmp       ebp,[rbx+10]
+       7FFD6ED5E1A6 jl        short M01_L01
 M01_L03:
-       7FFB2D7994D1 cmp       edi,[rbx+14]
-       7FFB2D7994D4 jne       short M01_L06
-       7FFB2D7994D6 add       rsp,20
-       7FFB2D7994DA pop       rbx
-       7FFB2D7994DB pop       rbp
-       7FFB2D7994DC pop       rsi
-       7FFB2D7994DD pop       rdi
-       7FFB2D7994DE pop       r14
-       7FFB2D7994E0 ret
+       7FFD6ED5E1A8 cmp       edi,[rbx+14]
+       7FFD6ED5E1AB jne       short M01_L06
+       7FFD6ED5E1AD add       rsp,20
+       7FFD6ED5E1B1 pop       rbx
+       7FFD6ED5E1B2 pop       rbp
+       7FFD6ED5E1B3 pop       rsi
+       7FFD6ED5E1B4 pop       rdi
+       7FFD6ED5E1B5 pop       r13
+       7FFD6ED5E1B7 pop       r14
+       7FFD6ED5E1B9 pop       r15
+       7FFD6ED5E1BB ret
 M01_L04:
-       7FFB2D7994E1 mov       ecx,1C
-       7FFB2D7994E6 call      qword ptr [7FFB2DA05B18]
-       7FFB2D7994EC int       3
+       7FFD6ED5E1BC mov       ecx,1C
+       7FFD6ED5E1C1 call      qword ptr [7FFD6EFC5B18]
+       7FFD6ED5E1C7 int       3
 M01_L05:
-       7FFB2D7994ED mov       rcx,[rsi+8]
-       7FFB2D7994F1 call      qword ptr [rsi+18]
-       7FFB2D7994F4 jmp       short M01_L02
+       7FFD6ED5E1C8 mov       rcx,[rsi+8]
+       7FFD6ED5E1CC call      qword ptr [rsi+18]
+       7FFD6ED5E1CF jmp       short M01_L02
 M01_L06:
-       7FFB2D7994F6 call      qword ptr [7FFB2DA05E00]
-       7FFB2D7994FC int       3
+       7FFD6ED5E1D1 call      qword ptr [7FFD6EFC5E00]
+       7FFD6ED5E1D7 int       3
 M01_L07:
-       7FFB2D7994FD call      CORINFO_HELP_RNGCHKFAIL
-       7FFB2D799502 int       3
-; Total bytes of code 195
+       7FFD6ED5E1D8 call      CORINFO_HELP_RNGCHKFAIL
+       7FFD6ED5E1DD int       3
+; Total bytes of code 254
 ```
 
 ## .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Parallel()
-;         Parallel.ForEach(List, _doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         Parallel.ForEach(List, _doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2D79A4C0 push      rbp
-       7FFB2D79A4C1 push      r14
-       7FFB2D79A4C3 push      rdi
-       7FFB2D79A4C4 push      rsi
-       7FFB2D79A4C5 push      rbx
-       7FFB2D79A4C6 sub       rsp,80
-       7FFB2D79A4CD lea       rbp,[rsp+0A0]
-       7FFB2D79A4D5 xor       eax,eax
-       7FFB2D79A4D7 mov       [rbp-40],rax
-       7FFB2D79A4DB mov       rbx,rcx
-       7FFB2D79A4DE mov       rsi,[rbx+8]
-       7FFB2D79A4E2 mov       rdi,[rbx+10]
-       7FFB2D79A4E6 test      rsi,rsi
-       7FFB2D79A4E9 je        near ptr M00_L03
-       7FFB2D79A4EF test      rdi,rdi
-       7FFB2D79A4F2 je        near ptr M00_L04
-       7FFB2D79A4F8 mov       rdx,21C4B406E38
-       7FFB2D79A502 mov       r14,[rdx]
-       7FFB2D79A505 mov       rdx,[r14+18]
-       7FFB2D79A509 mov       [rbp-40],rdx
-       7FFB2D79A50D cmp       qword ptr [rbp-40],0
-       7FFB2D79A512 jne       short M00_L02
+       7FFD6ED6D460 push      rbp
+       7FFD6ED6D461 push      r14
+       7FFD6ED6D463 push      rdi
+       7FFD6ED6D464 push      rsi
+       7FFD6ED6D465 push      rbx
+       7FFD6ED6D466 sub       rsp,80
+       7FFD6ED6D46D lea       rbp,[rsp+0A0]
+       7FFD6ED6D475 xor       eax,eax
+       7FFD6ED6D477 mov       [rbp-40],rax
+       7FFD6ED6D47B mov       rbx,7FFD6EFE52F0
+       7FFD6ED6D485 xor       edx,edx
+       7FFD6ED6D487 mov       [rbx],edx
+       7FFD6ED6D489 mov       rsi,[rcx+8]
+       7FFD6ED6D48D mov       rdi,[rcx+18]
+       7FFD6ED6D491 test      rsi,rsi
+       7FFD6ED6D494 je        near ptr M00_L03
+       7FFD6ED6D49A test      rdi,rdi
+       7FFD6ED6D49D je        near ptr M00_L04
+       7FFD6ED6D4A3 mov       rdx,22861006EC8
+       7FFD6ED6D4AD mov       r14,[rdx]
+       7FFD6ED6D4B0 mov       rdx,[r14+18]
+       7FFD6ED6D4B4 mov       [rbp-40],rdx
+       7FFD6ED6D4B8 cmp       qword ptr [rbp-40],0
+       7FFD6ED6D4BD jne       short M00_L02
 M00_L00:
-       7FFB2D79A514 mov       rdx,rsi
-       7FFB2D79A517 mov       rcx,offset MT_System.Int32[]
-       7FFB2D79A521 call      qword ptr [7FFB2D754330]; System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
-       7FFB2D79A527 test      rax,rax
-       7FFB2D79A52A jne       near ptr M00_L05
-       7FFB2D79A530 mov       r8,rsi
-       7FFB2D79A533 mov       [rsp+20],rdi
-       7FFB2D79A538 xor       ecx,ecx
-       7FFB2D79A53A mov       [rsp+28],rcx
-       7FFB2D79A53F mov       [rsp+30],rcx
-       7FFB2D79A544 mov       [rsp+38],rcx
-       7FFB2D79A549 mov       [rsp+40],rcx
-       7FFB2D79A54E mov       [rsp+48],rcx
-       7FFB2D79A553 mov       [rsp+50],rcx
-       7FFB2D79A558 lea       rcx,[rbp-38]
-       7FFB2D79A55C mov       r9,r14
-       7FFB2D79A55F mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFB2D79A569 call      qword ptr [7FFB2DBC6E80]; System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6D4BF mov       rdx,rsi
+       7FFD6ED6D4C2 mov       rcx,offset MT_System.Int32[]
+       7FFD6ED6D4CC call      qword ptr [7FFD6ED24330]; System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
+       7FFD6ED6D4D2 test      rax,rax
+       7FFD6ED6D4D5 jne       near ptr M00_L05
+       7FFD6ED6D4DB mov       r8,rsi
+       7FFD6ED6D4DE mov       [rsp+20],rdi
+       7FFD6ED6D4E3 xor       ecx,ecx
+       7FFD6ED6D4E5 mov       [rsp+28],rcx
+       7FFD6ED6D4EA mov       [rsp+30],rcx
+       7FFD6ED6D4EF mov       [rsp+38],rcx
+       7FFD6ED6D4F4 mov       [rsp+40],rcx
+       7FFD6ED6D4F9 mov       [rsp+48],rcx
+       7FFD6ED6D4FE mov       [rsp+50],rcx
+       7FFD6ED6D503 lea       rcx,[rbp-38]
+       7FFD6ED6D507 mov       r9,r14
+       7FFD6ED6D50A mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD6ED6D514 call      qword ptr [7FFD6F17C918]; System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M00_L01:
-       7FFB2D79A56F mov       eax,[rbx+1C]
-       7FFB2D79A572 add       rsp,80
-       7FFB2D79A579 pop       rbx
-       7FFB2D79A57A pop       rsi
-       7FFB2D79A57B pop       rdi
-       7FFB2D79A57C pop       r14
-       7FFB2D79A57E pop       rbp
-       7FFB2D79A57F ret
+       7FFD6ED6D51A mov       eax,[rbx]
+       7FFD6ED6D51C add       rsp,80
+       7FFD6ED6D523 pop       rbx
+       7FFD6ED6D524 pop       rsi
+       7FFD6ED6D525 pop       rdi
+       7FFD6ED6D526 pop       r14
+       7FFD6ED6D528 pop       rbp
+       7FFD6ED6D529 ret
 M00_L02:
-       7FFB2D79A580 mov       rdx,[rbp-40]
-       7FFB2D79A584 cmp       dword ptr [rdx+20],0
-       7FFB2D79A588 je        short M00_L00
-       7FFB2D79A58A lea       rcx,[rbp-40]
-       7FFB2D79A58E call      qword ptr [7FFB2D9BD740]
-       7FFB2D79A594 int       3
+       7FFD6ED6D52A mov       rdx,[rbp-40]
+       7FFD6ED6D52E cmp       dword ptr [rdx+20],0
+       7FFD6ED6D532 je        short M00_L00
+       7FFD6ED6D534 lea       rcx,[rbp-40]
+       7FFD6ED6D538 call      qword ptr [7FFD6EF8D740]
+       7FFD6ED6D53E int       3
 M00_L03:
-       7FFB2D79A595 mov       ecx,3C3
-       7FFB2D79A59A mov       rdx,7FFB2DBB4AF8
-       7FFB2D79A5A4 call      CORINFO_HELP_STRCNS
-       7FFB2D79A5A9 mov       rcx,rax
-       7FFB2D79A5AC call      qword ptr [7FFB2D876790]
-       7FFB2D79A5B2 int       3
+       7FFD6ED6D53F mov       ecx,3C3
+       7FFD6ED6D544 mov       rdx,7FFD6F194048
+       7FFD6ED6D54E call      CORINFO_HELP_STRCNS
+       7FFD6ED6D553 mov       rcx,rax
+       7FFD6ED6D556 call      qword ptr [7FFD6EE46790]
+       7FFD6ED6D55C int       3
 M00_L04:
-       7FFB2D79A5B3 mov       ecx,38B
-       7FFB2D79A5B8 mov       rdx,7FFB2DBB4AF8
-       7FFB2D79A5C2 call      CORINFO_HELP_STRCNS
-       7FFB2D79A5C7 mov       rcx,rax
-       7FFB2D79A5CA call      qword ptr [7FFB2D876790]
-       7FFB2D79A5D0 int       3
+       7FFD6ED6D55D mov       ecx,38B
+       7FFD6ED6D562 mov       rdx,7FFD6F194048
+       7FFD6ED6D56C call      CORINFO_HELP_STRCNS
+       7FFD6ED6D571 mov       rcx,rax
+       7FFD6ED6D574 call      qword ptr [7FFD6EE46790]
+       7FFD6ED6D57A int       3
 M00_L05:
-       7FFB2D79A5D1 mov       [rsp+20],rdi
-       7FFB2D79A5D6 xor       ecx,ecx
-       7FFB2D79A5D8 mov       [rsp+28],rcx
-       7FFB2D79A5DD mov       [rsp+30],rcx
-       7FFB2D79A5E2 mov       [rsp+38],rcx
-       7FFB2D79A5E7 mov       [rsp+40],rcx
-       7FFB2D79A5EC mov       [rsp+48],rcx
-       7FFB2D79A5F1 mov       [rsp+50],rcx
-       7FFB2D79A5F6 lea       rcx,[rbp-38]
-       7FFB2D79A5FA mov       r8,rax
-       7FFB2D79A5FD mov       r9,r14
-       7FFB2D79A600 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFB2D79A60A call      qword ptr [7FFB2DBC6EC8]
-       7FFB2D79A610 jmp       near ptr M00_L01
-; Total bytes of code 341
+       7FFD6ED6D57B mov       [rsp+20],rdi
+       7FFD6ED6D580 xor       ecx,ecx
+       7FFD6ED6D582 mov       [rsp+28],rcx
+       7FFD6ED6D587 mov       [rsp+30],rcx
+       7FFD6ED6D58C mov       [rsp+38],rcx
+       7FFD6ED6D591 mov       [rsp+40],rcx
+       7FFD6ED6D596 mov       [rsp+48],rcx
+       7FFD6ED6D59B mov       [rsp+50],rcx
+       7FFD6ED6D5A0 lea       rcx,[rbp-38]
+       7FFD6ED6D5A4 mov       r8,rax
+       7FFD6ED6D5A7 mov       r9,r14
+       7FFD6ED6D5AA mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.Object, System.Private.CoreLib]](Int32[], System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD6ED6D5B4 call      qword ptr [7FFD6F17C960]
+       7FFD6ED6D5BA jmp       near ptr M00_L01
+; Total bytes of code 351
 ```
 ```assembly
 ; System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
-       7FFB2D792D40 push      rsi
-       7FFB2D792D41 push      rbx
-       7FFB2D792D42 test      rdx,rdx
-       7FFB2D792D45 je        short M01_L00
-       7FFB2D792D47 mov       rax,[rdx]
-       7FFB2D792D4A cmp       rax,rcx
-       7FFB2D792D4D jne       short M01_L01
+       7FFD6ED65580 push      rsi
+       7FFD6ED65581 push      rbx
+       7FFD6ED65582 test      rdx,rdx
+       7FFD6ED65585 je        short M01_L00
+       7FFD6ED65587 mov       rax,[rdx]
+       7FFD6ED6558A cmp       rax,rcx
+       7FFD6ED6558D jne       short M01_L01
 M01_L00:
-       7FFB2D792D4F mov       rax,rdx
-       7FFB2D792D52 pop       rbx
-       7FFB2D792D53 pop       rsi
-       7FFB2D792D54 ret
+       7FFD6ED6558F mov       rax,rdx
+       7FFD6ED65592 pop       rbx
+       7FFD6ED65593 pop       rsi
+       7FFD6ED65594 ret
 M01_L01:
-       7FFB2D792D55 mov       r8,21C4B400B50
-       7FFB2D792D5F mov       r8,[r8]
-       7FFB2D792D62 add       r8,10
-       7FFB2D792D66 rorx      r10,rax,20
-       7FFB2D792D6C xor       r10,rcx
-       7FFB2D792D6F mov       r9,9E3779B97F4A7C15
-       7FFB2D792D79 imul      r10,r9
-       7FFB2D792D7D mov       r9d,[r8]
-       7FFB2D792D80 shrx      r10,r10,r9
-       7FFB2D792D85 xor       r9d,r9d
+       7FFD6ED65595 mov       r8,22861000B50
+       7FFD6ED6559F mov       r8,[r8]
+       7FFD6ED655A2 add       r8,10
+       7FFD6ED655A6 rorx      r10,rax,20
+       7FFD6ED655AC xor       r10,rcx
+       7FFD6ED655AF mov       r9,9E3779B97F4A7C15
+       7FFD6ED655B9 imul      r10,r9
+       7FFD6ED655BD mov       r9d,[r8]
+       7FFD6ED655C0 shrx      r10,r10,r9
+       7FFD6ED655C5 xor       r9d,r9d
 M01_L02:
-       7FFB2D792D88 lea       r11d,[r10+1]
-       7FFB2D792D8C movsxd    r11,r11d
-       7FFB2D792D8F lea       r11,[r11+r11*2]
-       7FFB2D792D93 lea       r11,[r8+r11*8]
-       7FFB2D792D97 mov       ebx,[r11]
-       7FFB2D792D9A mov       rsi,[r11+8]
-       7FFB2D792D9E and       ebx,0FFFFFFFE
-       7FFB2D792DA1 cmp       rsi,rax
-       7FFB2D792DA4 jne       short M01_L03
-       7FFB2D792DA6 mov       rsi,rcx
-       7FFB2D792DA9 xor       rsi,[r11+10]
-       7FFB2D792DAD cmp       rsi,1
-       7FFB2D792DB1 jbe       short M01_L04
+       7FFD6ED655C8 lea       r11d,[r10+1]
+       7FFD6ED655CC movsxd    r11,r11d
+       7FFD6ED655CF lea       r11,[r11+r11*2]
+       7FFD6ED655D3 lea       r11,[r8+r11*8]
+       7FFD6ED655D7 mov       ebx,[r11]
+       7FFD6ED655DA mov       rsi,[r11+8]
+       7FFD6ED655DE and       ebx,0FFFFFFFE
+       7FFD6ED655E1 cmp       rsi,rax
+       7FFD6ED655E4 jne       short M01_L03
+       7FFD6ED655E6 mov       rsi,rcx
+       7FFD6ED655E9 xor       rsi,[r11+10]
+       7FFD6ED655ED cmp       rsi,1
+       7FFD6ED655F1 jbe       short M01_L04
 M01_L03:
-       7FFB2D792DB3 test      ebx,ebx
-       7FFB2D792DB5 je        short M01_L06
-       7FFB2D792DB7 inc       r9d
-       7FFB2D792DBA add       r10d,r9d
-       7FFB2D792DBD and       r10d,[r8+4]
-       7FFB2D792DC1 cmp       r9d,8
-       7FFB2D792DC5 jl        short M01_L02
-       7FFB2D792DC7 jmp       short M01_L06
+       7FFD6ED655F3 test      ebx,ebx
+       7FFD6ED655F5 je        short M01_L06
+       7FFD6ED655F7 inc       r9d
+       7FFD6ED655FA add       r10d,r9d
+       7FFD6ED655FD and       r10d,[r8+4]
+       7FFD6ED65601 cmp       r9d,8
+       7FFD6ED65605 jl        short M01_L02
+       7FFD6ED65607 jmp       short M01_L06
 M01_L04:
-       7FFB2D792DC9 cmp       ebx,[r11]
-       7FFB2D792DCC jne       short M01_L06
+       7FFD6ED65609 cmp       ebx,[r11]
+       7FFD6ED6560C jne       short M01_L06
 M01_L05:
-       7FFB2D792DCE cmp       esi,1
-       7FFB2D792DD1 je        near ptr M01_L00
-       7FFB2D792DD7 test      esi,esi
-       7FFB2D792DD9 jne       short M01_L07
-       7FFB2D792DDB xor       edx,edx
-       7FFB2D792DDD jmp       near ptr M01_L00
+       7FFD6ED6560E cmp       esi,1
+       7FFD6ED65611 je        near ptr M01_L00
+       7FFD6ED65617 test      esi,esi
+       7FFD6ED65619 jne       short M01_L07
+       7FFD6ED6561B xor       edx,edx
+       7FFD6ED6561D jmp       near ptr M01_L00
 M01_L06:
-       7FFB2D792DE2 mov       esi,2
-       7FFB2D792DE7 jmp       short M01_L05
+       7FFD6ED65622 mov       esi,2
+       7FFD6ED65627 jmp       short M01_L05
 M01_L07:
-       7FFB2D792DE9 pop       rbx
-       7FFB2D792DEA pop       rsi
-       7FFB2D792DEB jmp       near ptr System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny_NoCacheLookup(Void*, System.Object)
+       7FFD6ED65629 pop       rbx
+       7FFD6ED6562A pop       rsi
+       7FFD6ED6562B jmp       near ptr System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny_NoCacheLookup(Void*, System.Object)
 ; Total bytes of code 176
 ```
 ```assembly
 ; System.Threading.Tasks.Parallel.ForEachWorker[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IList`1<Int32>, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Action`3<Int32,System.Threading.Tasks.ParallelLoopState,Int64>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`5<Int32,System.Threading.Tasks.ParallelLoopState,Int64,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
-       7FFB2D79AB40 push      rbp
-       7FFB2D79AB41 push      r15
-       7FFB2D79AB43 push      r14
-       7FFB2D79AB45 push      r13
-       7FFB2D79AB47 push      r12
-       7FFB2D79AB49 push      rdi
-       7FFB2D79AB4A push      rsi
-       7FFB2D79AB4B push      rbx
-       7FFB2D79AB4C sub       rsp,38
-       7FFB2D79AB50 lea       rbp,[rsp+70]
-       7FFB2D79AB55 mov       [rbp-40],rdx
-       7FFB2D79AB59 mov       rsi,rcx
-       7FFB2D79AB5C mov       rbx,rdx
-       7FFB2D79AB5F mov       r14,r8
-       7FFB2D79AB62 mov       rdi,r9
-       7FFB2D79AB65 mov       rcx,[rbx+10]
-       7FFB2D79AB69 mov       rcx,[rcx+18]
-       7FFB2D79AB6D test      rcx,rcx
-       7FFB2D79AB70 je        short M02_L00
-       7FFB2D79AB72 jmp       short M02_L01
+       7FFD6ED6DA50 push      rbp
+       7FFD6ED6DA51 push      r15
+       7FFD6ED6DA53 push      r14
+       7FFD6ED6DA55 push      r13
+       7FFD6ED6DA57 push      r12
+       7FFD6ED6DA59 push      rdi
+       7FFD6ED6DA5A push      rsi
+       7FFD6ED6DA5B push      rbx
+       7FFD6ED6DA5C sub       rsp,38
+       7FFD6ED6DA60 lea       rbp,[rsp+70]
+       7FFD6ED6DA65 mov       [rbp-40],rdx
+       7FFD6ED6DA69 mov       rsi,rcx
+       7FFD6ED6DA6C mov       rbx,rdx
+       7FFD6ED6DA6F mov       r14,r8
+       7FFD6ED6DA72 mov       rdi,r9
+       7FFD6ED6DA75 mov       rcx,[rbx+10]
+       7FFD6ED6DA79 mov       rcx,[rcx+18]
+       7FFD6ED6DA7D test      rcx,rcx
+       7FFD6ED6DA80 je        short M02_L00
+       7FFD6ED6DA82 jmp       short M02_L01
 M02_L00:
-       7FFB2D79AB74 mov       rcx,rbx
-       7FFB2D79AB77 mov       rdx,7FFB2DBD1140
-       7FFB2D79AB81 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
-       7FFB2D79AB86 mov       rcx,rax
+       7FFD6ED6DA84 mov       rcx,rbx
+       7FFD6ED6DA87 mov       rdx,7FFD6F186698
+       7FFD6ED6DA91 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
+       7FFD6ED6DA96 mov       rcx,rax
 M02_L01:
-       7FFB2D79AB89 call      CORINFO_HELP_NEWSFAST
-       7FFB2D79AB8E mov       r15,rax
-       7FFB2D79AB91 lea       rcx,[r15+8]
-       7FFB2D79AB95 mov       rdx,[rbp+30]
-       7FFB2D79AB99 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79AB9E lea       rcx,[r15+10]
-       7FFB2D79ABA2 mov       rdx,r14
-       7FFB2D79ABA5 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79ABAA lea       rcx,[r15+18]
-       7FFB2D79ABAE mov       rdx,[rbp+38]
-       7FFB2D79ABB2 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79ABB7 lea       rcx,[r15+20]
-       7FFB2D79ABBB mov       rdx,[rbp+40]
-       7FFB2D79ABBF call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79ABC4 lea       rcx,[r15+28]
-       7FFB2D79ABC8 mov       rdx,[rbp+48]
-       7FFB2D79ABCC call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79ABD1 lea       rcx,[r15+30]
-       7FFB2D79ABD5 mov       rdx,[rbp+50]
-       7FFB2D79ABD9 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79ABDE cmp       qword ptr [r15+8],0
-       7FFB2D79ABE3 je        near ptr M02_L03
-       7FFB2D79ABE9 mov       rcx,[r15+10]
-       7FFB2D79ABED mov       rax,offset MT_System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2D79ABF7 cmp       [rcx],rax
-       7FFB2D79ABFA jne       near ptr M02_L15
-       7FFB2D79AC00 mov       ebx,[rcx+10]
+       7FFD6ED6DA99 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DA9E mov       r15,rax
+       7FFD6ED6DAA1 lea       rcx,[r15+8]
+       7FFD6ED6DAA5 mov       rdx,[rbp+30]
+       7FFD6ED6DAA9 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DAAE lea       rcx,[r15+10]
+       7FFD6ED6DAB2 mov       rdx,r14
+       7FFD6ED6DAB5 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DABA lea       rcx,[r15+18]
+       7FFD6ED6DABE mov       rdx,[rbp+38]
+       7FFD6ED6DAC2 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DAC7 lea       rcx,[r15+20]
+       7FFD6ED6DACB mov       rdx,[rbp+40]
+       7FFD6ED6DACF call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DAD4 lea       rcx,[r15+28]
+       7FFD6ED6DAD8 mov       rdx,[rbp+48]
+       7FFD6ED6DADC call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DAE1 lea       rcx,[r15+30]
+       7FFD6ED6DAE5 mov       rdx,[rbp+50]
+       7FFD6ED6DAE9 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DAEE cmp       qword ptr [r15+8],0
+       7FFD6ED6DAF3 je        near ptr M02_L03
+       7FFD6ED6DAF9 mov       rcx,[r15+10]
+       7FFD6ED6DAFD mov       rax,offset MT_System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]]
+       7FFD6ED6DB07 cmp       [rcx],rax
+       7FFD6ED6DB0A jne       near ptr M02_L15
+       7FFD6ED6DB10 mov       ebx,[rcx+10]
 M02_L02:
-       7FFB2D79AC03 mov       rcx,offset MT_System.Action`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2D79AC0D call      CORINFO_HELP_NEWSFAST
-       7FFB2D79AC12 mov       r14,rax
-       7FFB2D79AC15 lea       rcx,[r14+8]
-       7FFB2D79AC19 mov       rdx,r15
-       7FFB2D79AC1C call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D79AC21 mov       rcx,7FFB2DBC2FD0
-       7FFB2D79AC2B mov       [r14+18],rcx
-       7FFB2D79AC2F mov       [rbp+30],rdi
-       7FFB2D79AC33 mov       [rbp+38],r14
-       7FFB2D79AC37 xor       ecx,ecx
-       7FFB2D79AC39 mov       [rbp+40],rcx
-       7FFB2D79AC3D mov       [rbp+48],rcx
-       7FFB2D79AC41 mov       [rbp+50],rcx
-       7FFB2D79AC45 mov       [rbp+58],rcx
-       7FFB2D79AC49 mov       rcx,rsi
-       7FFB2D79AC4C mov       r9d,ebx
-       7FFB2D79AC4F mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFB2D79AC59 xor       r8d,r8d
-       7FFB2D79AC5C add       rsp,38
-       7FFB2D79AC60 pop       rbx
-       7FFB2D79AC61 pop       rsi
-       7FFB2D79AC62 pop       rdi
-       7FFB2D79AC63 pop       r12
-       7FFB2D79AC65 pop       r13
-       7FFB2D79AC67 pop       r14
-       7FFB2D79AC69 pop       r15
-       7FFB2D79AC6B pop       rbp
-       7FFB2D79AC6C jmp       qword ptr [7FFB2DBC7138]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6DB13 mov       rcx,offset MT_System.Action`1[[System.Int32, System.Private.CoreLib]]
+       7FFD6ED6DB1D call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DB22 mov       r14,rax
+       7FFD6ED6DB25 lea       rcx,[r14+8]
+       7FFD6ED6DB29 mov       rdx,r15
+       7FFD6ED6DB2C call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED6DB31 mov       rcx,7FFD6F178A68
+       7FFD6ED6DB3B mov       [r14+18],rcx
+       7FFD6ED6DB3F mov       [rbp+30],rdi
+       7FFD6ED6DB43 mov       [rbp+38],r14
+       7FFD6ED6DB47 xor       ecx,ecx
+       7FFD6ED6DB49 mov       [rbp+40],rcx
+       7FFD6ED6DB4D mov       [rbp+48],rcx
+       7FFD6ED6DB51 mov       [rbp+50],rcx
+       7FFD6ED6DB55 mov       [rbp+58],rcx
+       7FFD6ED6DB59 mov       rcx,rsi
+       7FFD6ED6DB5C mov       r9d,ebx
+       7FFD6ED6DB5F mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD6ED6DB69 xor       r8d,r8d
+       7FFD6ED6DB6C add       rsp,38
+       7FFD6ED6DB70 pop       rbx
+       7FFD6ED6DB71 pop       rsi
+       7FFD6ED6DB72 pop       rdi
+       7FFD6ED6DB73 pop       r12
+       7FFD6ED6DB75 pop       r13
+       7FFD6ED6DB77 pop       r14
+       7FFD6ED6DB79 pop       r15
+       7FFD6ED6DB7B pop       rbp
+       7FFD6ED6DB7C jmp       qword ptr [7FFD6F17CBD0]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M02_L03:
-       7FFB2D79AC72 cmp       qword ptr [r15+18],0
-       7FFB2D79AC77 je        near ptr M02_L04
-       7FFB2D79AC7D mov       rcx,offset MT_System.Action`2[[System.Int32, System.Private.CoreLib],[System.Threading.Tasks.ParallelLoopState, System.Threading.Tasks.Parallel]]
-       7FFB2D79AC87 call      CORINFO_HELP_NEWSFAST
-       7FFB2D79AC8C mov       rbx,rax
-       7FFB2D79AC8F mov       rcx,[r15+10]
-       7FFB2D79AC93 mov       r11,7FFB2D610590
-       7FFB2D79AC9D call      qword ptr [r11]
-       7FFB2D79ACA0 mov       r14d,eax
-       7FFB2D79ACA3 mov       rcx,rbx
-       7FFB2D79ACA6 mov       rdx,r15
-       7FFB2D79ACA9 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__1(Int32, System.Threading.Tasks.ParallelLoopState)
-       7FFB2D79ACB3 call      qword ptr [7FFB2D754210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
-       7FFB2D79ACB9 mov       [rbp+30],rdi
-       7FFB2D79ACBD xor       ecx,ecx
-       7FFB2D79ACBF mov       [rbp+38],rcx
-       7FFB2D79ACC3 mov       [rbp+40],rbx
-       7FFB2D79ACC7 mov       [rbp+48],rcx
-       7FFB2D79ACCB mov       [rbp+50],rcx
-       7FFB2D79ACCF mov       [rbp+58],rcx
-       7FFB2D79ACD3 mov       rcx,rsi
-       7FFB2D79ACD6 mov       r9d,r14d
-       7FFB2D79ACD9 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFB2D79ACE3 xor       r8d,r8d
-       7FFB2D79ACE6 add       rsp,38
-       7FFB2D79ACEA pop       rbx
-       7FFB2D79ACEB pop       rsi
-       7FFB2D79ACEC pop       rdi
-       7FFB2D79ACED pop       r12
-       7FFB2D79ACEF pop       r13
-       7FFB2D79ACF1 pop       r14
-       7FFB2D79ACF3 pop       r15
-       7FFB2D79ACF5 pop       rbp
-       7FFB2D79ACF6 jmp       qword ptr [7FFB2DBC7138]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6DB82 cmp       qword ptr [r15+18],0
+       7FFD6ED6DB87 je        near ptr M02_L04
+       7FFD6ED6DB8D mov       rcx,offset MT_System.Action`2[[System.Int32, System.Private.CoreLib],[System.Threading.Tasks.ParallelLoopState, System.Threading.Tasks.Parallel]]
+       7FFD6ED6DB97 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DB9C mov       rbx,rax
+       7FFD6ED6DB9F mov       rcx,[r15+10]
+       7FFD6ED6DBA3 mov       r11,7FFD6EBE05A8
+       7FFD6ED6DBAD call      qword ptr [r11]
+       7FFD6ED6DBB0 mov       r14d,eax
+       7FFD6ED6DBB3 mov       rcx,rbx
+       7FFD6ED6DBB6 mov       rdx,r15
+       7FFD6ED6DBB9 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__1(Int32, System.Threading.Tasks.ParallelLoopState)
+       7FFD6ED6DBC3 call      qword ptr [7FFD6ED24210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
+       7FFD6ED6DBC9 mov       [rbp+30],rdi
+       7FFD6ED6DBCD xor       ecx,ecx
+       7FFD6ED6DBCF mov       [rbp+38],rcx
+       7FFD6ED6DBD3 mov       [rbp+40],rbx
+       7FFD6ED6DBD7 mov       [rbp+48],rcx
+       7FFD6ED6DBDB mov       [rbp+50],rcx
+       7FFD6ED6DBDF mov       [rbp+58],rcx
+       7FFD6ED6DBE3 mov       rcx,rsi
+       7FFD6ED6DBE6 mov       r9d,r14d
+       7FFD6ED6DBE9 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD6ED6DBF3 xor       r8d,r8d
+       7FFD6ED6DBF6 add       rsp,38
+       7FFD6ED6DBFA pop       rbx
+       7FFD6ED6DBFB pop       rsi
+       7FFD6ED6DBFC pop       rdi
+       7FFD6ED6DBFD pop       r12
+       7FFD6ED6DBFF pop       r13
+       7FFD6ED6DC01 pop       r14
+       7FFD6ED6DC03 pop       r15
+       7FFD6ED6DC05 pop       rbp
+       7FFD6ED6DC06 jmp       qword ptr [7FFD6F17CBD0]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M02_L04:
-       7FFB2D79ACFC cmp       qword ptr [r15+20],0
-       7FFB2D79AD01 je        near ptr M02_L05
-       7FFB2D79AD07 mov       rcx,offset MT_System.Action`2[[System.Int32, System.Private.CoreLib],[System.Threading.Tasks.ParallelLoopState, System.Threading.Tasks.Parallel]]
-       7FFB2D79AD11 call      CORINFO_HELP_NEWSFAST
-       7FFB2D79AD16 mov       rbx,rax
-       7FFB2D79AD19 mov       rcx,[r15+10]
-       7FFB2D79AD1D mov       r11,7FFB2D610588
-       7FFB2D79AD27 call      qword ptr [r11]
-       7FFB2D79AD2A mov       r14d,eax
-       7FFB2D79AD2D mov       rcx,rbx
-       7FFB2D79AD30 mov       rdx,r15
-       7FFB2D79AD33 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__2(Int32, System.Threading.Tasks.ParallelLoopState)
-       7FFB2D79AD3D call      qword ptr [7FFB2D754210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
-       7FFB2D79AD43 mov       [rbp+30],rdi
-       7FFB2D79AD47 xor       ecx,ecx
-       7FFB2D79AD49 mov       [rbp+38],rcx
-       7FFB2D79AD4D mov       [rbp+40],rbx
-       7FFB2D79AD51 mov       [rbp+48],rcx
-       7FFB2D79AD55 mov       [rbp+50],rcx
-       7FFB2D79AD59 mov       [rbp+58],rcx
-       7FFB2D79AD5D mov       rcx,rsi
-       7FFB2D79AD60 mov       r9d,r14d
-       7FFB2D79AD63 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
-       7FFB2D79AD6D xor       r8d,r8d
-       7FFB2D79AD70 add       rsp,38
-       7FFB2D79AD74 pop       rbx
-       7FFB2D79AD75 pop       rsi
-       7FFB2D79AD76 pop       rdi
-       7FFB2D79AD77 pop       r12
-       7FFB2D79AD79 pop       r13
-       7FFB2D79AD7B pop       r14
-       7FFB2D79AD7D pop       r15
-       7FFB2D79AD7F pop       rbp
-       7FFB2D79AD80 jmp       qword ptr [7FFB2DBC7138]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6DC0C cmp       qword ptr [r15+20],0
+       7FFD6ED6DC11 je        near ptr M02_L05
+       7FFD6ED6DC17 mov       rcx,offset MT_System.Action`2[[System.Int32, System.Private.CoreLib],[System.Threading.Tasks.ParallelLoopState, System.Threading.Tasks.Parallel]]
+       7FFD6ED6DC21 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DC26 mov       rbx,rax
+       7FFD6ED6DC29 mov       rcx,[r15+10]
+       7FFD6ED6DC2D mov       r11,7FFD6EBE05A0
+       7FFD6ED6DC37 call      qword ptr [r11]
+       7FFD6ED6DC3A mov       r14d,eax
+       7FFD6ED6DC3D mov       rcx,rbx
+       7FFD6ED6DC40 mov       rdx,r15
+       7FFD6ED6DC43 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__2(Int32, System.Threading.Tasks.ParallelLoopState)
+       7FFD6ED6DC4D call      qword ptr [7FFD6ED24210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
+       7FFD6ED6DC53 mov       [rbp+30],rdi
+       7FFD6ED6DC57 xor       ecx,ecx
+       7FFD6ED6DC59 mov       [rbp+38],rcx
+       7FFD6ED6DC5D mov       [rbp+40],rbx
+       7FFD6ED6DC61 mov       [rbp+48],rcx
+       7FFD6ED6DC65 mov       [rbp+50],rcx
+       7FFD6ED6DC69 mov       [rbp+58],rcx
+       7FFD6ED6DC6D mov       rcx,rsi
+       7FFD6ED6DC70 mov       r9d,r14d
+       7FFD6ED6DC73 mov       rdx,offset MD_System.Threading.Tasks.Parallel.ForWorker[[System.Object, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.Object,System.Object>, System.Func`1<System.Object>, System.Action`1<System.Object>)
+       7FFD6ED6DC7D xor       r8d,r8d
+       7FFD6ED6DC80 add       rsp,38
+       7FFD6ED6DC84 pop       rbx
+       7FFD6ED6DC85 pop       rsi
+       7FFD6ED6DC86 pop       rdi
+       7FFD6ED6DC87 pop       r12
+       7FFD6ED6DC89 pop       r13
+       7FFD6ED6DC8B pop       r14
+       7FFD6ED6DC8D pop       r15
+       7FFD6ED6DC8F pop       rbp
+       7FFD6ED6DC90 jmp       qword ptr [7FFD6F17CBD0]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M02_L05:
-       7FFB2D79AD86 cmp       qword ptr [r15+28],0
-       7FFB2D79AD8B je        near ptr M02_L10
-       7FFB2D79AD91 mov       rcx,[rbx+10]
-       7FFB2D79AD95 mov       rcx,[rcx+20]
-       7FFB2D79AD99 test      rcx,rcx
-       7FFB2D79AD9C je        short M02_L06
-       7FFB2D79AD9E jmp       short M02_L07
+       7FFD6ED6DC96 cmp       qword ptr [r15+28],0
+       7FFD6ED6DC9B je        near ptr M02_L10
+       7FFD6ED6DCA1 mov       rcx,[rbx+10]
+       7FFD6ED6DCA5 mov       rcx,[rcx+20]
+       7FFD6ED6DCA9 test      rcx,rcx
+       7FFD6ED6DCAC je        short M02_L06
+       7FFD6ED6DCAE jmp       short M02_L07
 M02_L06:
-       7FFB2D79ADA0 mov       rcx,rbx
-       7FFB2D79ADA3 mov       rdx,7FFB2DBD13D0
-       7FFB2D79ADAD call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
-       7FFB2D79ADB2 mov       rcx,rax
+       7FFD6ED6DCB0 mov       rcx,rbx
+       7FFD6ED6DCB3 mov       rdx,7FFD6F186928
+       7FFD6ED6DCBD call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
+       7FFD6ED6DCC2 mov       rcx,rax
 M02_L07:
-       7FFB2D79ADB5 call      CORINFO_HELP_NEWSFAST
-       7FFB2D79ADBA mov       r14,rax
-       7FFB2D79ADBD mov       rcx,[r15+10]
-       7FFB2D79ADC1 mov       r11,7FFB2D610580
-       7FFB2D79ADCB call      qword ptr [r11]
-       7FFB2D79ADCE mov       r13d,eax
-       7FFB2D79ADD1 mov       rcx,r14
-       7FFB2D79ADD4 mov       rdx,r15
-       7FFB2D79ADD7 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__3(Int32, System.Threading.Tasks.ParallelLoopState, System.__Canon)
-       7FFB2D79ADE1 call      qword ptr [7FFB2D754210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
-       7FFB2D79ADE7 mov       rcx,[rbx+10]
-       7FFB2D79ADEB mov       rdx,[rcx+28]
-       7FFB2D79ADEF test      rdx,rdx
-       7FFB2D79ADF2 je        short M02_L08
-       7FFB2D79ADF4 jmp       short M02_L09
+       7FFD6ED6DCC5 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DCCA mov       r14,rax
+       7FFD6ED6DCCD mov       rcx,[r15+10]
+       7FFD6ED6DCD1 mov       r11,7FFD6EBE0598
+       7FFD6ED6DCDB call      qword ptr [r11]
+       7FFD6ED6DCDE mov       r13d,eax
+       7FFD6ED6DCE1 mov       rcx,r14
+       7FFD6ED6DCE4 mov       rdx,r15
+       7FFD6ED6DCE7 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__3(Int32, System.Threading.Tasks.ParallelLoopState, System.__Canon)
+       7FFD6ED6DCF1 call      qword ptr [7FFD6ED24210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
+       7FFD6ED6DCF7 mov       rcx,[rbx+10]
+       7FFD6ED6DCFB mov       rdx,[rcx+28]
+       7FFD6ED6DCFF test      rdx,rdx
+       7FFD6ED6DD02 je        short M02_L08
+       7FFD6ED6DD04 jmp       short M02_L09
 M02_L08:
-       7FFB2D79ADF6 mov       rcx,rbx
-       7FFB2D79ADF9 mov       rdx,7FFB2DBD2320
-       7FFB2D79AE03 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
-       7FFB2D79AE08 mov       rdx,rax
+       7FFD6ED6DD06 mov       rcx,rbx
+       7FFD6ED6DD09 mov       rdx,7FFD6F187878
+       7FFD6ED6DD13 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
+       7FFD6ED6DD18 mov       rdx,rax
 M02_L09:
-       7FFB2D79AE0B mov       [rbp+30],rdi
-       7FFB2D79AE0F xor       ecx,ecx
-       7FFB2D79AE11 mov       [rbp+38],rcx
-       7FFB2D79AE15 mov       [rbp+40],rcx
-       7FFB2D79AE19 mov       [rbp+48],r14
-       7FFB2D79AE1D mov       r14,[rbp+58]
-       7FFB2D79AE21 mov       [rbp+50],r14
-       7FFB2D79AE25 mov       r12,[rbp+60]
-       7FFB2D79AE29 mov       [rbp+58],r12
-       7FFB2D79AE2D mov       rcx,rsi
-       7FFB2D79AE30 mov       r9d,r13d
-       7FFB2D79AE33 xor       r8d,r8d
-       7FFB2D79AE36 add       rsp,38
-       7FFB2D79AE3A pop       rbx
-       7FFB2D79AE3B pop       rsi
-       7FFB2D79AE3C pop       rdi
-       7FFB2D79AE3D pop       r12
-       7FFB2D79AE3F pop       r13
-       7FFB2D79AE41 pop       r14
-       7FFB2D79AE43 pop       r15
-       7FFB2D79AE45 pop       rbp
-       7FFB2D79AE46 jmp       qword ptr [7FFB2DBC7138]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6DD1B mov       [rbp+30],rdi
+       7FFD6ED6DD1F xor       ecx,ecx
+       7FFD6ED6DD21 mov       [rbp+38],rcx
+       7FFD6ED6DD25 mov       [rbp+40],rcx
+       7FFD6ED6DD29 mov       [rbp+48],r14
+       7FFD6ED6DD2D mov       r14,[rbp+58]
+       7FFD6ED6DD31 mov       [rbp+50],r14
+       7FFD6ED6DD35 mov       r12,[rbp+60]
+       7FFD6ED6DD39 mov       [rbp+58],r12
+       7FFD6ED6DD3D mov       rcx,rsi
+       7FFD6ED6DD40 mov       r9d,r13d
+       7FFD6ED6DD43 xor       r8d,r8d
+       7FFD6ED6DD46 add       rsp,38
+       7FFD6ED6DD4A pop       rbx
+       7FFD6ED6DD4B pop       rsi
+       7FFD6ED6DD4C pop       rdi
+       7FFD6ED6DD4D pop       r12
+       7FFD6ED6DD4F pop       r13
+       7FFD6ED6DD51 pop       r14
+       7FFD6ED6DD53 pop       r15
+       7FFD6ED6DD55 pop       rbp
+       7FFD6ED6DD56 jmp       qword ptr [7FFD6F17CBD0]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
 M02_L10:
-       7FFB2D79AE4C mov       rcx,[rbx+10]
-       7FFB2D79AE50 mov       rcx,[rcx+20]
-       7FFB2D79AE54 test      rcx,rcx
-       7FFB2D79AE57 je        short M02_L11
-       7FFB2D79AE59 jmp       short M02_L12
+       7FFD6ED6DD5C mov       rcx,[rbx+10]
+       7FFD6ED6DD60 mov       rcx,[rcx+20]
+       7FFD6ED6DD64 test      rcx,rcx
+       7FFD6ED6DD67 je        short M02_L11
+       7FFD6ED6DD69 jmp       short M02_L12
 M02_L11:
-       7FFB2D79AE5B mov       rcx,rbx
-       7FFB2D79AE5E mov       rdx,7FFB2DBD13D0
-       7FFB2D79AE68 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
-       7FFB2D79AE6D mov       rcx,rax
+       7FFD6ED6DD6B mov       rcx,rbx
+       7FFD6ED6DD6E mov       rdx,7FFD6F186928
+       7FFD6ED6DD78 call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
+       7FFD6ED6DD7D mov       rcx,rax
 M02_L12:
-       7FFB2D79AE70 call      CORINFO_HELP_NEWSFAST
-       7FFB2D79AE75 mov       r13,rax
-       7FFB2D79AE78 mov       rcx,[r15+10]
-       7FFB2D79AE7C mov       r11,7FFB2D610578
-       7FFB2D79AE86 call      qword ptr [r11]
-       7FFB2D79AE89 mov       [rbp-44],eax
-       7FFB2D79AE8C mov       rcx,r13
-       7FFB2D79AE8F mov       rdx,r15
-       7FFB2D79AE92 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__4(Int32, System.Threading.Tasks.ParallelLoopState, System.__Canon)
-       7FFB2D79AE9C call      qword ptr [7FFB2D754210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
-       7FFB2D79AEA2 mov       rcx,[rbx+10]
-       7FFB2D79AEA6 mov       rdx,[rcx+28]
-       7FFB2D79AEAA test      rdx,rdx
-       7FFB2D79AEAD je        short M02_L13
-       7FFB2D79AEAF jmp       short M02_L14
+       7FFD6ED6DD80 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED6DD85 mov       r13,rax
+       7FFD6ED6DD88 mov       rcx,[r15+10]
+       7FFD6ED6DD8C mov       r11,7FFD6EBE0590
+       7FFD6ED6DD96 call      qword ptr [r11]
+       7FFD6ED6DD99 mov       [rbp-44],eax
+       7FFD6ED6DD9C mov       rcx,r13
+       7FFD6ED6DD9F mov       rdx,r15
+       7FFD6ED6DDA2 mov       r8,offset System.Threading.Tasks.Parallel+<>c__DisplayClass32_0`2[[System.Int32, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]].<ForEachWorker>b__4(Int32, System.Threading.Tasks.ParallelLoopState, System.__Canon)
+       7FFD6ED6DDAC call      qword ptr [7FFD6ED24210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
+       7FFD6ED6DDB2 mov       rcx,[rbx+10]
+       7FFD6ED6DDB6 mov       rdx,[rcx+28]
+       7FFD6ED6DDBA test      rdx,rdx
+       7FFD6ED6DDBD je        short M02_L13
+       7FFD6ED6DDBF jmp       short M02_L14
 M02_L13:
-       7FFB2D79AEB1 mov       rcx,rbx
-       7FFB2D79AEB4 mov       rdx,7FFB2DBD2320
-       7FFB2D79AEBE call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
-       7FFB2D79AEC3 mov       rdx,rax
+       7FFD6ED6DDC1 mov       rcx,rbx
+       7FFD6ED6DDC4 mov       rdx,7FFD6F187878
+       7FFD6ED6DDCE call      CORINFO_HELP_RUNTIMEHANDLE_METHOD
+       7FFD6ED6DDD3 mov       rdx,rax
 M02_L14:
-       7FFB2D79AEC6 mov       [rbp+30],rdi
-       7FFB2D79AECA xor       ecx,ecx
-       7FFB2D79AECC mov       [rbp+38],rcx
-       7FFB2D79AED0 mov       [rbp+40],rcx
-       7FFB2D79AED4 mov       [rbp+48],r13
-       7FFB2D79AED8 mov       r14,[rbp+58]
-       7FFB2D79AEDC mov       [rbp+50],r14
-       7FFB2D79AEE0 mov       r12,[rbp+60]
-       7FFB2D79AEE4 mov       [rbp+58],r12
-       7FFB2D79AEE8 mov       rcx,rsi
-       7FFB2D79AEEB mov       r9d,[rbp-44]
-       7FFB2D79AEEF xor       r8d,r8d
-       7FFB2D79AEF2 add       rsp,38
-       7FFB2D79AEF6 pop       rbx
-       7FFB2D79AEF7 pop       rsi
-       7FFB2D79AEF8 pop       rdi
-       7FFB2D79AEF9 pop       r12
-       7FFB2D79AEFB pop       r13
-       7FFB2D79AEFD pop       r14
-       7FFB2D79AEFF pop       r15
-       7FFB2D79AF01 pop       rbp
-       7FFB2D79AF02 jmp       qword ptr [7FFB2DBC7138]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
-       7FFB2D79AF08 add       rsp,38
-       7FFB2D79AF0C pop       rbx
-       7FFB2D79AF0D pop       rsi
-       7FFB2D79AF0E pop       rdi
-       7FFB2D79AF0F pop       r12
-       7FFB2D79AF11 pop       r13
-       7FFB2D79AF13 pop       r14
-       7FFB2D79AF15 pop       r15
-       7FFB2D79AF17 pop       rbp
-       7FFB2D79AF18 ret
+       7FFD6ED6DDD6 mov       [rbp+30],rdi
+       7FFD6ED6DDDA xor       ecx,ecx
+       7FFD6ED6DDDC mov       [rbp+38],rcx
+       7FFD6ED6DDE0 mov       [rbp+40],rcx
+       7FFD6ED6DDE4 mov       [rbp+48],r13
+       7FFD6ED6DDE8 mov       r14,[rbp+58]
+       7FFD6ED6DDEC mov       [rbp+50],r14
+       7FFD6ED6DDF0 mov       r12,[rbp+60]
+       7FFD6ED6DDF4 mov       [rbp+58],r12
+       7FFD6ED6DDF8 mov       rcx,rsi
+       7FFD6ED6DDFB mov       r9d,[rbp-44]
+       7FFD6ED6DDFF xor       r8d,r8d
+       7FFD6ED6DE02 add       rsp,38
+       7FFD6ED6DE06 pop       rbx
+       7FFD6ED6DE07 pop       rsi
+       7FFD6ED6DE08 pop       rdi
+       7FFD6ED6DE09 pop       r12
+       7FFD6ED6DE0B pop       r13
+       7FFD6ED6DE0D pop       r14
+       7FFD6ED6DE0F pop       r15
+       7FFD6ED6DE11 pop       rbp
+       7FFD6ED6DE12 jmp       qword ptr [7FFD6F17CBD0]; System.Threading.Tasks.Parallel.ForWorker[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](Int32, Int32, System.Threading.Tasks.ParallelOptions, System.Action`1<Int32>, System.Action`2<Int32,System.Threading.Tasks.ParallelLoopState>, System.Func`4<Int32,System.Threading.Tasks.ParallelLoopState,System.__Canon,System.__Canon>, System.Func`1<System.__Canon>, System.Action`1<System.__Canon>)
+       7FFD6ED6DE18 add       rsp,38
+       7FFD6ED6DE1C pop       rbx
+       7FFD6ED6DE1D pop       rsi
+       7FFD6ED6DE1E pop       rdi
+       7FFD6ED6DE1F pop       r12
+       7FFD6ED6DE21 pop       r13
+       7FFD6ED6DE23 pop       r14
+       7FFD6ED6DE25 pop       r15
+       7FFD6ED6DE27 pop       rbp
+       7FFD6ED6DE28 ret
 M02_L15:
-       7FFB2D79AF19 mov       r11,7FFB2D610598
-       7FFB2D79AF23 call      qword ptr [r11]
-       7FFB2D79AF26 mov       ebx,eax
-       7FFB2D79AF28 jmp       near ptr M02_L02
+       7FFD6ED6DE29 mov       r11,7FFD6EBE05B0
+       7FFD6ED6DE33 call      qword ptr [r11]
+       7FFD6ED6DE36 mov       ebx,eax
+       7FFD6ED6DE38 jmp       near ptr M02_L02
 ; Total bytes of code 1005
 ```
 
 ## .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_LinqParallel()
-;         List.AsParallel().ForAll(_doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         List.AsParallel().ForAll(_doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2D7ADAA0 push      rbx
-       7FFB2D7ADAA1 sub       rsp,20
-       7FFB2D7ADAA5 mov       rbx,rcx
-       7FFB2D7ADAA8 mov       rcx,[rbx+8]
-       7FFB2D7ADAAC call      qword ptr [7FFB2DBD6F40]; System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFB2D7ADAB2 mov       rcx,rax
-       7FFB2D7ADAB5 mov       rdx,[rbx+10]
-       7FFB2D7ADAB9 call      qword ptr [7FFB2DBD74F8]; System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
-       7FFB2D7ADABF mov       eax,[rbx+1C]
-       7FFB2D7ADAC2 add       rsp,20
-       7FFB2D7ADAC6 pop       rbx
-       7FFB2D7ADAC7 ret
-; Total bytes of code 40
+       7FFD6ED71060 push      rsi
+       7FFD6ED71061 push      rbx
+       7FFD6ED71062 sub       rsp,28
+       7FFD6ED71066 mov       rbx,rcx
+       7FFD6ED71069 mov       rsi,7FFD6EFE52F0
+       7FFD6ED71073 xor       ecx,ecx
+       7FFD6ED71075 mov       [rsi],ecx
+       7FFD6ED71077 mov       rcx,[rbx+8]
+       7FFD6ED7107B call      qword ptr [7FFD6F1548E8]; System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
+       7FFD6ED71081 mov       rcx,rax
+       7FFD6ED71084 mov       rdx,[rbx+18]
+       7FFD6ED71088 call      qword ptr [7FFD6F154EA0]; System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
+       7FFD6ED7108E mov       eax,[rsi]
+       7FFD6ED71090 add       rsp,28
+       7FFD6ED71094 pop       rbx
+       7FFD6ED71095 pop       rsi
+       7FFD6ED71096 ret
+; Total bytes of code 55
 ```
 ```assembly
 ; System.Linq.ParallelEnumerable.AsParallel[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFB2D7ADAE0 push      rdi
-       7FFB2D7ADAE1 push      rsi
-       7FFB2D7ADAE2 push      rbp
-       7FFB2D7ADAE3 push      rbx
-       7FFB2D7ADAE4 sub       rsp,58
-       7FFB2D7ADAE8 xor       eax,eax
-       7FFB2D7ADAEA mov       [rsp+28],rax
-       7FFB2D7ADAEF vxorps    xmm4,xmm4,xmm4
-       7FFB2D7ADAF3 vmovdqa   xmmword ptr [rsp+30],xmm4
-       7FFB2D7ADAF9 vmovdqa   xmmword ptr [rsp+40],xmm4
-       7FFB2D7ADAFF mov       [rsp+50],rax
-       7FFB2D7ADB04 mov       rbx,rcx
-       7FFB2D7ADB07 test      rbx,rbx
-       7FFB2D7ADB0A je        short M01_L00
-       7FFB2D7ADB0C mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2D7ADB16 call      CORINFO_HELP_NEWSFAST
-       7FFB2D7ADB1B mov       rbp,rax
-       7FFB2D7ADB1E lea       rcx,[rsp+28]
-       7FFB2D7ADB23 call      qword ptr [7FFB2DBD7348]; System.Linq.Parallel.QuerySettings.get_Empty()
-       7FFB2D7ADB29 lea       rdi,[rbp+8]
-       7FFB2D7ADB2D lea       rsi,[rsp+28]
-       7FFB2D7ADB32 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2D7ADB37 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2D7ADB3C mov       ecx,4
-       7FFB2D7ADB41 rep movsq
-       7FFB2D7ADB44 lea       rcx,[rbp+38]
-       7FFB2D7ADB48 mov       rdx,rbx
-       7FFB2D7ADB4B call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D7ADB50 mov       rax,rbp
-       7FFB2D7ADB53 add       rsp,58
-       7FFB2D7ADB57 pop       rbx
-       7FFB2D7ADB58 pop       rbp
-       7FFB2D7ADB59 pop       rsi
-       7FFB2D7ADB5A pop       rdi
-       7FFB2D7ADB5B ret
+       7FFD6ED710B0 push      rdi
+       7FFD6ED710B1 push      rsi
+       7FFD6ED710B2 push      rbp
+       7FFD6ED710B3 push      rbx
+       7FFD6ED710B4 sub       rsp,58
+       7FFD6ED710B8 xor       eax,eax
+       7FFD6ED710BA mov       [rsp+28],rax
+       7FFD6ED710BF vxorps    xmm4,xmm4,xmm4
+       7FFD6ED710C3 vmovdqa   xmmword ptr [rsp+30],xmm4
+       7FFD6ED710C9 vmovdqa   xmmword ptr [rsp+40],xmm4
+       7FFD6ED710CF mov       [rsp+50],rax
+       7FFD6ED710D4 mov       rbx,rcx
+       7FFD6ED710D7 test      rbx,rbx
+       7FFD6ED710DA je        short M01_L00
+       7FFD6ED710DC mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD6ED710E6 call      CORINFO_HELP_NEWSFAST
+       7FFD6ED710EB mov       rbp,rax
+       7FFD6ED710EE lea       rcx,[rsp+28]
+       7FFD6ED710F3 call      qword ptr [7FFD6F154CF0]; System.Linq.Parallel.QuerySettings.get_Empty()
+       7FFD6ED710F9 lea       rdi,[rbp+8]
+       7FFD6ED710FD lea       rsi,[rsp+28]
+       7FFD6ED71102 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD6ED71107 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD6ED7110C mov       ecx,4
+       7FFD6ED71111 rep movsq
+       7FFD6ED71114 lea       rcx,[rbp+38]
+       7FFD6ED71118 mov       rdx,rbx
+       7FFD6ED7111B call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED71120 mov       rax,rbp
+       7FFD6ED71123 add       rsp,58
+       7FFD6ED71127 pop       rbx
+       7FFD6ED71128 pop       rbp
+       7FFD6ED71129 pop       rsi
+       7FFD6ED7112A pop       rdi
+       7FFD6ED7112B ret
 M01_L00:
-       7FFB2D7ADB5C mov       ecx,6F1
-       7FFB2D7ADB61 mov       rdx,7FFB2DBC4AF0
-       7FFB2D7ADB6B call      CORINFO_HELP_STRCNS
-       7FFB2D7ADB70 mov       rcx,rax
-       7FFB2D7ADB73 call      qword ptr [7FFB2D886790]
-       7FFB2D7ADB79 int       3
+       7FFD6ED7112C mov       ecx,6F1
+       7FFD6ED71131 mov       rdx,7FFD6F10F258
+       7FFD6ED7113B call      CORINFO_HELP_STRCNS
+       7FFD6ED71140 mov       rcx,rax
+       7FFD6ED71143 call      qword ptr [7FFD6EE46790]
+       7FFD6ED71149 int       3
 ; Total bytes of code 154
 ```
 ```assembly
 ; System.Linq.ParallelEnumerable.ForAll[[System.Int32, System.Private.CoreLib]](System.Linq.ParallelQuery`1<Int32>, System.Action`1<Int32>)
-       7FFB2D7ADC30 push      r15
-       7FFB2D7ADC32 push      r14
-       7FFB2D7ADC34 push      rdi
-       7FFB2D7ADC35 push      rsi
-       7FFB2D7ADC36 push      rbp
-       7FFB2D7ADC37 push      rbx
-       7FFB2D7ADC38 sub       rsp,58
-       7FFB2D7ADC3C vzeroupper
-       7FFB2D7ADC3F xor       eax,eax
-       7FFB2D7ADC41 mov       [rsp+28],rax
-       7FFB2D7ADC46 vxorps    xmm4,xmm4,xmm4
-       7FFB2D7ADC4A vmovdqa   xmmword ptr [rsp+30],xmm4
-       7FFB2D7ADC50 vmovdqa   xmmword ptr [rsp+40],xmm4
-       7FFB2D7ADC56 mov       [rsp+50],rax
-       7FFB2D7ADC5B mov       rsi,rcx
-       7FFB2D7ADC5E mov       rbx,rdx
-       7FFB2D7ADC61 test      rsi,rsi
-       7FFB2D7ADC64 je        near ptr M02_L00
-       7FFB2D7ADC6A test      rbx,rbx
-       7FFB2D7ADC6D je        near ptr M02_L01
-       7FFB2D7ADC73 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2D7ADC7D call      CORINFO_HELP_NEWSFAST
-       7FFB2D7ADC82 mov       rbp,rax
-       7FFB2D7ADC85 mov       rcx,rsi
-       7FFB2D7ADC88 call      qword ptr [7FFB2DBDC150]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFB2D7ADC8E mov       r14,rax
-       7FFB2D7ADC91 movzx     r15d,byte ptr [r14+38]
-       7FFB2D7ADC96 vmovdqu   ymm0,ymmword ptr [r14+8]
-       7FFB2D7ADC9C vmovdqu   ymmword ptr [rsp+28],ymm0
-       7FFB2D7ADCA2 vmovdqu   xmm0,xmmword ptr [r14+28]
-       7FFB2D7ADCA8 vmovdqu   xmmword ptr [rsp+48],xmm0
-       7FFB2D7ADCAE mov       byte ptr [rbp+48],3
-       7FFB2D7ADCB2 lea       rdi,[rbp+8]
-       7FFB2D7ADCB6 lea       rsi,[rsp+28]
-       7FFB2D7ADCBB call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2D7ADCC0 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2D7ADCC5 mov       ecx,4
-       7FFB2D7ADCCA rep movsq
-       7FFB2D7ADCCD mov       [rbp+38],r15b
-       7FFB2D7ADCD1 lea       rcx,[rbp+40]
-       7FFB2D7ADCD5 mov       rdx,r14
-       7FFB2D7ADCD8 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D7ADCDD lea       rcx,[rbp+50]
-       7FFB2D7ADCE1 mov       rdx,rbx
-       7FFB2D7ADCE4 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2D7ADCE9 mov       rcx,rbp
-       7FFB2D7ADCEC add       rsp,58
-       7FFB2D7ADCF0 pop       rbx
-       7FFB2D7ADCF1 pop       rbp
-       7FFB2D7ADCF2 pop       rsi
-       7FFB2D7ADCF3 pop       rdi
-       7FFB2D7ADCF4 pop       r14
-       7FFB2D7ADCF6 pop       r15
-       7FFB2D7ADCF8 jmp       qword ptr [7FFB2DBDC258]; System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
+       7FFD6ED71200 push      r15
+       7FFD6ED71202 push      r14
+       7FFD6ED71204 push      rdi
+       7FFD6ED71205 push      rsi
+       7FFD6ED71206 push      rbp
+       7FFD6ED71207 push      rbx
+       7FFD6ED71208 sub       rsp,58
+       7FFD6ED7120C vzeroupper
+       7FFD6ED7120F xor       eax,eax
+       7FFD6ED71211 mov       [rsp+28],rax
+       7FFD6ED71216 vxorps    xmm4,xmm4,xmm4
+       7FFD6ED7121A vmovdqa   xmmword ptr [rsp+30],xmm4
+       7FFD6ED71220 vmovdqa   xmmword ptr [rsp+40],xmm4
+       7FFD6ED71226 mov       [rsp+50],rax
+       7FFD6ED7122B mov       rsi,rcx
+       7FFD6ED7122E mov       rbx,rdx
+       7FFD6ED71231 test      rsi,rsi
+       7FFD6ED71234 je        near ptr M02_L00
+       7FFD6ED7123A test      rbx,rbx
+       7FFD6ED7123D je        near ptr M02_L01
+       7FFD6ED71243 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
+       7FFD6ED7124D call      CORINFO_HELP_NEWSFAST
+       7FFD6ED71252 mov       rbp,rax
+       7FFD6ED71255 mov       rcx,rsi
+       7FFD6ED71258 call      qword ptr [7FFD6F155A28]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
+       7FFD6ED7125E mov       r14,rax
+       7FFD6ED71261 movzx     r15d,byte ptr [r14+38]
+       7FFD6ED71266 vmovdqu   ymm0,ymmword ptr [r14+8]
+       7FFD6ED7126C vmovdqu   ymmword ptr [rsp+28],ymm0
+       7FFD6ED71272 vmovdqu   xmm0,xmmword ptr [r14+28]
+       7FFD6ED71278 vmovdqu   xmmword ptr [rsp+48],xmm0
+       7FFD6ED7127E mov       byte ptr [rbp+48],3
+       7FFD6ED71282 lea       rdi,[rbp+8]
+       7FFD6ED71286 lea       rsi,[rsp+28]
+       7FFD6ED7128B call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD6ED71290 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD6ED71295 mov       ecx,4
+       7FFD6ED7129A rep movsq
+       7FFD6ED7129D mov       [rbp+38],r15b
+       7FFD6ED712A1 lea       rcx,[rbp+40]
+       7FFD6ED712A5 mov       rdx,r14
+       7FFD6ED712A8 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED712AD lea       rcx,[rbp+50]
+       7FFD6ED712B1 mov       rdx,rbx
+       7FFD6ED712B4 call      CORINFO_HELP_ASSIGN_REF
+       7FFD6ED712B9 mov       rcx,rbp
+       7FFD6ED712BC add       rsp,58
+       7FFD6ED712C0 pop       rbx
+       7FFD6ED712C1 pop       rbp
+       7FFD6ED712C2 pop       rsi
+       7FFD6ED712C3 pop       rdi
+       7FFD6ED712C4 pop       r14
+       7FFD6ED712C6 pop       r15
+       7FFD6ED712C8 jmp       qword ptr [7FFD6F155B30]; System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
 M02_L00:
-       7FFB2D7ADCFE mov       ecx,6F1
-       7FFB2D7ADD03 mov       rdx,7FFB2DBC4AF0
-       7FFB2D7ADD0D call      CORINFO_HELP_STRCNS
-       7FFB2D7ADD12 mov       rcx,rax
-       7FFB2D7ADD15 call      qword ptr [7FFB2D886790]
-       7FFB2D7ADD1B int       3
+       7FFD6ED712CE mov       ecx,6F1
+       7FFD6ED712D3 mov       rdx,7FFD6F10F258
+       7FFD6ED712DD call      CORINFO_HELP_STRCNS
+       7FFD6ED712E2 mov       rcx,rax
+       7FFD6ED712E5 call      qword ptr [7FFD6EE46790]
+       7FFD6ED712EB int       3
 M02_L01:
-       7FFB2D7ADD1C mov       ecx,733
-       7FFB2D7ADD21 mov       rdx,7FFB2DBC4AF0
-       7FFB2D7ADD2B call      CORINFO_HELP_STRCNS
-       7FFB2D7ADD30 mov       rcx,rax
-       7FFB2D7ADD33 call      qword ptr [7FFB2D886790]
-       7FFB2D7ADD39 int       3
+       7FFD6ED712EC mov       ecx,733
+       7FFD6ED712F1 mov       rdx,7FFD6F10F258
+       7FFD6ED712FB call      CORINFO_HELP_STRCNS
+       7FFD6ED71300 mov       rcx,rax
+       7FFD6ED71303 call      qword ptr [7FFD6EE46790]
+       7FFD6ED71309 int       3
 ; Total bytes of code 266
 ```
 
 ## .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For_Span()
-;         var sum = 0;
-;         ^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
 ;         var span = CollectionsMarshal.AsSpan(List);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         for (int i = 0; i < span.Length; i++)
 ;              ^^^^^^^^^
-;             sum += DoSomeThing(span[i]);
+;             sum += DoSomething(span[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2D799740 push      r14
-       7FFB2D799742 push      rdi
-       7FFB2D799743 push      rsi
-       7FFB2D799744 push      rbp
-       7FFB2D799745 push      rbx
-       7FFB2D799746 sub       rsp,20
-       7FFB2D79974A mov       rbx,rcx
-       7FFB2D79974D xor       esi,esi
-       7FFB2D79974F mov       rdx,[rbx+8]
-       7FFB2D799753 test      rdx,rdx
-       7FFB2D799756 je        short M00_L05
-       7FFB2D799758 mov       rdi,[rdx+8]
-       7FFB2D79975C mov       ebp,[rdx+10]
-       7FFB2D79975F test      rdi,rdi
-       7FFB2D799762 je        short M00_L03
-       7FFB2D799764 cmp       [rdi+8],ebp
-       7FFB2D799767 jb        short M00_L04
-       7FFB2D799769 add       rdi,10
+       7FFD6ED6E240 push      r14
+       7FFD6ED6E242 push      rdi
+       7FFD6ED6E243 push      rsi
+       7FFD6ED6E244 push      rbp
+       7FFD6ED6E245 push      rbx
+       7FFD6ED6E246 sub       rsp,20
+       7FFD6ED6E24A mov       rbx,7FFD6EFF52F0
+       7FFD6ED6E254 xor       eax,eax
+       7FFD6ED6E256 mov       [rbx],eax
+       7FFD6ED6E258 mov       rcx,[rcx+8]
+       7FFD6ED6E25C test      rcx,rcx
+       7FFD6ED6E25F je        short M00_L05
+       7FFD6ED6E261 mov       rsi,[rcx+8]
+       7FFD6ED6E265 mov       edi,[rcx+10]
+       7FFD6ED6E268 test      rsi,rsi
+       7FFD6ED6E26B je        short M00_L03
+       7FFD6ED6E26D cmp       [rsi+8],edi
+       7FFD6ED6E270 jb        short M00_L04
+       7FFD6ED6E272 add       rsi,10
 M00_L00:
-       7FFB2D79976D xor       r14d,r14d
-       7FFB2D799770 test      ebp,ebp
-       7FFB2D799772 jle       short M00_L02
+       7FFD6ED6E276 xor       ebp,ebp
+       7FFD6ED6E278 test      edi,edi
+       7FFD6ED6E27A jle       short M00_L02
 M00_L01:
-       7FFB2D799774 mov       edx,r14d
-       7FFB2D799777 mov       edx,[rdi+rdx*4]
-       7FFB2D79977A mov       rcx,rbx
-       7FFB2D79977D call      qword ptr [7FFB2DA0EE50]; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFB2D799783 add       esi,eax
-       7FFB2D799785 inc       r14d
-       7FFB2D799788 cmp       r14d,ebp
-       7FFB2D79978B jl        short M00_L01
+       7FFD6ED6E27C mov       r14d,[rbx]
+       7FFD6ED6E27F mov       ecx,ebp
+       7FFD6ED6E281 mov       ecx,[rsi+rcx*4]
+       7FFD6ED6E284 call      qword ptr [7FFD6EFDEE50]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD6ED6E28A add       eax,r14d
+       7FFD6ED6E28D mov       [rbx],eax
+       7FFD6ED6E28F inc       ebp
+       7FFD6ED6E291 cmp       ebp,edi
+       7FFD6ED6E293 jl        short M00_L01
 M00_L02:
-       7FFB2D79978D mov       eax,esi
-       7FFB2D79978F add       rsp,20
-       7FFB2D799793 pop       rbx
-       7FFB2D799794 pop       rbp
-       7FFB2D799795 pop       rsi
-       7FFB2D799796 pop       rdi
-       7FFB2D799797 pop       r14
-       7FFB2D799799 ret
+       7FFD6ED6E295 mov       eax,[rbx]
+       7FFD6ED6E297 add       rsp,20
+       7FFD6ED6E29B pop       rbx
+       7FFD6ED6E29C pop       rbp
+       7FFD6ED6E29D pop       rsi
+       7FFD6ED6E29E pop       rdi
+       7FFD6ED6E29F pop       r14
+       7FFD6ED6E2A1 ret
 M00_L03:
-       7FFB2D79979A test      ebp,ebp
-       7FFB2D79979C jne       short M00_L04
-       7FFB2D79979E xor       edi,edi
-       7FFB2D7997A0 xor       ebp,ebp
-       7FFB2D7997A2 jmp       short M00_L00
+       7FFD6ED6E2A2 test      edi,edi
+       7FFD6ED6E2A4 jne       short M00_L04
+       7FFD6ED6E2A6 xor       esi,esi
+       7FFD6ED6E2A8 xor       edi,edi
+       7FFD6ED6E2AA jmp       short M00_L00
 M00_L04:
-       7FFB2D7997A4 call      qword ptr [7FFB2DA057E8]
-       7FFB2D7997AA int       3
+       7FFD6ED6E2AC call      qword ptr [7FFD6EFD57E8]
+       7FFD6ED6E2B2 int       3
 M00_L05:
-       7FFB2D7997AB xor       edi,edi
-       7FFB2D7997AD xor       ebp,ebp
-       7FFB2D7997AF jmp       short M00_L00
-; Total bytes of code 113
+       7FFD6ED6E2B3 xor       esi,esi
+       7FFD6ED6E2B5 xor       edi,edi
+       7FFD6ED6E2B7 jmp       short M00_L00
+; Total bytes of code 121
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFB2D7993A0 lea       eax,[rdx+rdx]
-       7FFB2D7993A3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD6ED6DE80 lea       eax,[rcx+rcx]
+       7FFD6ED6DE83 ret
 ; Total bytes of code 4
 ```
 
 ## .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For()
-;         var sum = 0;
-;         ^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
 ;         for (int i = 0; i < List.Count; i++)
 ;              ^^^^^^^^^
-;             sum += DoSomeThing(List[i]);
+;             sum += DoSomething(List[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2C5151C0 push      rdi
-       7FFB2C5151C1 push      rsi
-       7FFB2C5151C2 push      rbx
-       7FFB2C5151C3 sub       rsp,20
-       7FFB2C5151C7 mov       rbx,rcx
-       7FFB2C5151CA xor       esi,esi
-       7FFB2C5151CC xor       edi,edi
-       7FFB2C5151CE mov       rdx,[rbx+8]
-       7FFB2C5151D2 cmp       dword ptr [rdx+10],0
-       7FFB2C5151D6 jle       short M00_L01
+       7FFD48E3EEA0 push      rdi
+       7FFD48E3EEA1 push      rsi
+       7FFD48E3EEA2 push      rbp
+       7FFD48E3EEA3 push      rbx
+       7FFD48E3EEA4 sub       rsp,28
+       7FFD48E3EEA8 mov       rbx,rcx
+       7FFD48E3EEAB mov       rsi,7FFD48CDB0D8
+       7FFD48E3EEB5 xor       ecx,ecx
+       7FFD48E3EEB7 mov       [rsi],ecx
+       7FFD48E3EEB9 xor       edi,edi
+       7FFD48E3EEBB mov       rcx,[rbx+8]
+       7FFD48E3EEBF cmp       dword ptr [rcx+10],0
+       7FFD48E3EEC3 jle       short M00_L01
 M00_L00:
-       7FFB2C5151D8 mov       rdx,[rbx+8]
-       7FFB2C5151DC cmp       edi,[rdx+10]
-       7FFB2C5151DF jae       short M00_L02
-       7FFB2C5151E1 mov       rdx,[rdx+8]
-       7FFB2C5151E5 cmp       edi,[rdx+8]
-       7FFB2C5151E8 jae       short M00_L03
-       7FFB2C5151EA mov       edx,[rdx+rdi*4+10]
-       7FFB2C5151EE mov       rcx,rbx
-       7FFB2C5151F1 call      qword ptr [7FFB2C8B5218]; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFB2C5151F7 add       esi,eax
-       7FFB2C5151F9 inc       edi
-       7FFB2C5151FB mov       rax,[rbx+8]
-       7FFB2C5151FF cmp       edi,[rax+10]
-       7FFB2C515202 jl        short M00_L00
+       7FFD48E3EEC5 mov       ebp,[rsi]
+       7FFD48E3EEC7 mov       rcx,[rbx+8]
+       7FFD48E3EECB cmp       edi,[rcx+10]
+       7FFD48E3EECE jae       short M00_L02
+       7FFD48E3EED0 mov       rcx,[rcx+8]
+       7FFD48E3EED4 cmp       edi,[rcx+8]
+       7FFD48E3EED7 jae       short M00_L03
+       7FFD48E3EED9 mov       ecx,[rcx+rdi*4+10]
+       7FFD48E3EEDD call      qword ptr [7FFD4913D1D0]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD48E3EEE3 add       eax,ebp
+       7FFD48E3EEE5 mov       [rsi],eax
+       7FFD48E3EEE7 inc       edi
+       7FFD48E3EEE9 mov       rax,[rbx+8]
+       7FFD48E3EEED cmp       edi,[rax+10]
+       7FFD48E3EEF0 jl        short M00_L00
 M00_L01:
-       7FFB2C515204 mov       eax,esi
-       7FFB2C515206 add       rsp,20
-       7FFB2C51520A pop       rbx
-       7FFB2C51520B pop       rsi
-       7FFB2C51520C pop       rdi
-       7FFB2C51520D ret
+       7FFD48E3EEF2 mov       eax,[rsi]
+       7FFD48E3EEF4 add       rsp,28
+       7FFD48E3EEF8 pop       rbx
+       7FFD48E3EEF9 pop       rbp
+       7FFD48E3EEFA pop       rsi
+       7FFD48E3EEFB pop       rdi
+       7FFD48E3EEFC ret
 M00_L02:
-       7FFB2C51520E call      qword ptr [7FFB2C8B5248]
-       7FFB2C515214 int       3
+       7FFD48E3EEFD call      qword ptr [7FFD4913D200]
+       7FFD48E3EF03 int       3
 M00_L03:
-       7FFB2C515215 call      CORINFO_HELP_RNGCHKFAIL
-       7FFB2C51521A int       3
-; Total bytes of code 91
+       7FFD48E3EF04 call      CORINFO_HELP_RNGCHKFAIL
+       7FFD48E3EF09 int       3
+; Total bytes of code 106
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFB2C5150A0 lea       eax,[rdx+rdx]
-       7FFB2C5150A3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD48E3EBF0 lea       eax,[rcx+rcx]
+       7FFD48E3EBF3 ret
 ; Total bytes of code 4
 ```
 
 ## .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Linq()
-;         List.ForEach(_doSomeThing);
+;         sum = 0;
+;         ^^^^^^^^
+;         List.ForEach(_doSomething);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2C529F00 push      rbx
-       7FFB2C529F01 sub       rsp,20
-       7FFB2C529F05 mov       rbx,rcx
-       7FFB2C529F08 mov       rcx,[rbx+8]
-       7FFB2C529F0C mov       rdx,[rbx+10]
-       7FFB2C529F10 cmp       [rcx],ecx
-       7FFB2C529F12 call      qword ptr [7FFB2C904408]; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFB2C529F18 mov       eax,[rbx+1C]
-       7FFB2C529F1B add       rsp,20
-       7FFB2C529F1F pop       rbx
-       7FFB2C529F20 ret
-; Total bytes of code 33
+       7FFD48E3EE00 push      rbx
+       7FFD48E3EE01 sub       rsp,20
+       7FFD48E3EE05 mov       rdx,rcx
+       7FFD48E3EE08 mov       rbx,7FFD48CDB0D8
+       7FFD48E3EE12 xor       ecx,ecx
+       7FFD48E3EE14 mov       [rbx],ecx
+       7FFD48E3EE16 mov       rcx,[rdx+8]
+       7FFD48E3EE1A mov       rdx,[rdx+10]
+       7FFD48E3EE1E cmp       [rcx],ecx
+       7FFD48E3EE20 call      qword ptr [7FFD4913D290]; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
+       7FFD48E3EE26 mov       eax,[rbx]
+       7FFD48E3EE28 add       rsp,20
+       7FFD48E3EE2C pop       rbx
+       7FFD48E3EE2D ret
+; Total bytes of code 46
 ```
 ```assembly
 ; System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]].ForEach(System.Action`1<Int32>)
-       7FFB2C529F40 push      r14
-       7FFB2C529F42 push      rdi
-       7FFB2C529F43 push      rsi
-       7FFB2C529F44 push      rbp
-       7FFB2C529F45 push      rbx
-       7FFB2C529F46 sub       rsp,20
-       7FFB2C529F4A mov       rbx,rcx
-       7FFB2C529F4D mov       rsi,rdx
-       7FFB2C529F50 test      rsi,rsi
-       7FFB2C529F53 je        near ptr M01_L06
-       7FFB2C529F59 mov       edi,[rbx+14]
-       7FFB2C529F5C xor       ebp,ebp
-       7FFB2C529F5E cmp       dword ptr [rbx+10],0
-       7FFB2C529F62 jle       short M01_L01
-       7FFB2C529F64 mov       r14,[rsi+18]
-       7FFB2C529F68 mov       rdx,7FFB2C828CA8
-       7FFB2C529F72 cmp       r14,rdx
-       7FFB2C529F75 jne       short M01_L02
+       7FFD48E3EE60 push      r15
+       7FFD48E3EE62 push      r14
+       7FFD48E3EE64 push      r13
+       7FFD48E3EE66 push      rdi
+       7FFD48E3EE67 push      rsi
+       7FFD48E3EE68 push      rbp
+       7FFD48E3EE69 push      rbx
+       7FFD48E3EE6A sub       rsp,20
+       7FFD48E3EE6E mov       rbx,rcx
+       7FFD48E3EE71 mov       rsi,rdx
+       7FFD48E3EE74 test      rsi,rsi
+       7FFD48E3EE77 je        near ptr M01_L06
+       7FFD48E3EE7D mov       edi,[rbx+14]
+       7FFD48E3EE80 xor       ebp,ebp
+       7FFD48E3EE82 cmp       dword ptr [rbx+10],0
+       7FFD48E3EE86 jle       short M01_L01
+       7FFD48E3EE88 mov       r14,[rsi+18]
+       7FFD48E3EE8C mov       rcx,7FFD48FF8D98
+       7FFD48E3EE96 cmp       r14,rcx
+       7FFD48E3EE99 jne       short M01_L02
 M01_L00:
-       7FFB2C529F77 cmp       edi,[rbx+14]
-       7FFB2C529F7A jne       short M01_L01
-       7FFB2C529F7C mov       rdx,[rbx+8]
-       7FFB2C529F80 cmp       ebp,[rdx+8]
-       7FFB2C529F83 jae       short M01_L07
-       7FFB2C529F85 mov       ecx,ebp
-       7FFB2C529F87 mov       edx,[rdx+rcx*4+10]
-       7FFB2C529F8B mov       rcx,[rsi+8]
-       7FFB2C529F8F add       edx,edx
-       7FFB2C529F91 add       [rcx+1C],edx
-       7FFB2C529F94 inc       ebp
-       7FFB2C529F96 cmp       ebp,[rbx+10]
-       7FFB2C529F99 jl        short M01_L00
+       7FFD48E3EE9B cmp       edi,[rbx+14]
+       7FFD48E3EE9E jne       short M01_L01
+       7FFD48E3EEA0 mov       r15,[rbx+8]
+       7FFD48E3EEA4 cmp       ebp,[r15+8]
+       7FFD48E3EEA8 jae       near ptr M01_L07
+       7FFD48E3EEAE mov       ecx,ebp
+       7FFD48E3EEB0 mov       edx,[r15+rcx*4+10]
+       7FFD48E3EEB5 mov       r13,7FFD48CDB0D8
+       7FFD48E3EEBF mov       esi,[r13]
+       7FFD48E3EEC3 mov       ecx,edx
+       7FFD48E3EEC5 call      qword ptr [7FFD4913D1D0]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD48E3EECB add       eax,esi
+       7FFD48E3EECD mov       [r13],eax
+       7FFD48E3EED1 inc       ebp
+       7FFD48E3EED3 cmp       ebp,[rbx+10]
+       7FFD48E3EED6 jl        short M01_L00
 M01_L01:
-       7FFB2C529F9B cmp       edi,[rbx+14]
-       7FFB2C529F9E jne       short M01_L05
-       7FFB2C529FA0 add       rsp,20
-       7FFB2C529FA4 pop       rbx
-       7FFB2C529FA5 pop       rbp
-       7FFB2C529FA6 pop       rsi
-       7FFB2C529FA7 pop       rdi
-       7FFB2C529FA8 pop       r14
-       7FFB2C529FAA ret
+       7FFD48E3EED8 cmp       edi,[rbx+14]
+       7FFD48E3EEDB jne       short M01_L05
+       7FFD48E3EEDD add       rsp,20
+       7FFD48E3EEE1 pop       rbx
+       7FFD48E3EEE2 pop       rbp
+       7FFD48E3EEE3 pop       rsi
+       7FFD48E3EEE4 pop       rdi
+       7FFD48E3EEE5 pop       r13
+       7FFD48E3EEE7 pop       r14
+       7FFD48E3EEE9 pop       r15
+       7FFD48E3EEEB ret
 M01_L02:
-       7FFB2C529FAB cmp       edi,[rbx+14]
-       7FFB2C529FAE jne       short M01_L01
-       7FFB2C529FB0 mov       rdx,[rbx+8]
-       7FFB2C529FB4 cmp       ebp,[rdx+8]
-       7FFB2C529FB7 jae       short M01_L07
-       7FFB2C529FB9 mov       ecx,ebp
-       7FFB2C529FBB mov       edx,[rdx+rcx*4+10]
-       7FFB2C529FBF mov       rcx,7FFB2C828CA8
-       7FFB2C529FC9 cmp       r14,rcx
-       7FFB2C529FCC jne       short M01_L04
-       7FFB2C529FCE mov       rcx,[rsi+8]
-       7FFB2C529FD2 add       edx,edx
-       7FFB2C529FD4 add       [rcx+1C],edx
+       7FFD48E3EEEC cmp       edi,[rbx+14]
+       7FFD48E3EEEF jne       short M01_L01
+       7FFD48E3EEF1 mov       r15,[rbx+8]
+       7FFD48E3EEF5 cmp       ebp,[r15+8]
+       7FFD48E3EEF9 jae       short M01_L07
+       7FFD48E3EEFB mov       ecx,ebp
+       7FFD48E3EEFD mov       edx,[r15+rcx*4+10]
+       7FFD48E3EF02 mov       rcx,7FFD48FF8D98
+       7FFD48E3EF0C cmp       r14,rcx
+       7FFD48E3EF0F jne       short M01_L04
+       7FFD48E3EF11 mov       r13,7FFD48CDB0D8
+       7FFD48E3EF1B mov       r15d,[r13]
+       7FFD48E3EF1F mov       ecx,edx
+       7FFD48E3EF21 call      qword ptr [7FFD4913D1D0]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD48E3EF27 add       eax,r15d
+       7FFD48E3EF2A mov       [r13],eax
 M01_L03:
-       7FFB2C529FD7 inc       ebp
-       7FFB2C529FD9 cmp       ebp,[rbx+10]
-       7FFB2C529FDC jl        short M01_L02
-       7FFB2C529FDE jmp       short M01_L01
+       7FFD48E3EF2E inc       ebp
+       7FFD48E3EF30 cmp       ebp,[rbx+10]
+       7FFD48E3EF33 jl        short M01_L02
+       7FFD48E3EF35 jmp       short M01_L01
 M01_L04:
-       7FFB2C529FE0 mov       rcx,[rsi+8]
-       7FFB2C529FE4 call      qword ptr [rsi+18]
-       7FFB2C529FE7 jmp       short M01_L03
+       7FFD48E3EF37 mov       rcx,[rsi+8]
+       7FFD48E3EF3B call      qword ptr [rsi+18]
+       7FFD48E3EF3E jmp       short M01_L03
 M01_L05:
-       7FFB2C529FE9 call      qword ptr [7FFB2C6E7A98]
-       7FFB2C529FEF int       3
+       7FFD48E3EF40 call      qword ptr [7FFD48FF7A98]
+       7FFD48E3EF46 int       3
 M01_L06:
-       7FFB2C529FF0 mov       ecx,1C
-       7FFB2C529FF5 call      qword ptr [7FFB2C6E7B88]
-       7FFB2C529FFB int       3
+       7FFD48E3EF47 mov       ecx,1C
+       7FFD48E3EF4C call      qword ptr [7FFD48FF7B88]
+       7FFD48E3EF52 int       3
 M01_L07:
-       7FFB2C529FFC call      CORINFO_HELP_RNGCHKFAIL
-       7FFB2C52A001 int       3
-; Total bytes of code 194
+       7FFD48E3EF53 call      CORINFO_HELP_RNGCHKFAIL
+       7FFD48E3EF58 int       3
+; Total bytes of code 249
 ```
 
 ## .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_Parallel()
-;         Parallel.ForEach(List, _doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         Parallel.ForEach(List, _doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2C52B940 push      rbp
-       7FFB2C52B941 push      r14
-       7FFB2C52B943 push      rdi
-       7FFB2C52B944 push      rsi
-       7FFB2C52B945 push      rbx
-       7FFB2C52B946 sub       rsp,80
-       7FFB2C52B94D lea       rbp,[rsp+0A0]
-       7FFB2C52B955 xor       eax,eax
-       7FFB2C52B957 mov       [rbp-40],rax
-       7FFB2C52B95B mov       rbx,rcx
-       7FFB2C52B95E mov       rsi,[rbx+8]
-       7FFB2C52B962 mov       rdi,[rbx+10]
-       7FFB2C52B966 test      rsi,rsi
-       7FFB2C52B969 je        near ptr M00_L03
-       7FFB2C52B96F test      rdi,rdi
-       7FFB2C52B972 je        near ptr M00_L04
-       7FFB2C52B978 mov       rdx,28B14C01470
-       7FFB2C52B982 mov       r14,[rdx]
-       7FFB2C52B985 mov       rdx,[r14+18]
-       7FFB2C52B989 mov       [rbp-40],rdx
-       7FFB2C52B98D cmp       qword ptr [rbp-40],0
-       7FFB2C52B992 jne       short M00_L02
+       7FFD48E1E080 push      rbp
+       7FFD48E1E081 push      r14
+       7FFD48E1E083 push      rdi
+       7FFD48E1E084 push      rsi
+       7FFD48E1E085 push      rbx
+       7FFD48E1E086 sub       rsp,80
+       7FFD48E1E08D lea       rbp,[rsp+0A0]
+       7FFD48E1E095 xor       eax,eax
+       7FFD48E1E097 mov       [rbp-40],rax
+       7FFD48E1E09B mov       rbx,7FFD48CAB0D8
+       7FFD48E1E0A5 xor       edx,edx
+       7FFD48E1E0A7 mov       [rbx],edx
+       7FFD48E1E0A9 mov       rsi,[rcx+8]
+       7FFD48E1E0AD mov       rdi,[rcx+18]
+       7FFD48E1E0B1 test      rsi,rsi
+       7FFD48E1E0B4 je        near ptr M00_L03
+       7FFD48E1E0BA test      rdi,rdi
+       7FFD48E1E0BD je        near ptr M00_L04
+       7FFD48E1E0C3 mov       rdx,2431DC01318
+       7FFD48E1E0CD mov       r14,[rdx]
+       7FFD48E1E0D0 mov       rdx,[r14+18]
+       7FFD48E1E0D4 mov       [rbp-40],rdx
+       7FFD48E1E0D8 cmp       qword ptr [rbp-40],0
+       7FFD48E1E0DD jne       short M00_L02
 M00_L00:
-       7FFB2C52B994 mov       rdx,rsi
-       7FFB2C52B997 mov       rcx,offset MT_System.Int32[]
-       7FFB2C52B9A1 call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
-       7FFB2C52B9A6 test      rax,rax
-       7FFB2C52B9A9 jne       near ptr M00_L05
-       7FFB2C52B9AF mov       [rsp+20],rdi
-       7FFB2C52B9B4 xor       ecx,ecx
-       7FFB2C52B9B6 mov       [rsp+28],rcx
-       7FFB2C52B9BB mov       [rsp+30],rcx
-       7FFB2C52B9C0 mov       [rsp+38],rcx
-       7FFB2C52B9C5 mov       [rsp+40],rcx
-       7FFB2C52B9CA mov       [rsp+48],rcx
-       7FFB2C52B9CF mov       [rsp+50],rcx
-       7FFB2C52B9D4 lea       rcx,[rbp-38]
-       7FFB2C52B9D8 mov       r8,rsi
-       7FFB2C52B9DB mov       r9,r14
-       7FFB2C52B9DE mov       rdx,7FFB2C8F6B90
-       7FFB2C52B9E8 call      qword ptr [7FFB2C9047F8]
+       7FFD48E1E0DF mov       rdx,rsi
+       7FFD48E1E0E2 mov       rcx,offset MT_System.Int32[]
+       7FFD48E1E0EC call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
+       7FFD48E1E0F1 test      rax,rax
+       7FFD48E1E0F4 jne       near ptr M00_L05
+       7FFD48E1E0FA mov       [rsp+20],rdi
+       7FFD48E1E0FF xor       ecx,ecx
+       7FFD48E1E101 mov       [rsp+28],rcx
+       7FFD48E1E106 mov       [rsp+30],rcx
+       7FFD48E1E10B mov       [rsp+38],rcx
+       7FFD48E1E110 mov       [rsp+40],rcx
+       7FFD48E1E115 mov       [rsp+48],rcx
+       7FFD48E1E11A mov       [rsp+50],rcx
+       7FFD48E1E11F lea       rcx,[rbp-38]
+       7FFD48E1E123 mov       r8,rsi
+       7FFD48E1E126 mov       r9,r14
+       7FFD48E1E129 mov       rdx,7FFD491D2310
+       7FFD48E1E133 call      qword ptr [7FFD491C46F0]
 M00_L01:
-       7FFB2C52B9EE mov       eax,[rbx+1C]
-       7FFB2C52B9F1 add       rsp,80
-       7FFB2C52B9F8 pop       rbx
-       7FFB2C52B9F9 pop       rsi
-       7FFB2C52B9FA pop       rdi
-       7FFB2C52B9FB pop       r14
-       7FFB2C52B9FD pop       rbp
-       7FFB2C52B9FE ret
+       7FFD48E1E139 mov       eax,[rbx]
+       7FFD48E1E13B add       rsp,80
+       7FFD48E1E142 pop       rbx
+       7FFD48E1E143 pop       rsi
+       7FFD48E1E144 pop       rdi
+       7FFD48E1E145 pop       r14
+       7FFD48E1E147 pop       rbp
+       7FFD48E1E148 ret
 M00_L02:
-       7FFB2C52B9FF mov       rdx,[rbp-40]
-       7FFB2C52BA03 cmp       dword ptr [rdx+20],0
-       7FFB2C52BA07 je        short M00_L00
-       7FFB2C52BA09 jmp       near ptr M00_L06
+       7FFD48E1E149 mov       rdx,[rbp-40]
+       7FFD48E1E14D cmp       dword ptr [rdx+20],0
+       7FFD48E1E151 je        short M00_L00
+       7FFD48E1E153 jmp       near ptr M00_L06
 M00_L03:
-       7FFB2C52BA0E mov       ecx,3C3
-       7FFB2C52BA13 mov       rdx,7FFB2C8F2640
-       7FFB2C52BA1D call      CORINFO_HELP_STRCNS
-       7FFB2C52BA22 mov       rcx,rax
-       7FFB2C52BA25 call      qword ptr [7FFB2C90D590]
-       7FFB2C52BA2B int       3
+       7FFD48E1E158 mov       ecx,3C3
+       7FFD48E1E15D mov       rdx,7FFD491BE3C8
+       7FFD48E1E167 call      CORINFO_HELP_STRCNS
+       7FFD48E1E16C mov       rcx,rax
+       7FFD48E1E16F call      qword ptr [7FFD491CF0A8]
+       7FFD48E1E175 int       3
 M00_L04:
-       7FFB2C52BA2C mov       ecx,38B
-       7FFB2C52BA31 mov       rdx,7FFB2C8F2640
-       7FFB2C52BA3B call      CORINFO_HELP_STRCNS
-       7FFB2C52BA40 mov       rcx,rax
-       7FFB2C52BA43 call      qword ptr [7FFB2C90D590]
-       7FFB2C52BA49 int       3
+       7FFD48E1E176 mov       ecx,38B
+       7FFD48E1E17B mov       rdx,7FFD491BE3C8
+       7FFD48E1E185 call      CORINFO_HELP_STRCNS
+       7FFD48E1E18A mov       rcx,rax
+       7FFD48E1E18D call      qword ptr [7FFD491CF0A8]
+       7FFD48E1E193 int       3
 M00_L05:
-       7FFB2C52BA4A mov       [rsp+20],rdi
-       7FFB2C52BA4F xor       ecx,ecx
-       7FFB2C52BA51 mov       [rsp+28],rcx
-       7FFB2C52BA56 mov       [rsp+30],rcx
-       7FFB2C52BA5B mov       [rsp+38],rcx
-       7FFB2C52BA60 mov       [rsp+40],rcx
-       7FFB2C52BA65 mov       [rsp+48],rcx
-       7FFB2C52BA6A mov       [rsp+50],rcx
-       7FFB2C52BA6F lea       rcx,[rbp-38]
-       7FFB2C52BA73 mov       r8,rax
-       7FFB2C52BA76 mov       r9,r14
-       7FFB2C52BA79 mov       rdx,7FFB2C9866F8
-       7FFB2C52BA83 call      qword ptr [7FFB2C904840]
-       7FFB2C52BA89 jmp       near ptr M00_L01
+       7FFD48E1E194 mov       [rsp+20],rdi
+       7FFD48E1E199 xor       ecx,ecx
+       7FFD48E1E19B mov       [rsp+28],rcx
+       7FFD48E1E1A0 mov       [rsp+30],rcx
+       7FFD48E1E1A5 mov       [rsp+38],rcx
+       7FFD48E1E1AA mov       [rsp+40],rcx
+       7FFD48E1E1AF mov       [rsp+48],rcx
+       7FFD48E1E1B4 mov       [rsp+50],rcx
+       7FFD48E1E1B9 lea       rcx,[rbp-38]
+       7FFD48E1E1BD mov       r8,rax
+       7FFD48E1E1C0 mov       r9,r14
+       7FFD48E1E1C3 mov       rdx,7FFD49291B58
+       7FFD48E1E1CD call      qword ptr [7FFD491C4738]
+       7FFD48E1E1D3 jmp       near ptr M00_L01
 M00_L06:
-       7FFB2C52BA8E lea       rcx,[rbp-40]
-       7FFB2C52BA92 call      qword ptr [7FFB2C90D6C8]
-       7FFB2C52BA98 int       3
-; Total bytes of code 345
+       7FFD48E1E1D8 lea       rcx,[rbp-40]
+       7FFD48E1E1DC call      qword ptr [7FFD491C4120]
+       7FFD48E1E1E2 int       3
+; Total bytes of code 355
 ```
 ```assembly
 ; System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny(Void*, System.Object)
-       7FFB2C523120 push      rsi
-       7FFB2C523121 push      rbx
-       7FFB2C523122 test      rdx,rdx
-       7FFB2C523125 je        short M01_L00
-       7FFB2C523127 mov       r8,[rdx]
-       7FFB2C52312A cmp       r8,rcx
-       7FFB2C52312D jne       short M01_L01
+       7FFD48E153A0 push      rsi
+       7FFD48E153A1 push      rbx
+       7FFD48E153A2 test      rdx,rdx
+       7FFD48E153A5 je        short M01_L00
+       7FFD48E153A7 mov       r8,[rdx]
+       7FFD48E153AA cmp       r8,rcx
+       7FFD48E153AD jne       short M01_L01
 M01_L00:
-       7FFB2C52312F mov       rax,rdx
-       7FFB2C523132 pop       rbx
-       7FFB2C523133 pop       rsi
-       7FFB2C523134 ret
+       7FFD48E153AF mov       rax,rdx
+       7FFD48E153B2 pop       rbx
+       7FFD48E153B3 pop       rsi
+       7FFD48E153B4 ret
 M01_L01:
-       7FFB2C523135 mov       rax,28B14C00038
-       7FFB2C52313F mov       rax,[rax]
-       7FFB2C523142 add       rax,10
-       7FFB2C523146 rorx      r10,r8,20
-       7FFB2C52314C xor       r10,rcx
-       7FFB2C52314F mov       r9,9E3779B97F4A7C15
-       7FFB2C523159 imul      r10,r9
-       7FFB2C52315D mov       r9d,[rax]
-       7FFB2C523160 shrx      r10,r10,r9
-       7FFB2C523165 xor       r9d,r9d
+       7FFD48E153B5 mov       rax,2431DC00038
+       7FFD48E153BF mov       rax,[rax]
+       7FFD48E153C2 add       rax,10
+       7FFD48E153C6 rorx      r10,r8,20
+       7FFD48E153CC xor       r10,rcx
+       7FFD48E153CF mov       r9,9E3779B97F4A7C15
+       7FFD48E153D9 imul      r10,r9
+       7FFD48E153DD mov       r9d,[rax]
+       7FFD48E153E0 shrx      r10,r10,r9
+       7FFD48E153E5 xor       r9d,r9d
 M01_L02:
-       7FFB2C523168 lea       r11d,[r10+1]
-       7FFB2C52316C movsxd    r11,r11d
-       7FFB2C52316F lea       r11,[r11+r11*2]
-       7FFB2C523173 lea       r11,[rax+r11*8]
-       7FFB2C523177 mov       ebx,[r11]
-       7FFB2C52317A mov       rsi,[r11+8]
-       7FFB2C52317E and       ebx,0FFFFFFFE
-       7FFB2C523181 cmp       rsi,r8
-       7FFB2C523184 jne       short M01_L04
-       7FFB2C523186 mov       rsi,rcx
-       7FFB2C523189 xor       rsi,[r11+10]
-       7FFB2C52318D cmp       rsi,1
-       7FFB2C523191 ja        short M01_L04
-       7FFB2C523193 cmp       ebx,[r11]
-       7FFB2C523196 jne       short M01_L05
+       7FFD48E153E8 lea       r11d,[r10+1]
+       7FFD48E153EC movsxd    r11,r11d
+       7FFD48E153EF lea       r11,[r11+r11*2]
+       7FFD48E153F3 lea       r11,[rax+r11*8]
+       7FFD48E153F7 mov       ebx,[r11]
+       7FFD48E153FA mov       rsi,[r11+8]
+       7FFD48E153FE and       ebx,0FFFFFFFE
+       7FFD48E15401 cmp       rsi,r8
+       7FFD48E15404 jne       short M01_L04
+       7FFD48E15406 mov       rsi,rcx
+       7FFD48E15409 xor       rsi,[r11+10]
+       7FFD48E1540D cmp       rsi,1
+       7FFD48E15411 ja        short M01_L04
+       7FFD48E15413 cmp       ebx,[r11]
+       7FFD48E15416 jne       short M01_L05
 M01_L03:
-       7FFB2C523198 cmp       esi,1
-       7FFB2C52319B je        short M01_L00
-       7FFB2C52319D test      esi,esi
-       7FFB2C52319F jne       short M01_L06
-       7FFB2C5231A1 xor       edx,edx
-       7FFB2C5231A3 jmp       short M01_L00
+       7FFD48E15418 cmp       esi,1
+       7FFD48E1541B je        short M01_L00
+       7FFD48E1541D test      esi,esi
+       7FFD48E1541F jne       short M01_L06
+       7FFD48E15421 xor       edx,edx
+       7FFD48E15423 jmp       short M01_L00
 M01_L04:
-       7FFB2C5231A5 test      ebx,ebx
-       7FFB2C5231A7 je        short M01_L05
-       7FFB2C5231A9 inc       r9d
-       7FFB2C5231AC add       r10d,r9d
-       7FFB2C5231AF and       r10d,[rax+4]
-       7FFB2C5231B3 cmp       r9d,8
-       7FFB2C5231B7 jl        short M01_L02
+       7FFD48E15425 test      ebx,ebx
+       7FFD48E15427 je        short M01_L05
+       7FFD48E15429 inc       r9d
+       7FFD48E1542C add       r10d,r9d
+       7FFD48E1542F and       r10d,[rax+4]
+       7FFD48E15433 cmp       r9d,8
+       7FFD48E15437 jl        short M01_L02
 M01_L05:
-       7FFB2C5231B9 mov       esi,2
-       7FFB2C5231BE jmp       short M01_L03
+       7FFD48E15439 mov       esi,2
+       7FFD48E1543E jmp       short M01_L03
 M01_L06:
-       7FFB2C5231C0 pop       rbx
-       7FFB2C5231C1 pop       rsi
-       7FFB2C5231C2 jmp       near ptr System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny_NoCacheLookup(Void*, System.Object)
+       7FFD48E15440 pop       rbx
+       7FFD48E15441 pop       rsi
+       7FFD48E15442 jmp       near ptr System.Runtime.CompilerServices.CastHelpers.IsInstanceOfAny_NoCacheLookup(Void*, System.Object)
 ; Total bytes of code 167
 ```
 
 ## .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.ForEach_LinqParallel()
-;         List.AsParallel().ForAll(_doSomeThing);
-;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
+;         List.AsParallel().ForAll(_doSomethingParallel);
+;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2C5317D0 push      r15
-       7FFB2C5317D2 push      r14
-       7FFB2C5317D4 push      rdi
-       7FFB2C5317D5 push      rsi
-       7FFB2C5317D6 push      rbp
-       7FFB2C5317D7 push      rbx
-       7FFB2C5317D8 sub       rsp,88
-       7FFB2C5317DF xor       eax,eax
-       7FFB2C5317E1 mov       [rsp+28],rax
-       7FFB2C5317E6 vxorps    xmm4,xmm4,xmm4
-       7FFB2C5317EA vmovdqu   ymmword ptr [rsp+30],ymm4
-       7FFB2C5317F0 vmovdqu   ymmword ptr [rsp+50],ymm4
-       7FFB2C5317F6 vmovdqa   xmmword ptr [rsp+70],xmm4
-       7FFB2C5317FC mov       [rsp+80],rax
-       7FFB2C531804 mov       rbx,rcx
-       7FFB2C531807 mov       rbp,[rbx+8]
-       7FFB2C53180B test      rbp,rbp
-       7FFB2C53180E je        near ptr M00_L00
-       7FFB2C531814 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C53181E call      CORINFO_HELP_NEWSFAST
-       7FFB2C531823 mov       r14,rax
-       7FFB2C531826 lea       rcx,[rsp+58]
-       7FFB2C53182B call      qword ptr [7FFB2C904750]; System.Linq.Parallel.QuerySettings.get_Empty()
-       7FFB2C531831 lea       rdi,[r14+8]
-       7FFB2C531835 lea       rsi,[rsp+58]
-       7FFB2C53183A call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2C53183F call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2C531844 mov       ecx,4
-       7FFB2C531849 rep movsq
-       7FFB2C53184C lea       rcx,[r14+38]
-       7FFB2C531850 mov       rdx,rbp
-       7FFB2C531853 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C531858 mov       rbp,[rbx+10]
-       7FFB2C53185C test      rbp,rbp
-       7FFB2C53185F je        near ptr M00_L01
-       7FFB2C531865 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C53186F call      CORINFO_HELP_NEWSFAST
-       7FFB2C531874 mov       r15,rax
-       7FFB2C531877 mov       rcx,r14
-       7FFB2C53187A call      qword ptr [7FFB2C904AE0]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFB2C531880 mov       rdx,rax
-       7FFB2C531883 movzx     r8d,byte ptr [rdx+38]
-       7FFB2C531888 vmovdqu   ymm0,ymmword ptr [rdx+8]
-       7FFB2C53188D vmovdqu   ymmword ptr [rsp+28],ymm0
-       7FFB2C531893 vmovdqu   xmm0,xmmword ptr [rdx+28]
-       7FFB2C531898 vmovdqu   xmmword ptr [rsp+48],xmm0
-       7FFB2C53189E mov       byte ptr [r15+48],3
-       7FFB2C5318A3 lea       rdi,[r15+8]
-       7FFB2C5318A7 lea       rsi,[rsp+28]
-       7FFB2C5318AC call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2C5318B1 call      CORINFO_HELP_ASSIGN_BYREF
-       7FFB2C5318B6 mov       ecx,4
-       7FFB2C5318BB rep movsq
-       7FFB2C5318BE mov       [r15+38],r8b
-       7FFB2C5318C2 lea       rcx,[r15+40]
-       7FFB2C5318C6 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C5318CB lea       rcx,[r15+50]
-       7FFB2C5318CF mov       rdx,rbp
-       7FFB2C5318D2 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C5318D7 mov       rcx,r15
-       7FFB2C5318DA call      qword ptr [7FFB2C904CD8]; System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
-       7FFB2C5318E0 mov       eax,[rbx+1C]
-       7FFB2C5318E3 vzeroupper
-       7FFB2C5318E6 add       rsp,88
-       7FFB2C5318ED pop       rbx
-       7FFB2C5318EE pop       rbp
-       7FFB2C5318EF pop       rsi
-       7FFB2C5318F0 pop       rdi
-       7FFB2C5318F1 pop       r14
-       7FFB2C5318F3 pop       r15
-       7FFB2C5318F5 ret
+       7FFD48E32630 push      r15
+       7FFD48E32632 push      r14
+       7FFD48E32634 push      rdi
+       7FFD48E32635 push      rsi
+       7FFD48E32636 push      rbp
+       7FFD48E32637 push      rbx
+       7FFD48E32638 sub       rsp,88
+       7FFD48E3263F xor       eax,eax
+       7FFD48E32641 mov       [rsp+28],rax
+       7FFD48E32646 vxorps    xmm4,xmm4,xmm4
+       7FFD48E3264A vmovdqu   ymmword ptr [rsp+30],ymm4
+       7FFD48E32650 vmovdqu   ymmword ptr [rsp+50],ymm4
+       7FFD48E32656 vmovdqa   xmmword ptr [rsp+70],xmm4
+       7FFD48E3265C mov       [rsp+80],rax
+       7FFD48E32664 mov       rbx,rcx
+       7FFD48E32667 mov       rbp,7FFD48CBB0D8
+       7FFD48E32671 xor       ecx,ecx
+       7FFD48E32673 mov       [rbp],ecx
+       7FFD48E32676 mov       r14,[rbx+8]
+       7FFD48E3267A test      r14,r14
+       7FFD48E3267D je        near ptr M00_L00
+       7FFD48E32683 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E3268D call      CORINFO_HELP_NEWSFAST
+       7FFD48E32692 mov       r15,rax
+       7FFD48E32695 lea       rcx,[rsp+58]
+       7FFD48E3269A call      qword ptr [7FFD4911D518]; System.Linq.Parallel.QuerySettings.get_Empty()
+       7FFD48E326A0 lea       rdi,[r15+8]
+       7FFD48E326A4 lea       rsi,[rsp+58]
+       7FFD48E326A9 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD48E326AE call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD48E326B3 mov       ecx,4
+       7FFD48E326B8 rep movsq
+       7FFD48E326BB lea       rcx,[r15+38]
+       7FFD48E326BF mov       rdx,r14
+       7FFD48E326C2 call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E326C7 mov       rbx,[rbx+18]
+       7FFD48E326CB test      rbx,rbx
+       7FFD48E326CE je        near ptr M00_L01
+       7FFD48E326D4 mov       rcx,offset MT_System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E326DE call      CORINFO_HELP_NEWSFAST
+       7FFD48E326E3 mov       r14,rax
+       7FFD48E326E6 mov       rcx,r15
+       7FFD48E326E9 call      qword ptr [7FFD4911D8A8]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
+       7FFD48E326EF mov       rdx,rax
+       7FFD48E326F2 movzx     r8d,byte ptr [rdx+38]
+       7FFD48E326F7 vmovdqu   ymm0,ymmword ptr [rdx+8]
+       7FFD48E326FC vmovdqu   ymmword ptr [rsp+28],ymm0
+       7FFD48E32702 vmovdqu   xmm0,xmmword ptr [rdx+28]
+       7FFD48E32707 vmovdqu   xmmword ptr [rsp+48],xmm0
+       7FFD48E3270D mov       byte ptr [r14+48],3
+       7FFD48E32712 lea       rdi,[r14+8]
+       7FFD48E32716 lea       rsi,[rsp+28]
+       7FFD48E3271B call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD48E32720 call      CORINFO_HELP_ASSIGN_BYREF
+       7FFD48E32725 mov       ecx,4
+       7FFD48E3272A rep movsq
+       7FFD48E3272D mov       [r14+38],r8b
+       7FFD48E32731 lea       rcx,[r14+40]
+       7FFD48E32735 call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E3273A lea       rcx,[r14+50]
+       7FFD48E3273E mov       rdx,rbx
+       7FFD48E32741 call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E32746 mov       rcx,r14
+       7FFD48E32749 call      qword ptr [7FFD4911DAA0]; System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
+       7FFD48E3274F mov       eax,[rbp]
+       7FFD48E32752 vzeroupper
+       7FFD48E32755 add       rsp,88
+       7FFD48E3275C pop       rbx
+       7FFD48E3275D pop       rbp
+       7FFD48E3275E pop       rsi
+       7FFD48E3275F pop       rdi
+       7FFD48E32760 pop       r14
+       7FFD48E32762 pop       r15
+       7FFD48E32764 ret
 M00_L00:
-       7FFB2C5318F6 mov       ecx,6F1
-       7FFB2C5318FB mov       rdx,7FFB2C8F2638
-       7FFB2C531905 call      CORINFO_HELP_STRCNS
-       7FFB2C53190A mov       rcx,rax
-       7FFB2C53190D call      qword ptr [7FFB2C90DCC8]
-       7FFB2C531913 int       3
+       7FFD48E32765 mov       ecx,6F1
+       7FFD48E3276A mov       rdx,7FFD49185E90
+       7FFD48E32774 call      CORINFO_HELP_STRCNS
+       7FFD48E32779 mov       rcx,rax
+       7FFD48E3277C call      qword ptr [7FFD491DEDC0]
+       7FFD48E32782 int       3
 M00_L01:
-       7FFB2C531914 mov       ecx,733
-       7FFB2C531919 mov       rdx,7FFB2C8F2638
-       7FFB2C531923 call      CORINFO_HELP_STRCNS
-       7FFB2C531928 mov       rcx,rax
-       7FFB2C53192B call      qword ptr [7FFB2C90DCC8]
-       7FFB2C531931 int       3
-; Total bytes of code 354
+       7FFD48E32783 mov       ecx,733
+       7FFD48E32788 mov       rdx,7FFD49185E90
+       7FFD48E32792 call      CORINFO_HELP_STRCNS
+       7FFD48E32797 mov       rcx,rax
+       7FFD48E3279A call      qword ptr [7FFD491DEDC0]
+       7FFD48E327A0 int       3
+; Total bytes of code 369
 ```
 ```assembly
 ; System.Linq.Parallel.QuerySettings.get_Empty()
-       7FFB2C52E3E0 push      rsi
-       7FFB2C52E3E1 push      rbx
-       7FFB2C52E3E2 sub       rsp,28
-       7FFB2C52E3E6 mov       rbx,rcx
-       7FFB2C52E3E9 mov       rcx,offset MT_System.Linq.Parallel.CancellationState
-       7FFB2C52E3F3 call      CORINFO_HELP_NEWSFAST
-       7FFB2C52E3F8 mov       rsi,rax
-       7FFB2C52E3FB xor       ecx,ecx
-       7FFB2C52E3FD mov       [rsi+20],rcx
-       7FFB2C52E401 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
-       7FFB2C52E40B call      CORINFO_HELP_NEWSFAST
-       7FFB2C52E410 mov       byte ptr [rax+8],0
-       7FFB2C52E414 lea       rcx,[rsi+18]
-       7FFB2C52E418 mov       rdx,rax
-       7FFB2C52E41B call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C52E420 xor       ecx,ecx
-       7FFB2C52E422 mov       [rbx],rcx
-       7FFB2C52E425 lea       rcx,[rbx+8]
-       7FFB2C52E429 mov       rdx,rsi
-       7FFB2C52E42C call      CORINFO_HELP_CHECKED_ASSIGN_REF
-       7FFB2C52E431 mov       dword ptr [rbx+10],0FFFFFFFF
-       7FFB2C52E438 mov       byte ptr [rbx+14],0
-       7FFB2C52E43C xor       eax,eax
-       7FFB2C52E43E mov       [rbx+18],eax
-       7FFB2C52E441 mov       byte ptr [rbx+1C],0
-       7FFB2C52E445 mov       [rbx+20],eax
-       7FFB2C52E448 mov       byte ptr [rbx+24],0
-       7FFB2C52E44C mov       [rbx+28],eax
-       7FFB2C52E44F mov       rax,rbx
-       7FFB2C52E452 add       rsp,28
-       7FFB2C52E456 pop       rbx
-       7FFB2C52E457 pop       rsi
-       7FFB2C52E458 ret
+       7FFD48E307C0 push      rsi
+       7FFD48E307C1 push      rbx
+       7FFD48E307C2 sub       rsp,28
+       7FFD48E307C6 mov       rbx,rcx
+       7FFD48E307C9 mov       rcx,offset MT_System.Linq.Parallel.CancellationState
+       7FFD48E307D3 call      CORINFO_HELP_NEWSFAST
+       7FFD48E307D8 mov       rsi,rax
+       7FFD48E307DB xor       ecx,ecx
+       7FFD48E307DD mov       [rsi+20],rcx
+       7FFD48E307E1 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
+       7FFD48E307EB call      CORINFO_HELP_NEWSFAST
+       7FFD48E307F0 mov       byte ptr [rax+8],0
+       7FFD48E307F4 lea       rcx,[rsi+18]
+       7FFD48E307F8 mov       rdx,rax
+       7FFD48E307FB call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E30800 xor       ecx,ecx
+       7FFD48E30802 mov       [rbx],rcx
+       7FFD48E30805 lea       rcx,[rbx+8]
+       7FFD48E30809 mov       rdx,rsi
+       7FFD48E3080C call      CORINFO_HELP_CHECKED_ASSIGN_REF
+       7FFD48E30811 mov       dword ptr [rbx+10],0FFFFFFFF
+       7FFD48E30818 mov       byte ptr [rbx+14],0
+       7FFD48E3081C xor       eax,eax
+       7FFD48E3081E mov       [rbx+18],eax
+       7FFD48E30821 mov       byte ptr [rbx+1C],0
+       7FFD48E30825 mov       [rbx+20],eax
+       7FFD48E30828 mov       byte ptr [rbx+24],0
+       7FFD48E3082C mov       [rbx+28],eax
+       7FFD48E3082F mov       rax,rbx
+       7FFD48E30832 add       rsp,28
+       7FFD48E30836 pop       rbx
+       7FFD48E30837 pop       rsi
+       7FFD48E30838 ret
 ; Total bytes of code 121
 ```
 ```assembly
 ; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].AsQueryOperator(System.Collections.Generic.IEnumerable`1<Int32>)
-       7FFB2C531BB0 push      rdi
-       7FFB2C531BB1 push      rsi
-       7FFB2C531BB2 push      rbp
-       7FFB2C531BB3 push      rbx
-       7FFB2C531BB4 sub       rsp,28
-       7FFB2C531BB8 mov       rbx,rcx
-       7FFB2C531BBB mov       rax,rbx
-       7FFB2C531BBE test      rax,rax
-       7FFB2C531BC1 je        short M02_L00
-       7FFB2C531BC3 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531BCD cmp       [rax],rcx
-       7FFB2C531BD0 jne       near ptr M02_L04
-       7FFB2C531BD6 xor       eax,eax
+       7FFD48E32A20 push      rdi
+       7FFD48E32A21 push      rsi
+       7FFD48E32A22 push      rbp
+       7FFD48E32A23 push      rbx
+       7FFD48E32A24 sub       rsp,28
+       7FFD48E32A28 mov       rbx,rcx
+       7FFD48E32A2B mov       rax,rbx
+       7FFD48E32A2E test      rax,rax
+       7FFD48E32A31 je        short M02_L00
+       7FFD48E32A33 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32A3D cmp       [rax],rcx
+       7FFD48E32A40 jne       near ptr M02_L04
+       7FFD48E32A46 xor       eax,eax
 M02_L00:
-       7FFB2C531BD8 test      rax,rax
-       7FFB2C531BDB jne       near ptr M02_L03
-       7FFB2C531BE1 mov       rsi,rbx
-       7FFB2C531BE4 test      rsi,rsi
-       7FFB2C531BE7 je        short M02_L01
-       7FFB2C531BE9 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531BF3 cmp       [rsi],rcx
-       7FFB2C531BF6 jne       near ptr M02_L05
-       7FFB2C531BFC xor       esi,esi
+       7FFD48E32A48 test      rax,rax
+       7FFD48E32A4B jne       near ptr M02_L03
+       7FFD48E32A51 mov       rsi,rbx
+       7FFD48E32A54 test      rsi,rsi
+       7FFD48E32A57 je        short M02_L01
+       7FFD48E32A59 mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32A63 cmp       [rsi],rcx
+       7FFD48E32A66 jne       near ptr M02_L05
+       7FFD48E32A6C xor       esi,esi
 M02_L01:
-       7FFB2C531BFE test      rsi,rsi
-       7FFB2C531C01 jne       near ptr M02_L06
-       7FFB2C531C07 mov       rcx,offset MT_System.Linq.Parallel.ScanQueryOperator`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531C11 call      CORINFO_HELP_NEWSFAST
-       7FFB2C531C16 mov       rsi,rax
-       7FFB2C531C19 mov       rcx,offset MT_System.Linq.Parallel.CancellationState
-       7FFB2C531C23 call      CORINFO_HELP_NEWSFAST
-       7FFB2C531C28 mov       rdi,rax
-       7FFB2C531C2B xor       ecx,ecx
-       7FFB2C531C2D mov       [rdi+20],rcx
-       7FFB2C531C31 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
-       7FFB2C531C3B call      CORINFO_HELP_NEWSFAST
-       7FFB2C531C40 mov       byte ptr [rax+8],0
-       7FFB2C531C44 lea       rcx,[rdi+18]
-       7FFB2C531C48 mov       rdx,rax
-       7FFB2C531C4B call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C531C50 lea       rbp,[rsi+8]
-       7FFB2C531C54 xor       ecx,ecx
-       7FFB2C531C56 mov       [rbp],rcx
-       7FFB2C531C5A lea       rcx,[rbp+8]
-       7FFB2C531C5E mov       rdx,rdi
-       7FFB2C531C61 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C531C66 mov       dword ptr [rbp+10],0FFFFFFFF
-       7FFB2C531C6D mov       byte ptr [rbp+14],0
-       7FFB2C531C71 xor       ecx,ecx
-       7FFB2C531C73 mov       [rbp+18],ecx
-       7FFB2C531C76 mov       byte ptr [rbp+1C],0
-       7FFB2C531C7A mov       [rbp+20],ecx
-       7FFB2C531C7D mov       byte ptr [rbp+24],0
-       7FFB2C531C81 mov       [rbp+28],ecx
-       7FFB2C531C84 mov       byte ptr [rsi+38],0
-       7FFB2C531C88 test      rbx,rbx
-       7FFB2C531C8B je        short M02_L02
-       7FFB2C531C8D mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531C97 cmp       [rbx],rcx
-       7FFB2C531C9A jne       short M02_L02
-       7FFB2C531C9C mov       rbx,[rbx+38]
+       7FFD48E32A6E test      rsi,rsi
+       7FFD48E32A71 jne       near ptr M02_L06
+       7FFD48E32A77 mov       rcx,offset MT_System.Linq.Parallel.ScanQueryOperator`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32A81 call      CORINFO_HELP_NEWSFAST
+       7FFD48E32A86 mov       rsi,rax
+       7FFD48E32A89 mov       rcx,offset MT_System.Linq.Parallel.CancellationState
+       7FFD48E32A93 call      CORINFO_HELP_NEWSFAST
+       7FFD48E32A98 mov       rdi,rax
+       7FFD48E32A9B xor       ecx,ecx
+       7FFD48E32A9D mov       [rdi+20],rcx
+       7FFD48E32AA1 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
+       7FFD48E32AAB call      CORINFO_HELP_NEWSFAST
+       7FFD48E32AB0 mov       byte ptr [rax+8],0
+       7FFD48E32AB4 lea       rcx,[rdi+18]
+       7FFD48E32AB8 mov       rdx,rax
+       7FFD48E32ABB call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E32AC0 lea       rbp,[rsi+8]
+       7FFD48E32AC4 xor       ecx,ecx
+       7FFD48E32AC6 mov       [rbp],rcx
+       7FFD48E32ACA lea       rcx,[rbp+8]
+       7FFD48E32ACE mov       rdx,rdi
+       7FFD48E32AD1 call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E32AD6 mov       dword ptr [rbp+10],0FFFFFFFF
+       7FFD48E32ADD mov       byte ptr [rbp+14],0
+       7FFD48E32AE1 xor       ecx,ecx
+       7FFD48E32AE3 mov       [rbp+18],ecx
+       7FFD48E32AE6 mov       byte ptr [rbp+1C],0
+       7FFD48E32AEA mov       [rbp+20],ecx
+       7FFD48E32AED mov       byte ptr [rbp+24],0
+       7FFD48E32AF1 mov       [rbp+28],ecx
+       7FFD48E32AF4 mov       byte ptr [rsi+38],0
+       7FFD48E32AF8 test      rbx,rbx
+       7FFD48E32AFB je        short M02_L02
+       7FFD48E32AFD mov       rcx,offset MT_System.Linq.Parallel.ParallelEnumerableWrapper`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32B07 cmp       [rbx],rcx
+       7FFD48E32B0A jne       short M02_L02
+       7FFD48E32B0C mov       rbx,[rbx+38]
 M02_L02:
-       7FFB2C531CA0 lea       rcx,[rsi+40]
-       7FFB2C531CA4 mov       rdx,rbx
-       7FFB2C531CA7 call      CORINFO_HELP_ASSIGN_REF
-       7FFB2C531CAC mov       rax,rsi
+       7FFD48E32B10 lea       rcx,[rsi+40]
+       7FFD48E32B14 mov       rdx,rbx
+       7FFD48E32B17 call      CORINFO_HELP_ASSIGN_REF
+       7FFD48E32B1C mov       rax,rsi
 M02_L03:
-       7FFB2C531CAF add       rsp,28
-       7FFB2C531CB3 pop       rbx
-       7FFB2C531CB4 pop       rbp
-       7FFB2C531CB5 pop       rsi
-       7FFB2C531CB6 pop       rdi
-       7FFB2C531CB7 ret
+       7FFD48E32B1F add       rsp,28
+       7FFD48E32B23 pop       rbx
+       7FFD48E32B24 pop       rbp
+       7FFD48E32B25 pop       rsi
+       7FFD48E32B26 pop       rdi
+       7FFD48E32B27 ret
 M02_L04:
-       7FFB2C531CB8 mov       rdx,rbx
-       7FFB2C531CBB mov       rcx,offset MT_System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531CC5 call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfClass(Void*, System.Object)
-       7FFB2C531CCA jmp       near ptr M02_L00
+       7FFD48E32B28 mov       rdx,rbx
+       7FFD48E32B2B mov       rcx,offset MT_System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32B35 call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfClass(Void*, System.Object)
+       7FFD48E32B3A jmp       near ptr M02_L00
 M02_L05:
-       7FFB2C531CCF mov       rdx,rbx
-       7FFB2C531CD2 mov       rcx,offset MT_System.Linq.OrderedParallelQuery`1[[System.Int32, System.Private.CoreLib]]
-       7FFB2C531CDC call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfClass(Void*, System.Object)
-       7FFB2C531CE1 mov       rsi,rax
-       7FFB2C531CE4 jmp       near ptr M02_L01
+       7FFD48E32B3F mov       rdx,rbx
+       7FFD48E32B42 mov       rcx,offset MT_System.Linq.OrderedParallelQuery`1[[System.Int32, System.Private.CoreLib]]
+       7FFD48E32B4C call      System.Runtime.CompilerServices.CastHelpers.IsInstanceOfClass(Void*, System.Object)
+       7FFD48E32B51 mov       rsi,rax
+       7FFD48E32B54 jmp       near ptr M02_L01
 M02_L06:
-       7FFB2C531CE9 mov       rax,[rsi+38]
-       7FFB2C531CED jmp       short M02_L03
+       7FFD48E32B59 mov       rax,[rsi+38]
+       7FFD48E32B5D jmp       short M02_L03
 ; Total bytes of code 319
 ```
 ```assembly
 ; System.Linq.Parallel.ForAllOperator`1[[System.Int32, System.Private.CoreLib]].RunSynchronously()
-       7FFB2C531D10 push      r15
-       7FFB2C531D12 push      r14
-       7FFB2C531D14 push      rdi
-       7FFB2C531D15 push      rsi
-       7FFB2C531D16 push      rbp
-       7FFB2C531D17 push      rbx
-       7FFB2C531D18 sub       rsp,0C8
-       7FFB2C531D1F vxorps    xmm4,xmm4,xmm4
-       7FFB2C531D23 vmovdqu   ymmword ptr [rsp+30],ymm4
-       7FFB2C531D29 vmovdqu   ymmword ptr [rsp+50],ymm4
-       7FFB2C531D2F vmovdqu   ymmword ptr [rsp+70],ymm4
-       7FFB2C531D35 vmovdqu   ymmword ptr [rsp+90],ymm4
-       7FFB2C531D3E vmovdqa   xmmword ptr [rsp+0B0],xmm4
-       7FFB2C531D47 xor       eax,eax
-       7FFB2C531D49 mov       [rsp+0C0],rax
-       7FFB2C531D51 mov       rbx,rcx
-       7FFB2C531D54 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
-       7FFB2C531D5E call      CORINFO_HELP_NEWSFAST
-       7FFB2C531D63 mov       rsi,rax
-       7FFB2C531D66 mov       byte ptr [rsi+8],0
-       7FFB2C531D6A mov       rcx,offset MT_System.Threading.CancellationTokenSource
-       7FFB2C531D74 call      CORINFO_HELP_NEWSFAST
-       7FFB2C531D79 mov       r8,rax
-       7FFB2C531D7C vmovdqu   ymm0,ymmword ptr [rbx+8]
-       7FFB2C531D81 vmovdqu   ymmword ptr [rsp+68],ymm0
-       7FFB2C531D87 vmovdqu   xmm0,xmmword ptr [rbx+28]
-       7FFB2C531D8C vmovdqu   xmmword ptr [rsp+88],xmm0
-       7FFB2C531D95 lea       rcx,[rsp+68]
-       7FFB2C531D9A lea       rdx,[rsp+68]
-       7FFB2C531D9F mov       r9,rsi
-       7FFB2C531DA2 call      qword ptr [7FFB2C904D08]; System.Linq.Parallel.QuerySettings.WithPerExecutionSettings(System.Threading.CancellationTokenSource, System.Linq.Parallel.Shared`1<Boolean>)
-       7FFB2C531DA8 lea       rcx,[rsp+68]
-       7FFB2C531DAD lea       rdx,[rsp+98]
-       7FFB2C531DB5 call      qword ptr [7FFB2C904FA8]; System.Linq.Parallel.QuerySettings.WithDefaults()
-       7FFB2C531DBB mov       rcx,1E463C01480
-       7FFB2C531DC5 mov       rsi,[rcx]
-       7FFB2C531DC8 mov       rcx,rsi
-       7FFB2C531DCB mov       edi,[rsp+0A8]
-       7FFB2C531DD2 mov       edx,edi
-       7FFB2C531DD4 call      qword ptr [7FFB2C904FD8]; System.Linq.Parallel.PlinqEtwProvider.ParallelQueryBegin(Int32)
-       7FFB2C531DDA mov       byte ptr [rsp+60],1
-       7FFB2C531DDF mov       dword ptr [rsp+64],3
-       7FFB2C531DE7 vmovdqu   ymm0,ymmword ptr [rsp+98]
-       7FFB2C531DF0 vmovdqu   ymmword ptr [rsp+30],ymm0
-       7FFB2C531DF6 vmovdqu   xmm0,xmmword ptr [rsp+0B8]
-       7FFB2C531DFF vmovdqu   xmmword ptr [rsp+50],xmm0
-       7FFB2C531E05 mov       rdx,[rsp+60]
-       7FFB2C531E0A lea       rcx,[rsp+30]
-       7FFB2C531E0F mov       [rsp+20],rcx
-       7FFB2C531E14 mov       rcx,rbx
-       7FFB2C531E17 mov       r8d,1
-       7FFB2C531E1D mov       r9d,1
-       7FFB2C531E23 call      qword ptr [7FFB2C905008]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].GetOpenedEnumerator(System.Nullable`1<System.Linq.ParallelMergeOptions>, Boolean, Boolean, System.Linq.Parallel.QuerySettings)
-       7FFB2C531E29 mov       rcx,[rsp+0A0]
-       7FFB2C531E31 mov       rbx,[rcx+10]
-       7FFB2C531E35 mov       rcx,offset MT_System.Threading.CancellationTokenSource+Linked1CancellationTokenSource
-       7FFB2C531E3F cmp       [rbx],rcx
-       7FFB2C531E42 jne       near ptr M03_L03
-       7FFB2C531E48 cmp       byte ptr [rbx+24],0
-       7FFB2C531E4C jne       short M03_L01
-       7FFB2C531E4E lea       rbp,[rbx+28]
-       7FFB2C531E52 mov       r14,[rbp]
-       7FFB2C531E56 test      r14,r14
-       7FFB2C531E59 jne       short M03_L02
+       7FFD48E32B80 push      r15
+       7FFD48E32B82 push      r14
+       7FFD48E32B84 push      rdi
+       7FFD48E32B85 push      rsi
+       7FFD48E32B86 push      rbp
+       7FFD48E32B87 push      rbx
+       7FFD48E32B88 sub       rsp,0C8
+       7FFD48E32B8F vxorps    xmm4,xmm4,xmm4
+       7FFD48E32B93 vmovdqu   ymmword ptr [rsp+30],ymm4
+       7FFD48E32B99 vmovdqu   ymmword ptr [rsp+50],ymm4
+       7FFD48E32B9F vmovdqu   ymmword ptr [rsp+70],ymm4
+       7FFD48E32BA5 vmovdqu   ymmword ptr [rsp+90],ymm4
+       7FFD48E32BAE vmovdqa   xmmword ptr [rsp+0B0],xmm4
+       7FFD48E32BB7 xor       eax,eax
+       7FFD48E32BB9 mov       [rsp+0C0],rax
+       7FFD48E32BC1 mov       rbx,rcx
+       7FFD48E32BC4 mov       rcx,offset MT_System.Linq.Parallel.Shared`1[[System.Boolean, System.Private.CoreLib]]
+       7FFD48E32BCE call      CORINFO_HELP_NEWSFAST
+       7FFD48E32BD3 mov       rsi,rax
+       7FFD48E32BD6 mov       byte ptr [rsi+8],0
+       7FFD48E32BDA mov       rcx,offset MT_System.Threading.CancellationTokenSource
+       7FFD48E32BE4 call      CORINFO_HELP_NEWSFAST
+       7FFD48E32BE9 mov       r8,rax
+       7FFD48E32BEC vmovdqu   ymm0,ymmword ptr [rbx+8]
+       7FFD48E32BF1 vmovdqu   ymmword ptr [rsp+68],ymm0
+       7FFD48E32BF7 vmovdqu   xmm0,xmmword ptr [rbx+28]
+       7FFD48E32BFC vmovdqu   xmmword ptr [rsp+88],xmm0
+       7FFD48E32C05 lea       rcx,[rsp+68]
+       7FFD48E32C0A lea       rdx,[rsp+68]
+       7FFD48E32C0F mov       r9,rsi
+       7FFD48E32C12 call      qword ptr [7FFD4911DAD0]; System.Linq.Parallel.QuerySettings.WithPerExecutionSettings(System.Threading.CancellationTokenSource, System.Linq.Parallel.Shared`1<Boolean>)
+       7FFD48E32C18 lea       rcx,[rsp+68]
+       7FFD48E32C1D lea       rdx,[rsp+98]
+       7FFD48E32C25 call      qword ptr [7FFD4911DE18]; System.Linq.Parallel.QuerySettings.WithDefaults()
+       7FFD48E32C2B mov       rcx,14CA38011F8
+       7FFD48E32C35 mov       rsi,[rcx]
+       7FFD48E32C38 mov       rcx,rsi
+       7FFD48E32C3B mov       edi,[rsp+0A8]
+       7FFD48E32C42 mov       edx,edi
+       7FFD48E32C44 call      qword ptr [7FFD4911DE48]; System.Linq.Parallel.PlinqEtwProvider.ParallelQueryBegin(Int32)
+       7FFD48E32C4A mov       byte ptr [rsp+60],1
+       7FFD48E32C4F mov       dword ptr [rsp+64],3
+       7FFD48E32C57 vmovdqu   ymm0,ymmword ptr [rsp+98]
+       7FFD48E32C60 vmovdqu   ymmword ptr [rsp+30],ymm0
+       7FFD48E32C66 vmovdqu   xmm0,xmmword ptr [rsp+0B8]
+       7FFD48E32C6F vmovdqu   xmmword ptr [rsp+50],xmm0
+       7FFD48E32C75 mov       rdx,[rsp+60]
+       7FFD48E32C7A lea       rcx,[rsp+30]
+       7FFD48E32C7F mov       [rsp+20],rcx
+       7FFD48E32C84 mov       rcx,rbx
+       7FFD48E32C87 mov       r8d,1
+       7FFD48E32C8D mov       r9d,1
+       7FFD48E32C93 call      qword ptr [7FFD4911DE78]; System.Linq.Parallel.QueryOperator`1[[System.Int32, System.Private.CoreLib]].GetOpenedEnumerator(System.Nullable`1<System.Linq.ParallelMergeOptions>, Boolean, Boolean, System.Linq.Parallel.QuerySettings)
+       7FFD48E32C99 mov       rcx,[rsp+0A0]
+       7FFD48E32CA1 mov       rbx,[rcx+10]
+       7FFD48E32CA5 mov       rcx,offset MT_System.Threading.CancellationTokenSource+Linked1CancellationTokenSource
+       7FFD48E32CAF cmp       [rbx],rcx
+       7FFD48E32CB2 jne       near ptr M03_L03
+       7FFD48E32CB8 cmp       byte ptr [rbx+24],0
+       7FFD48E32CBC jne       short M03_L01
+       7FFD48E32CBE lea       rbp,[rbx+28]
+       7FFD48E32CC2 mov       r14,[rbp]
+       7FFD48E32CC6 test      r14,r14
+       7FFD48E32CC9 jne       short M03_L02
 M03_L00:
-       7FFB2C531E5B mov       rcx,rbx
-       7FFB2C531E5E mov       edx,1
-       7FFB2C531E63 call      qword ptr [7FFB2C8FAA28]; System.Threading.CancellationTokenSource.Dispose(Boolean)
+       7FFD48E32CCB mov       rcx,rbx
+       7FFD48E32CCE mov       edx,1
+       7FFD48E32CD3 call      qword ptr [7FFD4918E280]; System.Threading.CancellationTokenSource.Dispose(Boolean)
 M03_L01:
-       7FFB2C531E69 mov       rcx,rbx
-       7FFB2C531E6C call      System.GC._SuppressFinalize(System.Object)
-       7FFB2C531E71 mov       rcx,rsi
-       7FFB2C531E74 mov       edx,edi
-       7FFB2C531E76 call      qword ptr [7FFB2C907618]; System.Linq.Parallel.PlinqEtwProvider.ParallelQueryEnd(Int32)
-       7FFB2C531E7C nop
-       7FFB2C531E7D vzeroupper
-       7FFB2C531E80 add       rsp,0C8
-       7FFB2C531E87 pop       rbx
-       7FFB2C531E88 pop       rbp
-       7FFB2C531E89 pop       rsi
-       7FFB2C531E8A pop       rdi
-       7FFB2C531E8B pop       r14
-       7FFB2C531E8D pop       r15
-       7FFB2C531E8F ret
+       7FFD48E32CD9 mov       rcx,rbx
+       7FFD48E32CDC call      System.GC._SuppressFinalize(System.Object)
+       7FFD48E32CE1 mov       rcx,rsi
+       7FFD48E32CE4 mov       edx,edi
+       7FFD48E32CE6 call      qword ptr [7FFD491D44C8]; System.Linq.Parallel.PlinqEtwProvider.ParallelQueryEnd(Int32)
+       7FFD48E32CEC nop
+       7FFD48E32CED vzeroupper
+       7FFD48E32CF0 add       rsp,0C8
+       7FFD48E32CF7 pop       rbx
+       7FFD48E32CF8 pop       rbp
+       7FFD48E32CF9 pop       rsi
+       7FFD48E32CFA pop       rdi
+       7FFD48E32CFB pop       r14
+       7FFD48E32CFD pop       r15
+       7FFD48E32CFF ret
 M03_L02:
-       7FFB2C531E90 mov       rcx,[r14+8]
-       7FFB2C531E94 mov       rdx,[rbp+8]
-       7FFB2C531E98 mov       r8,r14
-       7FFB2C531E9B cmp       [rcx],ecx
-       7FFB2C531E9D call      qword ptr [7FFB2C907600]; System.Threading.CancellationTokenSource+Registrations.Unregister(Int64, CallbackNode)
-       7FFB2C531EA3 test      eax,eax
-       7FFB2C531EA5 jne       short M03_L00
-       7FFB2C531EA7 mov       rbp,[rbp+8]
-       7FFB2C531EAB mov       rax,[r14+8]
-       7FFB2C531EAF mov       rax,[rax+8]
-       7FFB2C531EB3 cmp       dword ptr [rax+20],0
-       7FFB2C531EB7 je        short M03_L00
-       7FFB2C531EB9 cmp       dword ptr [rax+20],2
-       7FFB2C531EBD je        short M03_L00
-       7FFB2C531EBF mov       rax,[r14+8]
-       7FFB2C531EC3 mov       r15d,[rax+30]
-       7FFB2C531EC7 call      CORINFO_HELP_GETCURRENTMANAGEDTHREADID
-       7FFB2C531ECC cmp       r15d,eax
-       7FFB2C531ECF je        short M03_L00
-       7FFB2C531ED1 mov       rcx,[r14+8]
-       7FFB2C531ED5 mov       rdx,rbp
-       7FFB2C531ED8 cmp       [rcx],ecx
-       7FFB2C531EDA call      qword ptr [7FFB2C90E6A0]
-       7FFB2C531EE0 jmp       near ptr M03_L00
+       7FFD48E32D00 mov       rcx,[r14+8]
+       7FFD48E32D04 mov       rdx,[rbp+8]
+       7FFD48E32D08 mov       r8,r14
+       7FFD48E32D0B cmp       [rcx],ecx
+       7FFD48E32D0D call      qword ptr [7FFD491D44B0]; System.Threading.CancellationTokenSource+Registrations.Unregister(Int64, CallbackNode)
+       7FFD48E32D13 test      eax,eax
+       7FFD48E32D15 jne       short M03_L00
+       7FFD48E32D17 mov       rbp,[rbp+8]
+       7FFD48E32D1B mov       rax,[r14+8]
+       7FFD48E32D1F mov       rax,[rax+8]
+       7FFD48E32D23 cmp       dword ptr [rax+20],0
+       7FFD48E32D27 je        short M03_L00
+       7FFD48E32D29 cmp       dword ptr [rax+20],2
+       7FFD48E32D2D je        short M03_L00
+       7FFD48E32D2F mov       rax,[r14+8]
+       7FFD48E32D33 mov       r15d,[rax+30]
+       7FFD48E32D37 call      CORINFO_HELP_GETCURRENTMANAGEDTHREADID
+       7FFD48E32D3C cmp       r15d,eax
+       7FFD48E32D3F je        short M03_L00
+       7FFD48E32D41 mov       rcx,[r14+8]
+       7FFD48E32D45 mov       rdx,rbp
+       7FFD48E32D48 cmp       [rcx],ecx
+       7FFD48E32D4A call      qword ptr [7FFD491DF840]
+       7FFD48E32D50 jmp       near ptr M03_L00
 M03_L03:
-       7FFB2C531EE5 mov       rcx,rbx
-       7FFB2C531EE8 mov       edx,1
-       7FFB2C531EED mov       rax,[rbx]
-       7FFB2C531EF0 mov       rax,[rax+40]
-       7FFB2C531EF4 call      qword ptr [rax+28]
-       7FFB2C531EF7 jmp       near ptr M03_L01
+       7FFD48E32D55 mov       rcx,rbx
+       7FFD48E32D58 mov       edx,1
+       7FFD48E32D5D mov       rax,[rbx]
+       7FFD48E32D60 mov       rax,[rax+40]
+       7FFD48E32D64 call      qword ptr [rax+28]
+       7FFD48E32D67 jmp       near ptr M03_L01
 ; Total bytes of code 492
 ```
 
 ## .NET 9.0.0 (9.0.24.43107), X64 RyuJIT AVX2
 ```assembly
 ; Benchmark.BetterBenchmark.For_Span()
-;         var sum = 0;
-;         ^^^^^^^^^^^^
+;         sum = 0;
+;         ^^^^^^^^
 ;         var span = CollectionsMarshal.AsSpan(List);
 ;         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         for (int i = 0; i < span.Length; i++)
 ;              ^^^^^^^^^
-;             sum += DoSomeThing(span[i]);
+;             sum += DoSomething(span[i]);
 ;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ;         return sum;
 ;         ^^^^^^^^^^^
-       7FFB2C52A240 push      r14
-       7FFB2C52A242 push      rdi
-       7FFB2C52A243 push      rsi
-       7FFB2C52A244 push      rbp
-       7FFB2C52A245 push      rbx
-       7FFB2C52A246 sub       rsp,20
-       7FFB2C52A24A mov       rbx,rcx
-       7FFB2C52A24D xor       esi,esi
-       7FFB2C52A24F mov       rdx,[rbx+8]
-       7FFB2C52A253 xor       edi,edi
-       7FFB2C52A255 xor       ebp,ebp
-       7FFB2C52A257 test      rdx,rdx
-       7FFB2C52A25A je        short M00_L00
-       7FFB2C52A25C mov       ebp,[rdx+10]
-       7FFB2C52A25F mov       rdi,[rdx+8]
-       7FFB2C52A263 cmp       [rdi+8],ebp
-       7FFB2C52A266 jb        short M00_L03
-       7FFB2C52A268 add       rdi,10
+       7FFD48E2EF00 push      r14
+       7FFD48E2EF02 push      rdi
+       7FFD48E2EF03 push      rsi
+       7FFD48E2EF04 push      rbp
+       7FFD48E2EF05 push      rbx
+       7FFD48E2EF06 sub       rsp,20
+       7FFD48E2EF0A mov       rbx,7FFD48CCB0D8
+       7FFD48E2EF14 xor       eax,eax
+       7FFD48E2EF16 mov       [rbx],eax
+       7FFD48E2EF18 mov       rcx,[rcx+8]
+       7FFD48E2EF1C xor       esi,esi
+       7FFD48E2EF1E test      rcx,rcx
+       7FFD48E2EF21 je        short M00_L00
+       7FFD48E2EF23 mov       eax,[rcx+10]
+       7FFD48E2EF26 mov       rsi,[rcx+8]
+       7FFD48E2EF2A cmp       [rsi+8],eax
+       7FFD48E2EF2D jb        short M00_L03
+       7FFD48E2EF2F add       rsi,10
 M00_L00:
-       7FFB2C52A26C test      ebp,ebp
-       7FFB2C52A26E jle       short M00_L02
-       7FFB2C52A270 xor       r14d,r14d
+       7FFD48E2EF33 mov       edi,eax
+       7FFD48E2EF35 test      edi,edi
+       7FFD48E2EF37 jle       short M00_L02
+       7FFD48E2EF39 xor       ebp,ebp
 M00_L01:
-       7FFB2C52A273 mov       edx,[rdi+r14]
-       7FFB2C52A277 mov       rcx,rbx
-       7FFB2C52A27A call      qword ptr [7FFB2C904408]; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-       7FFB2C52A280 add       esi,eax
-       7FFB2C52A282 add       r14,4
-       7FFB2C52A286 dec       ebp
-       7FFB2C52A288 jne       short M00_L01
+       7FFD48E2EF3B mov       r14d,[rbx]
+       7FFD48E2EF3E mov       ecx,[rsi+rbp]
+       7FFD48E2EF41 call      qword ptr [7FFD4912D1D0]; Benchmark.BetterBenchmark.DoSomething(Int32)
+       7FFD48E2EF47 add       eax,r14d
+       7FFD48E2EF4A mov       [rbx],eax
+       7FFD48E2EF4C add       rbp,4
+       7FFD48E2EF50 dec       edi
+       7FFD48E2EF52 jne       short M00_L01
 M00_L02:
-       7FFB2C52A28A mov       eax,esi
-       7FFB2C52A28C add       rsp,20
-       7FFB2C52A290 pop       rbx
-       7FFB2C52A291 pop       rbp
-       7FFB2C52A292 pop       rsi
-       7FFB2C52A293 pop       rdi
-       7FFB2C52A294 pop       r14
-       7FFB2C52A296 ret
+       7FFD48E2EF54 mov       eax,[rbx]
+       7FFD48E2EF56 add       rsp,20
+       7FFD48E2EF5A pop       rbx
+       7FFD48E2EF5B pop       rbp
+       7FFD48E2EF5C pop       rsi
+       7FFD48E2EF5D pop       rdi
+       7FFD48E2EF5E pop       r14
+       7FFD48E2EF60 ret
 M00_L03:
-       7FFB2C52A297 call      qword ptr [7FFB2C6E7390]
-       7FFB2C52A29D int       3
-; Total bytes of code 94
+       7FFD48E2EF61 call      qword ptr [7FFD48FE7390]
+       7FFD48E2EF67 int       3
+; Total bytes of code 104
 ```
 ```assembly
-; Benchmark.BetterBenchmark.DoSomeThing(Int32)
-;     private int DoSomeThing(int i) => i + i;
-;                                       ^^^^^
-       7FFB2C529EC0 lea       eax,[rdx+rdx]
-       7FFB2C529EC3 ret
+; Benchmark.BetterBenchmark.DoSomething(Int32)
+;     private static int DoSomething(int i) => i + i;
+;                                              ^^^^^
+       7FFD48E2EBF0 lea       eax,[rcx+rcx]
+       7FFD48E2EBF3 ret
 ; Total bytes of code 4
 ```
 
