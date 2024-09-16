@@ -97,25 +97,19 @@ public class BetterBenchmark
     private List<int> List = null!;
     private static int sum = 0;
     private readonly Action<int> _doSomeThing = x => sum += DoSomeThing(x);
+    private readonly Action<int> _doSomeThingParallel = x => Interlocked.Add(ref sum, DoSomeThing(x));
 
     [GlobalSetup]
     public void GlobalSetup()
     {
         List = Enumerable.Range(0, ItemCount).ToList();
         
-        var result1 = For();
-        var result2 = ForEach();
-        var result3 = For_Span();
-        var result4 = ForEach_Linq();
-        var result5 = ForEach_LinqParallel();
-        var result6 = ForEach_Parallel();
-        var result7 = ForEach_Span();
-
-        // Make sure that all methods returns the same result
-        if (result1 != result2 || result3 != result4 || result5 != result6 || result6 != result7)
-        {
-            throw new InvalidOperationException();
-        }
+        if (For() != For_Span()) throw new Exception();
+        if (For() != ForEach()) throw new Exception();
+        if (For() != ForEach_Linq()) throw new Exception();
+        if (For() != ForEach_LinqParallel()) throw new Exception();
+        if (For() != ForEach_Parallel()) throw new Exception();
+        if (For() != ForEach_Span()) throw new Exception();
     }
 
     [Benchmark]
@@ -152,7 +146,7 @@ public class BetterBenchmark
     public int ForEach_Parallel()
     {
         sum = 0;
-        Parallel.ForEach(List, _doSomeThing);
+        Parallel.ForEach(List, _doSomeThingParallel);
         return sum;
     }
 
@@ -160,7 +154,7 @@ public class BetterBenchmark
     public int ForEach_LinqParallel()
     {
         sum = 0;
-        List.AsParallel().ForAll(_doSomeThing);
+        List.AsParallel().ForAll(_doSomeThingParallel);
         return sum;
     }
 
